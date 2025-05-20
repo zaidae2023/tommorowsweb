@@ -4,7 +4,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import { UserProvider } from './context/usercontext.jsx'; // Make sure this is correct
-import './components/AuthForm.css';
+import VerifyOtp from './pages/VerifyOtp';
+
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="*" element={<h2>404 - Page Not Found</h2>} />
+            <Route path="/verify-otp" element={<VerifyOtp />} />
           </Routes>
         </div>
       </Router>

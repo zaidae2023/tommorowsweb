@@ -1,12 +1,10 @@
-// src/pages/ForgotPassword.jsx
 import React, { useState } from 'react';
-import "../components/AuthForm.css";
-
+import './forgot.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ForgotPassword() {
-  const [step, setStep] = useState(1); // Step 1: Send OTP, Step 2: Verify OTP
+  const [step, setStep] = useState(1); // Step 1: Send OTP, Step 2: Verify & Reset
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -23,68 +21,73 @@ export default function ForgotPassword() {
       const data = await res.json();
       if (res.ok) {
         setStep(2);
-        setMessage('OTP sent to your email.');
+        setMessage('📩 OTP sent to your email.');
       } else {
         setMessage(data.message || 'Failed to send OTP.');
       }
     } catch (err) {
       console.error('Send OTP error:', err);
+      setMessage('Server error. Try again.');
     }
   };
 
   // Step 2: Verify OTP and reset password
   const verifyOtp = async () => {
     try {
-      const res = await fetch(`${API_URL}/auth/verify-otp`, {
+      const res = await fetch(`${API_URL}/auth/verify-reset-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp, newPassword }),
       });
       const data = await res.json();
       if (res.ok) {
-        setMessage('Password reset successfully. You can now login.');
+        setMessage('✅ Password reset successful. You can now login.');
       } else {
-        setMessage(data.message || 'OTP verification failed.');
+        setMessage(data.message || '❌ OTP verification failed.');
       }
     } catch (err) {
       console.error('Verify OTP error:', err);
+      setMessage('Server error. Try again.');
     }
   };
 
   return (
-    <div className="auth-container">
-      <h2>Forgot Password</h2>
-      <p>{message}</p>
-      {step === 1 ? (
-        <>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <button onClick={sendOtp}>Send OTP</button>
-        </>
-      ) : (
-        <>
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-          <button onClick={verifyOtp}>Verify & Reset</button>
-        </>
-      )}
+    <div className="forgot-page">
+      <div className="forgot-box">
+        <h2>Forgot Password</h2>
+        <p>{message}</p>
+
+        {step === 1 ? (
+          <>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button onClick={sendOtp}>Send OTP</button>
+          </>
+        ) : (
+          <>
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+            <button onClick={verifyOtp}>Verify & Reset</button>
+          </>
+        )}
+      </div>
     </div>
   );
 }

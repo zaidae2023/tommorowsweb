@@ -1,7 +1,8 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "../components/AuthForm.css";
+import './Login.css';
+import googleIcon from '../assets/google.jpg'; // adjust path if needed
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,14 +21,24 @@ export default function Login() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
+
       if (res.ok) {
         navigate('/dashboard');
       } else {
-        alert(data.message || 'Login failed');
+        if (res.status === 403) {
+          const goVerify = confirm('Email not verified. Would you like to enter OTP now?');
+          if (goVerify) {
+            navigate(`/verify-otp?email=${email}`);
+          }
+        } else {
+          alert(data.message || 'Login failed');
+        }
       }
     } catch (err) {
       console.error('Login error:', err);
+      alert('Something went wrong. Please try again.');
     }
   };
 
@@ -37,8 +48,8 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-container">
+    <div className="login-page">
+      <div className="login-box">
         <h2>Login to TuneUp</h2>
         <form onSubmit={handleLogin}>
           <input
@@ -59,10 +70,12 @@ export default function Login() {
         </form>
 
         <button onClick={handleGoogleLogin} className="google-btn">
-          Continue with Google
-        </button>
+  <img src={googleIcon} alt="Google" className="google-icon" />
+  Continue with Google
+</button>
 
-        <div className="auth-links">
+
+        <div className="links">
           <span onClick={() => navigate('/register')}>Don't have an account? Register</span>
           <span onClick={() => navigate('/forgot-password')}>Forgot Password?</span>
         </div>

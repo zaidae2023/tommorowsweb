@@ -1,57 +1,68 @@
-// routes/authRoutes.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const crypto = require('crypto');
 
 const User = require('../models/user');
 const Otp = require('../models/otp');
 const sendOtp = require('../utils/sendOtp');
-const sendEmail = require('../utils/sendEmail');
 
 const router = express.Router();
 
-// -------------------- Register --------------------
+// -------------------- Register with Email OTP --------------------
 router.post('/register', async (req, res) => {
   const { fullName, email, password } = req.body;
   try {
     const hashed = await bcrypt.hash(password, 10);
-    const token = crypto.randomBytes(20).toString('hex');
-    const expiry = Date.now() + 3600000; // 1 hour
 
-    await User.create({
+    const user = await User.create({
       fullName,
       email,
       password: hashed,
-      verifyToken: token,
-      verifyTokenExpiry: expiry,
+      isVerified: false,
     });
 
-    const link = `http://localhost:5173/verify-email?token=${token}&email=${email}`;
-    await sendEmail(email, 'Verify your TuneUp account', `Click to verify your email: ${link}`);
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    await Otp.create({ email, code });
+    await sendOtp(email, code);
 
-    res.json({ message: 'Check your email to verify your account.' });
+    res.status(200).json({ message: 'OTP sent to your email for verification.', email });
   } catch (err) {
     res.status(400).json({ message: 'Email already registered or invalid' });
   }
 });
 
-// -------------------- Verify Email --------------------
-router.get('/verify-email', async (req, res) => {
-  const { email, token } = req.query;
+// -------------------- Verify OTP to Activate Account --------------------
+router.post('/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
 
-  const user = await User.findOne({ email, verifyToken: token });
-  if (!user || user.verifyTokenExpiry < Date.now()) {
-    return res.status(400).json({ message: 'Invalid or expired verification link' });
+  try {
+    const record = await Otp.findOne({ email, code: otp });
+    if (!record) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    await User.updateOne({ email }, { isVerified: true });
+    await Otp.deleteMany({ email }); // Cleanup all old OTPs
+
+    res.status(200).json({ message: 'Email verified successfully. You can now log in.' });
+  } catch (err) {
+    console.error('OTP verification error:', err);
+    res.status(500).json({ message: 'Server error during OTP verification' });
   }
+});
 
-  user.isVerified = true;
-  user.verifyToken = undefined;
-  user.verifyTokenExpiry = undefined;
-  await user.save();
 
-  res.json({ message: 'Email verified. You can now log in.' });
+// -------------------- Verify OTP to Activate Account --------------------
+router.post('/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
+  const record = await Otp.findOne({ email, code: otp });
+  if (!record) return res.status(400).json({ message: 'Invalid or expired OTP' });
+
+  await User.updateOne({ email }, { isVerified: true });
+  await Otp.deleteMany({ email }); // cleanup OTPs
+
+  res.status(200).json({ message: 'Email verified successfully. You can now log in.' });
 });
 
 // -------------------- Login --------------------
@@ -59,24 +70,17 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
-
-  if (!user.isVerified) {
-    return res.status(403).json({ message: 'Please verify your email first.' });
-  }
+  if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+  if (!user.isVerified) return res.status(403).json({ message: 'Please verify your email first.' });
 
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
+  if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
   res.cookie('token', token, { httpOnly: true }).json({ message: 'Login successful' });
 });
 
-// -------------------- Send OTP for Forgot Password --------------------
+// -------------------- Forgot Password - Send OTP --------------------
 router.post('/send-otp', async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -85,18 +89,20 @@ router.post('/send-otp', async (req, res) => {
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   await Otp.create({ email, code });
   await sendOtp(email, code);
+
   res.json({ message: 'OTP sent to email' });
 });
 
-// -------------------- Verify OTP and Reset Password --------------------
-router.post('/verify-otp', async (req, res) => {
+// -------------------- Forgot Password - Verify OTP & Reset --------------------
+router.post('/verify-reset-otp', async (req, res) => {
   const { email, otp, newPassword } = req.body;
   const record = await Otp.findOne({ email, code: otp });
   if (!record) return res.status(400).json({ message: 'Invalid or expired OTP' });
 
   const hashed = await bcrypt.hash(newPassword, 10);
   await User.updateOne({ email }, { password: hashed });
-  await Otp.deleteMany({ email }); // Clear used OTPs
+  await Otp.deleteMany({ email });
+
   res.json({ message: 'Password reset successful' });
 });
 

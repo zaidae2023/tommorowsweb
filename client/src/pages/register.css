@@ -1,0 +1,56 @@
+/* register.css */
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f4fdfc;
+}
+
+.register-box {
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.register-box h2 {
+  font-size: 26px;
+  color: #222;
+  margin-bottom: 24px;
+}
+
+.register-box input,
+.register-box button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.register-box input:focus {
+  border-color: #1abc9c;
+  outline: none;
+}
+
+.register-box button {
+  background: #1abc9c;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.register-box .links {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-box .links span {
+  color: #1f7aec;
+  cursor: pointer;
+}

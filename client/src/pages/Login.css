@@ -1,0 +1,100 @@
+/* login.css */
+
+/* Add this at the top of login.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(to right, #e0f7fa, #ffffff);
+}
+
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+
+.login-box h2 {
+  font-size: 26px;
+  color: #222;
+  margin-bottom: 24px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.login-box input:focus {
+  border-color: #1abc9c;
+  outline: none;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  background: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-box .google-btn {
+  margin-top: 10px;
+  background-color: #db4437;
+}
+
+.login-box .links {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login-box .links span {
+  color: #1f7aec;
+  cursor: pointer;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #db4437;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.google-btn:hover {
+  background-color: #c13526;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+}
