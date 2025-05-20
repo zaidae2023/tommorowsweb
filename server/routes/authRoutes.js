@@ -1,0 +1,125 @@
+// routes/authRoutes.js
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
+const crypto = require('crypto');
+
+const User = require('../models/user');
+const Otp = require('../models/otp');
+const sendOtp = require('../utils/sendOtp');
+const sendEmail = require('../utils/sendEmail');
+
+const router = express.Router();
+
+// -------------------- Register --------------------
+router.post('/register', async (req, res) => {
+  const { fullName, email, password } = req.body;
+  try {
+    const hashed = await bcrypt.hash(password, 10);
+    const token = crypto.randomBytes(20).toString('hex');
+    const expiry = Date.now() + 3600000; // 1 hour
+
+    await User.create({
+      fullName,
+      email,
+      password: hashed,
+      verifyToken: token,
+      verifyTokenExpiry: expiry,
+    });
+
+    const link = `http://localhost:5173/verify-email?token=${token}&email=${email}`;
+    await sendEmail(email, 'Verify your TuneUp account', `Click to verify your email: ${link}`);
+
+    res.json({ message: 'Check your email to verify your account.' });
+  } catch (err) {
+    res.status(400).json({ message: 'Email already registered or invalid' });
+  }
+});
+
+// -------------------- Verify Email --------------------
+router.get('/verify-email', async (req, res) => {
+  const { email, token } = req.query;
+
+  const user = await User.findOne({ email, verifyToken: token });
+  if (!user || user.verifyTokenExpiry < Date.now()) {
+    return res.status(400).json({ message: 'Invalid or expired verification link' });
+  }
+
+  user.isVerified = true;
+  user.verifyToken = undefined;
+  user.verifyTokenExpiry = undefined;
+  await user.save();
+
+  res.json({ message: 'Email verified. You can now log in.' });
+});
+
+// -------------------- Login --------------------
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+
+  if (!user.isVerified) {
+    return res.status(403).json({ message: 'Please verify your email first.' });
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+  res.cookie('token', token, { httpOnly: true }).json({ message: 'Login successful' });
+});
+
+// -------------------- Send OTP for Forgot Password --------------------
+router.post('/send-otp', async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(400).json({ message: 'Email not registered' });
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  await Otp.create({ email, code });
+  await sendOtp(email, code);
+  res.json({ message: 'OTP sent to email' });
+});
+
+// -------------------- Verify OTP and Reset Password --------------------
+router.post('/verify-otp', async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  const record = await Otp.findOne({ email, code: otp });
+  if (!record) return res.status(400).json({ message: 'Invalid or expired OTP' });
+
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await User.updateOne({ email }, { password: hashed });
+  await Otp.deleteMany({ email }); // Clear used OTPs
+  res.json({ message: 'Password reset successful' });
+});
+
+// -------------------- Google OAuth --------------------
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.get('/google/callback', passport.authenticate('google', {
+  failureRedirect: '/',
+  session: false,
+}), (req, res) => {
+  const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET);
+  res.redirect(`http://localhost:5173/dashboard?token=${token}`);
+});
+
+// -------------------- Get Logged-in User Profile --------------------
+const authenticate = require('../middleware/authMiddleware');
+router.get('/profile', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('-password');
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching profile' });
+  }
+});
+
+module.exports = router;
