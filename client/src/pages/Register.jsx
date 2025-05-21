@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './register.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -8,9 +9,9 @@ export default function Register() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Handle new user registration
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
@@ -35,10 +36,12 @@ export default function Register() {
   };
 
   return (
-    <div className="register-page">
-      <div className="register-box">
-        <h2>Create Account</h2>
-        <form onSubmit={handleRegister}>
+    <div className="login-page">
+      <div className="login-card">
+        <h2>Create Account 🚘</h2>
+        <p className="subtitle">Register to get started with TuneUp</p>
+
+        <form onSubmit={handleRegister} className="register-form">
           <input
             type="text"
             placeholder="Full Name"
@@ -53,18 +56,23 @@ export default function Register() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Register</button>
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <span className="toggle" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          <button type="submit" className="primary-btn">Register</button>
         </form>
 
-        <div className="links">
-          <span onClick={() => navigate('/login')}>Already have an account? Login</span>
+        <div className="bottom-links">
+          <span onClick={() => navigate('/login')}>Already have an account? <b>Login</b></span>
         </div>
       </div>
     </div>

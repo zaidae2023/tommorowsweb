@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import googleIcon from '../assets/google.jpg'; // adjust path if needed
-
+import googleIcon from '../assets/google.jpg';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Handle email/password login
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -42,16 +42,17 @@ export default function Login() {
     }
   };
 
-  // Redirect to backend Google OAuth
   const handleGoogleLogin = () => {
     window.location.href = `${API_URL}/auth/google`;
   };
 
   return (
     <div className="login-page">
-      <div className="login-box">
-        <h2>Login to TuneUp</h2>
-        <form onSubmit={handleLogin}>
+      <div className="login-card">
+        <h2>Welcome Back 👋</h2>
+        <p className="subtitle">Login to your TuneUp account</p>
+
+        <form onSubmit={handleLogin} className="login-form">
           <input
             type="email"
             placeholder="Email"
@@ -59,25 +60,31 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Login</button>
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <span className="toggle" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          <button type="submit" className="primary-btn">Login</button>
         </form>
 
+        <div className="divider">OR</div>
+
         <button onClick={handleGoogleLogin} className="google-btn">
-  <img src={googleIcon} alt="Google" className="google-icon" />
-  Continue with Google
-</button>
+          <img src={googleIcon} alt="Google" className="google-icon" />
+          Continue with Google
+        </button>
 
-
-        <div className="links">
-          <span onClick={() => navigate('/register')}>Don't have an account? Register</span>
-          <span onClick={() => navigate('/forgot-password')}>Forgot Password?</span>
+        <div className="bottom-links">
+          <span onClick={() => navigate('/register')}>Don't have an account? <b>Register</b></span>
+          <span onClick={() => navigate('/forgot-password')}><b>Forgot Password?</b></span>
         </div>
       </div>
     </div>

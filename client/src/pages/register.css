@@ -1,56 +1,99 @@
 /* register.css */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
 .register-page {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f4fdfc;
+  padding: 20px;
 }
 
-.register-box {
-  background: #fff;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+.register-card {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 420px;
   text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-.register-box h2 {
-  font-size: 26px;
-  color: #222;
+.register-card h2 {
+  font-size: 28px;
+  color: #1f7aec;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
   margin-bottom: 24px;
 }
 
-.register-box input,
-.register-box button {
+.register-form input {
   width: 100%;
   padding: 12px;
   margin-bottom: 16px;
   font-size: 15px;
-  border-radius: 8px;
   border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s;
 }
 
-.register-box input:focus {
+.register-form input:focus {
   border-color: #1abc9c;
   outline: none;
 }
 
-.register-box button {
+.primary-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
   background: #1abc9c;
   color: white;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.register-box .links {
-  margin-top: 20px;
+.primary-btn:hover {
+  background-color: #17a88d;
+}
+
+.bottom-links {
+  margin-top: 24px;
   font-size: 14px;
+  color: #444;
+  display: flex;
+  justify-content: center;
 }
 
-.register-box .links span {
-  color: #1f7aec;
+.bottom-links span {
   cursor: pointer;
+  color: #1f7aec;
+  transition: color 0.2s ease;
+}
+
+.bottom-links span:hover {
+  color: #1357c5;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
