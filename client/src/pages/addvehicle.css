@@ -1,0 +1,41 @@
+.add-vehicle-container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+}
+
+.add-vehicle-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.vehicle-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.vehicle-form input {
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.vehicle-form button {
+  padding: 12px;
+  font-size: 16px;
+  background-color: #1f7aec;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.vehicle-form button:hover {
+  background-color: #155ac4;
+}

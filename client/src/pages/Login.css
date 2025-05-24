@@ -8,7 +8,7 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background-color: #f5f8fa; /* Light default background for dashboard */
 }
 
 /* Centering container */

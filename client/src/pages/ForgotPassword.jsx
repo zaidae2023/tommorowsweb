@@ -12,9 +12,11 @@ export default function ForgotPassword() {
   const [newPassword, setNewPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const sendOtp = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`${API_URL}/auth/send-otp`, {
         method: 'POST',
@@ -26,15 +28,18 @@ export default function ForgotPassword() {
         setStep(2);
         setMessage('📩 OTP sent to your email.');
       } else {
-        setMessage(data.message || 'Failed to send OTP.');
+        setMessage(data.message || '❌ Failed to send OTP.');
       }
     } catch (err) {
       console.error('Send OTP error:', err);
-      setMessage('Server error. Try again.');
+      setMessage('❌ Server error. Try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   const verifyOtp = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`${API_URL}/auth/verify-reset-otp`, {
         method: 'POST',
@@ -43,13 +48,16 @@ export default function ForgotPassword() {
       });
       const data = await res.json();
       if (res.ok) {
-        setMessage('✅ Password reset successful. You can now login.');
+        setMessage('✅ Password reset successful! Redirecting to login...');
+        setTimeout(() => navigate('/login'), 2000); // Redirect after 2s
       } else {
         setMessage(data.message || '❌ OTP verification failed.');
       }
     } catch (err) {
       console.error('Verify OTP error:', err);
-      setMessage('Server error. Try again.');
+      setMessage('❌ Server error. Try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,7 +77,9 @@ export default function ForgotPassword() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <button onClick={sendOtp} className="primary-btn">Send OTP</button>
+              <button onClick={sendOtp} className="primary-btn" disabled={loading}>
+                {loading ? 'Sending...' : 'Send OTP'}
+              </button>
             </>
           ) : (
             <>
@@ -92,7 +102,9 @@ export default function ForgotPassword() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
-              <button onClick={verifyOtp} className="primary-btn">Verify & Reset</button>
+              <button onClick={verifyOtp} className="primary-btn" disabled={loading}>
+                {loading ? 'Verifying...' : 'Verify & Reset'}
+              </button>
             </>
           )}
         </div>

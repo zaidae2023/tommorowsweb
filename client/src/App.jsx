@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
-import { UserProvider } from './context/usercontext.jsx'; // Make sure this is correct
 import VerifyOtp from './pages/VerifyOtp';
-
+import Dashboard from './pages/dashboard';
+import AddVehicle from './pages/addvehicle';
+import Vehicles from './pages/vehicles'; // ✅ New import for vehicle list page
+import { UserProvider } from './context/usercontext.jsx';
 
 function App() {
   return (
@@ -18,6 +20,9 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/verify-otp" element={<VerifyOtp />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/add-vehicle" element={<AddVehicle />} />
+            <Route path="/vehicles" element={<Vehicles />} /> {/* ✅ Vehicles list route */}
           </Routes>
         </div>
       </Router>

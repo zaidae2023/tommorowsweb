@@ -1,0 +1,66 @@
+.dashboard-container {
+  padding: 30px;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #e0eafc);
+  height: 100vh;
+  width: 100%;                  /* Ensures container occupies full width */
+  display: flex;                /* Ensures proper alignment */
+  flex-direction: column;       /* Stacks children vertically */
+  box-sizing: border-box;
+}
+
+.dashboard-container h1 {
+  margin-bottom: 20px;
+  color: #333;
+  align-self: center;          /* Centers the heading horizontally */
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;     /* Centers cards horizontally */
+  width: 100%;                 /* Ensures cards take full width */
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 220px;
+  max-width: 300px;            /* Optional: keeps cards from stretching too wide */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.vehicle-card {
+  border-top: 5px solid #4CAF50;
+}
+
+.expenses-card {
+  border-top: 5px solid #FF5722;
+}
+
+.service-card {
+  border-top: 5px solid #2196F3;
+}
+
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.card p {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #555;
+}

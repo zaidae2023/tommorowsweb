@@ -24,14 +24,14 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        alert('Registration successful! An OTP has been sent to your email.');
+        alert('✅ Registration successful! OTP sent to your email.');
         navigate(`/verify-otp?email=${email}`);
       } else {
-        alert(data.message || 'Registration failed');
+        alert(data.message || '❌ Registration failed.');
       }
     } catch (err) {
       console.error('Register error:', err);
-      alert('Something went wrong during registration.');
+      alert('❌ Something went wrong during registration.');
     }
   };
 
@@ -72,7 +72,9 @@ export default function Register() {
         </form>
 
         <div className="bottom-links">
-          <span onClick={() => navigate('/login')}>Already have an account? <b>Login</b></span>
+          <span onClick={() => navigate('/login')}>
+            Already have an account? <b>Login</b>
+          </span>
         </div>
       </div>
     </div>

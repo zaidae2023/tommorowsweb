@@ -43,7 +43,7 @@ router.post('/verify-otp', async (req, res) => {
     }
 
     await User.updateOne({ email }, { isVerified: true });
-    await Otp.deleteMany({ email }); // Cleanup all old OTPs
+    await Otp.deleteMany({ email });
 
     res.status(200).json({ message: 'Email verified successfully. You can now log in.' });
   } catch (err) {
@@ -52,20 +52,7 @@ router.post('/verify-otp', async (req, res) => {
   }
 });
 
-
-// -------------------- Verify OTP to Activate Account --------------------
-router.post('/verify-otp', async (req, res) => {
-  const { email, otp } = req.body;
-  const record = await Otp.findOne({ email, code: otp });
-  if (!record) return res.status(400).json({ message: 'Invalid or expired OTP' });
-
-  await User.updateOne({ email }, { isVerified: true });
-  await Otp.deleteMany({ email }); // cleanup OTPs
-
-  res.status(200).json({ message: 'Email verified successfully. You can now log in.' });
-});
-
-// -------------------- Login --------------------
+// -------------------- Login (JWT returned in response) --------------------
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -76,8 +63,10 @@ router.post('/login', async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  res.cookie('token', token, { httpOnly: true }).json({ message: 'Login successful' });
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
+  // ✅ Return token in response body
+  res.json({ message: 'Login successful', token });
 });
 
 // -------------------- Forgot Password - Send OTP --------------------
@@ -113,7 +102,7 @@ router.get('/google/callback', passport.authenticate('google', {
   failureRedirect: '/',
   session: false,
 }), (req, res) => {
-  const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
   res.redirect(`http://localhost:5173/dashboard?token=${token}`);
 });
 

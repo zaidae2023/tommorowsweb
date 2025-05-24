@@ -17,7 +17,6 @@ export default function Login() {
     try {
       const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
-        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
@@ -25,6 +24,7 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok) {
+        localStorage.setItem('token', data.token); // ✅ Store token
         navigate('/dashboard');
       } else {
         if (res.status === 403) {
