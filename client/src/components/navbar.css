@@ -1,20 +1,30 @@
 .navbar {
   background-color: #1f7aec;
   color: white;
-  padding: 15px 30px;
+  padding: 0 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   position: relative;
+  height: 70px; /* fixed height to control layout */
 }
 
 .navbar-logo {
-  font-size: 22px;
-  font-weight: bold;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
+.navbar-logo-img {
+  max-height: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Hamburger toggle icon */
 .navbar-toggle {
   display: none;
   font-size: 26px;
@@ -41,7 +51,7 @@
   color: #ffeb3b;
 }
 
-/* Responsive */
+/* Responsive Styles */
 @media (max-width: 768px) {
   .navbar-toggle {
     display: block;
@@ -53,7 +63,7 @@
     width: 100%;
     background-color: #1f7aec;
     position: absolute;
-    top: 60px;
+    top: 70px; /* Match .navbar height */
     left: 0;
     padding: 15px 30px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -67,4 +77,12 @@
   .navbar-links li {
     margin-bottom: 10px;
   }
+}
+
+/* Replace the .navbar-logo with this */
+.navbar-logo-img {
+  height: 300px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 20px; /* optional */
 }

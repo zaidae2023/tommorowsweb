@@ -6,6 +6,8 @@ html, body, #root {
   height: 100%;
 }
 
+
+
 /* Set up a consistent font and appearance */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -85,5 +87,92 @@ button:focus-visible {
 
   a:hover {
     color: #155ac4;
+  }
+}
+
+/* Base font setup */
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Headings */
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #1abc9c;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f7aec;
+  margin-bottom: 16px;
+}
+
+h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 14px;
+}
+
+h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+/* Paragraph */
+p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #444;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  h1 {
+    font-size: 30px;
+  }
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  p {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: 26px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 18px;
+  }
+  p {
+    font-size: 14px;
   }
 }

@@ -17,7 +17,6 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 export default function Dashboard() {
   const [vehicles, setVehicles] = useState([]);
   const [expenses, setExpenses] = useState([]);
-  const [expensesByCurrency, setExpensesByCurrency] = useState({});
   const [nextService, setNextService] = useState({ date: 'N/A', type: 'N/A' });
 
   const [weather, setWeather] = useState(null);
@@ -65,16 +64,6 @@ export default function Dashboard() {
 
         const expensesData = await expensesRes.json();
         setExpenses(expensesData);
-
-        if (Array.isArray(expensesData)) {
-          const totals = {};
-          expensesData.forEach((exp) => {
-            const curr = exp.currency || 'USD';
-            if (!totals[curr]) totals[curr] = 0;
-            totals[curr] += exp.amount;
-          });
-          setExpensesByCurrency(totals);
-        }
 
         const serviceData = await serviceRes.json();
         if (Array.isArray(serviceData) && serviceData.length > 0) {
@@ -199,14 +188,6 @@ export default function Dashboard() {
             </div>
           )}
           <Card title="Registered Vehicles" value={vehicles.length} />
-          <Card
-            title="Total Expenses"
-            value={
-              Object.entries(expensesByCurrency)
-                .map(([curr, total]) => `${curr} ${total.toFixed(2)}`)
-                .join(' | ') || 'N/A'
-            }
-          />
           <Card
             title="Next Service"
             value={

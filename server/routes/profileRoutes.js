@@ -31,13 +31,14 @@ router.get('/', authMiddleware, async (req, res) => {
       fullName: user.fullName,
       email: user.email,
       avatar: user.avatar ? `/uploads/avatars/${path.basename(user.avatar)}` : '',
+      twoFactorEnabled: user.twoFactorEnabled || false, // ✅ Include 2FA toggle status
     });
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch profile', error: err.message });
   }
 });
 
-// ✅ PUT /api/profile - Update fullName only
+// ✅ PUT /api/profile - Update fullName
 router.put('/', authMiddleware, async (req, res) => {
   try {
     const { fullName } = req.body;
@@ -49,6 +50,23 @@ router.put('/', authMiddleware, async (req, res) => {
     res.json({ fullName: user.fullName });
   } catch (err) {
     res.status(500).json({ message: 'Failed to update profile', error: err.message });
+  }
+});
+
+// ✅ NEW: PUT /api/profile/twofactor - Toggle 2FA
+router.put('/twofactor', authMiddleware, async (req, res) => {
+  try {
+    const { enabled } = req.body;
+
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.twoFactorEnabled = !!enabled;
+    await user.save();
+
+    res.json({ message: `2FA ${enabled ? 'enabled' : 'disabled'}` });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to update 2FA setting', error: err.message });
   }
 });
 

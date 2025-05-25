@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // ✅ Import Link
+import { Link } from 'react-router-dom';
 import './Navbar.css';
+import logo from '../assets/logo.png'; // ✅ Adjust path if needed
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -8,7 +9,9 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="navbar-logo">🚗 TuneUp</div>
+      {/* Logo Image */}
+      <img src={logo} alt="TuneUp Logo" className="navbar-logo-img" />
+
       <div className="navbar-toggle" onClick={toggleMenu}>
         ☰
       </div>

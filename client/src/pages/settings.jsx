@@ -7,19 +7,21 @@ export default function Settings() {
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
   const [message, setMessage] = useState('');
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         const data = await res.json();
         if (res.ok) {
           setFullName(data.fullName || '');
           setEmail(data.email || '');
           setAvatar(data.avatar ? `${import.meta.env.VITE_API_URL}${data.avatar}` : '');
+          setTwoFactorEnabled(data.twoFactorEnabled || false);
         } else {
           setMessage(data.message || 'Failed to load profile');
         }
@@ -30,6 +32,30 @@ export default function Settings() {
     };
     fetchProfile();
   }, []);
+
+  const handle2FAToggle = async () => {
+    try {
+      const updated = !twoFactorEnabled;
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/twofactor`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ enabled: updated }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTwoFactorEnabled(updated);
+        setMessage(`✅ 2FA ${updated ? 'enabled' : 'disabled'}`);
+      } else {
+        setMessage(data.message || 'Failed to update 2FA');
+      }
+    } catch (err) {
+      console.error('2FA toggle error:', err);
+      setMessage('Error updating 2FA');
+    }
+  };
 
   const handleImageClick = () => {
     fileInputRef.current.click();
@@ -89,7 +115,7 @@ export default function Settings() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({ fullName }),
       });
@@ -103,6 +129,14 @@ export default function Settings() {
     } catch (err) {
       console.error('Profile update error:', err);
       setMessage('❌ Error updating profile');
+    }
+  };
+
+  const handleLogout = () => {
+    const confirmLogout = window.confirm('Are you sure you want to logout?');
+    if (confirmLogout) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
     }
   };
 
@@ -159,7 +193,24 @@ export default function Settings() {
               <input type="email" value={email} readOnly />
             </div>
 
+            <div className="input-group toggle-group">
+              <label htmlFor="2fa-toggle">2-Factor Authentication</label>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  id="2fa-toggle"
+                  checked={twoFactorEnabled}
+                  onChange={handle2FAToggle}
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+
             <button type="submit" className="save-btn">Save Changes</button>
+
+            <button type="button" className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
           </form>
         </div>
       </div>

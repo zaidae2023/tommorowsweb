@@ -24,8 +24,17 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem('token', data.token); // ✅ Store token
-        navigate('/dashboard');
+        if (data.requireOtp) {
+          // ✅ 2FA is ON → redirect to OTP verification page
+          localStorage.setItem('emailForOtp', email);
+          navigate('/verify-otp');
+        } else if (data.token) {
+          // ✅ 2FA is OFF → login and save token
+          localStorage.setItem('token', data.token);
+          navigate('/dashboard');
+        } else {
+          alert('Something went wrong. Please try again.');
+        }
       } else {
         if (res.status === 403) {
           const goVerify = confirm('Email not verified. Would you like to enter OTP now?');

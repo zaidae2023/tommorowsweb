@@ -8,10 +8,15 @@ const userSchema = new mongoose.Schema({
   avatar: { type: String },
   isGoogleUser: { type: Boolean, default: false },
 
-  // Email verification fields
+  // Email verification
   isVerified: { type: Boolean, default: false },
   verifyToken: { type: String },
-  verifyTokenExpiry: { type: Date }
+  verifyTokenExpiry: { type: Date },
+
+  // ✅ 2FA support
+  twoFactorEnabled: { type: Boolean, default: false },
+  otp: { type: String },
+  otpExpiry: { type: Date }
 });
 
 module.exports = mongoose.model('User', userSchema);

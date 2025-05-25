@@ -6,6 +6,7 @@ const passport = require('passport');
 const User = require('../models/user');
 const Otp = require('../models/otp');
 const sendOtp = require('../utils/sendOtp');
+const authenticate = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -52,7 +53,7 @@ router.post('/verify-otp', async (req, res) => {
   }
 });
 
-// -------------------- Login (JWT returned in response) --------------------
+// -------------------- Login with optional 2FA --------------------
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -63,10 +64,38 @@ router.post('/login', async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  // ✅ Check 2FA toggle
+  if (user.twoFactorEnabled) {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiry = Date.now() + 5 * 60 * 1000;
 
-  // ✅ Return token in response body
+    user.otp = otp;
+    user.otpExpiry = expiry;
+    await user.save();
+
+    await sendOtp(user.email, otp);
+    return res.json({ requireOtp: true, email: user.email });
+  }
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
   res.json({ message: 'Login successful', token });
+});
+
+// -------------------- Verify login OTP --------------------
+router.post('/verify-login-otp', async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user || !user.otp || user.otp !== otp || Date.now() > user.otpExpiry) {
+    return res.status(400).json({ message: 'Invalid or expired OTP' });
+  }
+
+  user.otp = undefined;
+  user.otpExpiry = undefined;
+  await user.save();
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  res.json({ message: 'OTP verified. Login successful', token });
 });
 
 // -------------------- Forgot Password - Send OTP --------------------
@@ -107,7 +136,6 @@ router.get('/google/callback', passport.authenticate('google', {
 });
 
 // -------------------- Get Logged-in User Profile --------------------
-const authenticate = require('../middleware/authMiddleware');
 router.get('/profile', authenticate, async (req, res) => {
   try {
     const user = await User.findById(req.userId).select('-password');
