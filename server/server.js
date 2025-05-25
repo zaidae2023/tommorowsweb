@@ -6,8 +6,11 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 require('./passport'); // Passport config
 
+// Routes
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const authRoutes = require('./routes/authRoutes');
+const expenseRoutes = require('./routes/expenseRoutes'); // ✅ Added
+const serviceRoutes = require('./routes/serviceRoutes');
 
 const app = express();
 
@@ -16,7 +19,7 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'] // ✅ allow JWT header
+  allowedHeaders: ['Content-Type', 'Authorization'] // ✅ Allow JWT header
 }));
 
 app.use(express.json());
@@ -32,6 +35,8 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/expenses', expenseRoutes); // ✅ New route added
+app.use('/api/services', serviceRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {

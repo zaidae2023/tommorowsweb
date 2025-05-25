@@ -27,8 +27,8 @@ export default function AddVehicle() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // ✅ Include JWT token
         },
-        credentials: 'include', // for cookies (sessions)
         body: JSON.stringify(form),
       });
 
@@ -53,7 +53,9 @@ export default function AddVehicle() {
       <Navbar />
       <div className="add-vehicle-container">
         <h2>Add New Vehicle</h2>
-        {message && <p style={{ color: message.startsWith('✅') ? 'green' : 'red' }}>{message}</p>}
+        {message && (
+          <p style={{ color: message.startsWith('✅') ? 'green' : 'red' }}>{message}</p>
+        )}
         <form className="vehicle-form" onSubmit={handleSubmit}>
           <input
             type="text"
