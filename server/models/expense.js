@@ -21,6 +21,10 @@ const expenseSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  currency: {
+    type: String,
+    default: 'USD', // ✅ Default currency
+  },
   date: {
     type: Date,
     default: Date.now,

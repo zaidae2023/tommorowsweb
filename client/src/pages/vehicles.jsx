@@ -42,6 +42,32 @@ export default function Vehicles() {
     fetchVehicles();
   }, []);
 
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this vehicle?');
+    if (!confirmDelete) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/vehicles/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setVehicles((prev) => prev.filter((v) => v._id !== id));
+      } else {
+        alert(data.message || 'Failed to delete vehicle');
+      }
+    } catch (err) {
+      console.error('Delete error:', err);
+      alert('An error occurred while deleting');
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -90,12 +116,30 @@ export default function Vehicles() {
                 borderRadius: '10px',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                 width: '250px',
+                position: 'relative',
               }}
             >
               <h3>{vehicle.name}</h3>
               <p><strong>Model:</strong> {vehicle.model}</p>
               <p><strong>Year:</strong> {vehicle.year}</p>
               <p><strong>Reg #:</strong> {vehicle.registration}</p>
+              <button
+                onClick={() => handleDelete(vehicle._id)}
+                style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  backgroundColor: '#ff4d4f',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '5px',
+                  padding: '4px 8px',
+                  cursor: 'pointer',
+                  fontSize: '12px',
+                }}
+              >
+                ❌ Delete
+              </button>
             </div>
           ))}
         </div>

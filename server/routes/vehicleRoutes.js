@@ -37,4 +37,18 @@ router.post('/', async (req, res) => {
   }
 });
 
+// ✅ DELETE /api/vehicles/:id - Delete a vehicle by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    if (!vehicle) {
+      return res.status(404).json({ message: 'Vehicle not found or unauthorized' });
+    }
+    res.json({ message: 'Vehicle deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting vehicle:', err);
+    res.status(500).json({ message: 'Failed to delete vehicle', error: err.message });
+  }
+});
+
 module.exports = router;

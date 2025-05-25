@@ -2,25 +2,32 @@
   padding: 30px;
   font-family: 'Inter', sans-serif;
   background: linear-gradient(135deg, #f0f4f8, #e0eafc);
-  height: 100vh;
-  width: 100%;                  /* Ensures container occupies full width */
-  display: flex;                /* Ensures proper alignment */
-  flex-direction: column;       /* Stacks children vertically */
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
 }
 
 .dashboard-container h1 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #333;
-  align-self: center;          /* Centers the heading horizontally */
+  align-self: center;
 }
 
+.dashboard-container p {
+  align-self: center;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Cards Layout */
 .dashboard-cards {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-  justify-content: center;     /* Centers cards horizontally */
-  width: 100%;                 /* Ensures cards take full width */
+  justify-content: center;
+  width: 100%;
 }
 
 .card {
@@ -30,7 +37,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   flex: 1;
   min-width: 220px;
-  max-width: 300px;            /* Optional: keeps cards from stretching too wide */
+  max-width: 300px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -59,8 +66,121 @@
 }
 
 .card p {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   margin: 5px 0;
   color: #555;
+}
+
+/* Quick Links */
+.quick-links {
+  margin: 30px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.quick-links button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1abc9c;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.quick-links button:hover {
+  background-color: #159b85;
+}
+
+/* Recent Activity */
+.recent-activity {
+  margin-top: 30px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.recent-activity h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.recent-activity ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.recent-activity li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+  color: #444;
+}
+
+.recent-activity li:last-child {
+  border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .quick-links {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Chart Section */
+.chart-section {
+  margin-top: 40px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.chart-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .chart-section {
+    padding: 15px;
+    margin-top: 30px;
+  }
+}
+
+.fuel-card {
+  border-top: 5px solid #f39c12;
+  text-align: left;
+}
+.fuel-card ul {
+  padding-left: 0;
+  margin-top: 10px;
+}
+.fuel-card li {
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+.fuel-card li:last-child {
+  border-bottom: none;
 }

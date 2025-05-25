@@ -6,55 +6,61 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 require('./passport'); // Passport config
 
-// Routes
+// Route Imports
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const authRoutes = require('./routes/authRoutes');
-const expenseRoutes = require('./routes/expenseRoutes'); // ✅ Added
+const expenseRoutes = require('./routes/expenseRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
+const profileRoutes = require('./routes/profileRoutes'); // ✅ Added
 
 const app = express();
 
-// Middleware
+// ✅ Middleware
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'] // ✅ Allow JWT header
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 
-// Root route
+// ✅ Serve uploaded avatars
+app.use('/uploads', express.static('uploads'));
+
+// ✅ Root Route
 app.get('/', (req, res) => {
   console.log("✅ Root route accessed");
   res.send('🚗 Welcome to the TuneUp API backend!');
 });
 
-// API Routes
+// ✅ API Routes
 app.use('/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
-app.use('/api/expenses', expenseRoutes); // ✅ New route added
+app.use('/api/expenses', expenseRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/api/profile', profileRoutes); // ✅ Profile routes added
 
-// Connect to MongoDB
+// ✅ Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => {
   console.log('✅ MongoDB connected');
-  app.listen(process.env.PORT || 5000, () => {
-    console.log(`🚀 Server running on port ${process.env.PORT}`);
-    console.log(`🌐 Visit: http://localhost:${process.env.PORT}`);
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 Visit: http://localhost:${PORT}`);
   });
 })
 .catch(err => {
   console.error('❌ MongoDB connection failed:', err.message);
 });
 
-// Optional: Catch unhandled routes
+// ✅ Catch-All Route for Undefined Endpoints
 app.use((req, res) => {
   res.status(404).json({ message: 'Endpoint not found' });
 });

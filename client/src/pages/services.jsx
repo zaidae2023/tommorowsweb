@@ -42,7 +42,7 @@ export default function Services() {
   useEffect(() => {
     fetchVehicles();
     fetchServices();
-  }, [fetchVehicles, fetchServices]); // ✅ No more ESLint warning
+  }, [fetchVehicles, fetchServices]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -94,6 +94,28 @@ export default function Services() {
     }
   };
 
+  const deleteService = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this service?');
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/services/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        fetchServices();
+      } else {
+        console.error('Failed to delete service');
+      }
+    } catch (err) {
+      console.error('Delete service error:', err);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -134,12 +156,20 @@ export default function Services() {
               🚗 {svc.vehicleId?.name} – {svc.vehicleId?.model} ({svc.vehicleId?.year})<br />
               <em>Note:</em> {svc.note || 'N/A'}<br />
               <em>Status:</em> {svc.status}
-              {svc.status === 'upcoming' && (
-                <div style={{ marginTop: '5px' }}>
-                  <button onClick={() => updateStatus(svc._id, 'completed')}>Mark Completed</button>
-                  <button onClick={() => updateStatus(svc._id, 'missed')}>Mark Missed</button>
-                </div>
-              )}
+              <div style={{ marginTop: '5px' }}>
+                {svc.status === 'upcoming' && (
+                  <>
+                    <button onClick={() => updateStatus(svc._id, 'completed')}>Mark Completed</button>
+                    <button onClick={() => updateStatus(svc._id, 'missed')}>Mark Missed</button>
+                  </>
+                )}
+                <button
+                  onClick={() => deleteService(svc._id)}
+                  style={{ marginLeft: '10px', color: 'red' }}
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>

@@ -10,6 +10,9 @@ import Vehicles from './pages/vehicles'; // ✅ New import for vehicle list page
 import { UserProvider } from './context/usercontext.jsx';
 import Expenses from './pages/expenses';
 import Services from './pages/services'; // ✅ Make sure path is correct
+import Settings from './pages/settings';
+
+
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
             <Route path="/vehicles" element={<Vehicles />} /> {/* ✅ Vehicles list route */}
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/settings" element={<Settings />} />
+
+          
           </Routes>
         </div>
       </Router>
