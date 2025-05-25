@@ -1,5 +1,6 @@
 // src/pages/VerifyOtp.jsx
 import React, { useState } from 'react';
+import './VerifyOtp.css';
 
 export default function VerifyOtp() {
   const [otp, setOtp] = useState('');

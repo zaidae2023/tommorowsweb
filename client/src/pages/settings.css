@@ -1,83 +1,154 @@
-.settings-container {
-  padding: 30px;
-  background: linear-gradient(to right, #e0f7fa, #ffffff);
-  font-family: 'Segoe UI', sans-serif;
+/* Page container */
+.settings-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #ffffff; /* White background */
   min-height: 100vh;
+  color: #111; /* Dark text for contrast */
 }
 
-.settings-box {
-  max-width: 600px;
-  margin: auto;
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* Card container */
+.settings-card {
+  background: #f9f9f9; /* Light card background */
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); /* Soft shadow */
+  color: #111;
 }
 
-.settings-box h2 {
+/* Section title */
+.settings-title {
+  font-size: 28px;
   margin-bottom: 20px;
   text-align: center;
+  font-weight: bold;
 }
 
-.avatar-section {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+/* Success/Error Message */
+.settings-message {
+  background: #e3f2fd; /* Light blue background */
+  color: #0d47a1;
+  padding: 10px;
+  border-radius: 8px;
   margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #90caf9;
 }
 
-.avatar-preview {
+/* Avatar container */
+.avatar-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+/* Avatar image */
+.avatar-image {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #1abc9c;
+  border: 3px solid #4fc3f7;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
+.avatar-image:hover {
+  transform: scale(1.05);
+}
+
+/* Delete (X) button on avatar */
+.avatar-delete-btn {
+  position: absolute;
+  top: -6px;
+  right: calc(50% - 50px); /* Center based on avatar size */
+  background: #ef5350;
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-delete-btn:hover {
+  background: #d32f2f;
+}
+
+/* Form input group */
 .input-group {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 15px;
 }
 
 .input-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 5px;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #333;
+  font-weight: 500;
 }
 
 .input-group input {
-  width: 100%;
-  padding: 8px;
+  padding: 10px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  font-size: 15px;
+  transition: border 0.2s ease;
 }
 
-button {
-  padding: 8px 15px;
-  margin-top: 10px;
-  border: none;
-  background: #1abc9c;
+.input-group input:focus {
+  outline: none;
+  border-color: #4fc3f7;
+}
+
+/* Save button */
+.save-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #00bfa5;
   color: #fff;
-  border-radius: 6px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
+  margin-top: 10px;
   transition: background 0.3s ease;
 }
 
-button:hover {
-  background: #169f89;
+.save-btn:hover {
+  background-color: #009688;
 }
 
-.delete-btn {
-  background: #e74c3c;
-  margin-left: 10px;
-}
+/* Responsive improvements (optional) */
+@media (max-width: 600px) {
+  .settings-card {
+    padding: 20px;
+  }
 
-.delete-btn:hover {
-  background: #c0392b;
-}
+  .settings-title {
+    font-size: 24px;
+  }
 
-.save-btn {
-  display: block;
-  margin-top: 25px;
-  width: 100%;
-  font-weight: bold;
+  .avatar-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .avatar-delete-btn {
+    top: -5px;
+    right: calc(50% - 40px);
+  }
 }

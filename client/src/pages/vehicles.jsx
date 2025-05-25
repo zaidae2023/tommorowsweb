@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
+import './vehicles.css';
 
 export default function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
@@ -71,72 +72,30 @@ export default function Vehicles() {
   return (
     <>
       <Navbar />
-      <div
-        style={{
-          backgroundColor: '#ffffff',
-          color: '#222',
-          minHeight: '100vh',
-          width: '100%',
-          padding: '30px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2>My Vehicles</h2>
-          <button
-            onClick={() => navigate('/add-vehicle')}
-            style={{
-              backgroundColor: '#1f7aec',
-              color: '#fff',
-              padding: '10px 16px',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '14px',
-            }}
-          >
+      <div className="vehicles-page">
+        <div className="vehicles-header">
+          <h2 className="vehicles-title">🚗 My Vehicles</h2>
+          <button className="add-vehicle-btn" onClick={() => navigate('/add-vehicle')}>
             ➕ Add Vehicle
           </button>
         </div>
 
-        {loading && <p>Loading vehicles...</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-
+        {loading && <p style={{ textAlign: 'center' }}>Loading vehicles...</p>}
+        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
         {!loading && !error && vehicles.length === 0 && (
-          <p>You haven't added any vehicles yet.</p>
+          <p style={{ textAlign: 'center' }}>You haven't added any vehicles yet.</p>
         )}
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        <div className="vehicles-grid">
           {vehicles.map((vehicle) => (
-            <div
-              key={vehicle._id}
-              style={{
-                background: '#f9f9f9',
-                padding: '20px',
-                borderRadius: '10px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                width: '250px',
-                position: 'relative',
-              }}
-            >
+            <div key={vehicle._id} className="vehicle-card">
               <h3>{vehicle.name}</h3>
               <p><strong>Model:</strong> {vehicle.model}</p>
               <p><strong>Year:</strong> {vehicle.year}</p>
               <p><strong>Reg #:</strong> {vehicle.registration}</p>
               <button
+                className="vehicle-delete-btn"
                 onClick={() => handleDelete(vehicle._id)}
-                style={{
-                  position: 'absolute',
-                  top: '10px',
-                  right: '10px',
-                  backgroundColor: '#ff4d4f',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '5px',
-                  padding: '4px 8px',
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                }}
               >
                 ❌ Delete
               </button>

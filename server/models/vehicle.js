@@ -6,6 +6,14 @@ const vehicleSchema = new mongoose.Schema({
     required: true,
     ref: 'User',
   },
+  vin: {
+    type: String,
+    trim: true,
+    minlength: 17,
+    maxlength: 17,
+    unique: true, // Optional: prevents duplicate VINs
+    sparse: true, // Allows documents without a VIN
+  },
   name: {
     type: String,
     required: true,
@@ -23,7 +31,7 @@ const vehicleSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 1900,
-    max: new Date().getFullYear() + 1, // allow 1 year in future
+    max: new Date().getFullYear() + 1,
   },
   registration: {
     type: String,

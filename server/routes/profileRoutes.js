@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// 🗂️ Set up multer storage
+// 🗂️ Multer storage setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dir = path.join(__dirname, '..', 'uploads', 'avatars');
@@ -21,14 +21,14 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// ✅ GET /api/profile
+// ✅ GET /api/profile - Fetch profile
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     res.json({
-      name: user.name,
+      fullName: user.fullName,
       email: user.email,
       avatar: user.avatar ? `/uploads/avatars/${path.basename(user.avatar)}` : '',
     });
@@ -37,23 +37,27 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ PUT /api/profile
+// ✅ PUT /api/profile - Update fullName only
 router.put('/', authMiddleware, async (req, res) => {
   try {
-    const { name } = req.body;
-    const user = await User.findByIdAndUpdate(req.userId, { name }, { new: true });
-    res.json({ name: user.name });
+    const { fullName } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { fullName },
+      { new: true }
+    );
+    res.json({ fullName: user.fullName });
   } catch (err) {
     res.status(500).json({ message: 'Failed to update profile', error: err.message });
   }
 });
 
-// ✅ POST /api/profile/avatar
+// ✅ POST /api/profile/avatar - Upload avatar
 router.post('/avatar', authMiddleware, upload.single('avatar'), async (req, res) => {
   try {
     const user = await User.findById(req.userId);
 
-    // Delete previous avatar file
+    // Delete old avatar if it exists
     if (user.avatar && fs.existsSync(user.avatar)) {
       fs.unlinkSync(user.avatar);
     }
@@ -70,10 +74,11 @@ router.post('/avatar', authMiddleware, upload.single('avatar'), async (req, res)
   }
 });
 
-// ✅ DELETE /api/profile/avatar
+// ✅ DELETE /api/profile/avatar - Remove avatar
 router.delete('/avatar', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
+
     if (user.avatar && fs.existsSync(user.avatar)) {
       fs.unlinkSync(user.avatar);
     }

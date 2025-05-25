@@ -1,50 +1,161 @@
-/* Global override to force full white background */
+/* Global override to ensure clean background */
 body {
-  background: #fff !important;
-}
-
-/* Services page styling */
-.services-container {
-  padding: 30px;
+  background: #f5f7fa;
   font-family: 'Inter', sans-serif;
-  background: #fff; /* Still applies to the section */
+  margin: 0;
+  padding: 0;
 }
 
+/* Services container */
+.services-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
+  color: #333;
+}
+
+/* Heading */
+.services-container h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #2c3e50;
+}
+
+/* Form styling */
 .service-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
   margin-bottom: 30px;
 }
 
 .service-form input,
 .service-form select {
-  padding: 10px;
-  flex: 1;
-  min-width: 200px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: border 0.3s ease;
+}
+
+.service-form input:focus,
+.service-form select:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .service-form button {
-  padding: 10px 20px;
+  grid-column: span 2;
+  padding: 12px 20px;
+  background-color: #1f7aec;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+.service-form button:hover {
+  background-color: #1667c1;
+}
+
+/* Message */
+.service-form p {
+  grid-column: span 2;
+  margin-top: -10px;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Services list */
 .service-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
+/* Individual service item */
 .service-item {
-  background: #f9f9f9;
-  border-left: 5px solid #ccc;
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 8px;
+  background: #f8fafd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 6px solid #bdc3c7;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s ease;
+}
+
+.service-item:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .service-item.completed {
-  border-color: green;
+  border-color: #27ae60;
 }
 
 .service-item.missed {
-  border-color: red;
+  border-color: #e74c3c;
+}
+
+.service-item strong {
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+.service-item em {
+  color: #555;
+}
+
+/* Buttons inside service item */
+.service-item button {
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.service-item button:first-of-type {
+  background-color: #1abc9c;
+  color: white;
+}
+
+.service-item button:first-of-type:hover {
+  background-color: #16a085;
+}
+
+.service-item button:nth-of-type(2) {
+  background-color: #f39c12;
+  color: white;
+}
+
+.service-item button:nth-of-type(2):hover {
+  background-color: #d68910;
+}
+
+.service-item button:last-of-type {
+  background-color: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+
+.service-item button:last-of-type:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Section heading */
+.services-container h3 {
+  font-size: 22px;
+  margin: 40px 0 20px;
+  color: #34495e;
+  text-align: center;
 }

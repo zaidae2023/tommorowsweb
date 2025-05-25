@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './dashboard.css';
 import Navbar from '../components/navbar';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-// ✅ Chart.js imports
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -21,6 +19,9 @@ export default function Dashboard() {
   const [expenses, setExpenses] = useState([]);
   const [expensesByCurrency, setExpensesByCurrency] = useState({});
   const [nextService, setNextService] = useState({ date: 'N/A', type: 'N/A' });
+
+  const [weather, setWeather] = useState(null);
+  const [city, setCity] = useState('');
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -80,7 +81,6 @@ export default function Dashboard() {
           const firstService = serviceData[0];
           const dateObj = new Date(firstService.date);
           const daysLeft = Math.ceil((dateObj - new Date()) / (1000 * 60 * 60 * 24));
-
           setNextService({
             date: dateObj.toLocaleDateString(),
             type: firstService.type || 'Service',
@@ -99,7 +99,60 @@ export default function Dashboard() {
     fetchData();
   }, [navigate]);
 
-  // ✅ Generate Chart.js data
+  useEffect(() => {
+    const fetchCityFromIP = async () => {
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        setCity(data?.city || 'Dubai');
+      } catch {
+        setCity('Dubai');
+      }
+    };
+
+    fetchCityFromIP();
+  }, []);
+
+  useEffect(() => {
+    if (!city) return;
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`
+        );
+        const data = await res.json();
+
+        if (res.ok) {
+          setWeather({
+            temp: data.main.temp,
+            condition: data.weather[0].description,
+            icon: data.weather[0].icon,
+          });
+        }
+      } catch (err) {
+        console.error('Weather fetch error:', err);
+      }
+    };
+
+    fetchWeather();
+  }, [city]);
+
+  const getCarWashAdvice = (condition) => {
+    const desc = condition.toLowerCase();
+    if (desc.includes('clear') || desc.includes('sun')) return '✅ Perfect day for a car wash!';
+    if (desc.includes('cloud')) return '✅ Okay for a car wash.';
+    if (desc.includes('rain') || desc.includes('storm')) return '❌ Not ideal – it\'s rainy.';
+    if (desc.includes('dust') || desc.includes('sand')) return '❌ Avoid – dusty conditions.';
+    return 'ℹ️ Check conditions before washing your car.';
+  };
+
+  const getAdviceColor = (condition) => {
+    const desc = condition.toLowerCase();
+    if (desc.includes('clear') || desc.includes('sun')) return '#2e7d32';
+    if (desc.includes('cloud')) return '#f57c00';
+    return '#c62828';
+  };
+
   const getChartData = () => {
     const types = ['Fuel', 'Maintenance', 'Insurance'];
     const data = types.map((type) =>
@@ -128,8 +181,23 @@ export default function Dashboard() {
         <h1>Welcome to Your Dashboard</h1>
         <p>Here’s an overview of your vehicle activities 🚘</p>
 
-        {/* Cards Section */}
-        <div className="dashboard-cards">
+        {/* Grid Layout: Weather + Cards */}
+        <div className="dashboard-top-grid">
+          {weather && (
+            <div className="weather-card">
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+                alt="weather-icon"
+              />
+              <div>
+                <h4>{city}</h4>
+                <p>{weather.temp}°C – {weather.condition}</p>
+                <p style={{ fontWeight: 'bold', color: getAdviceColor(weather.condition) }}>
+                  {getCarWashAdvice(weather.condition)}
+                </p>
+              </div>
+            </div>
+          )}
           <Card title="Registered Vehicles" value={vehicles.length} />
           <Card
             title="Total Expenses"
@@ -149,7 +217,7 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Quick Links */}
+        {/* Buttons */}
         <div className="quick-links">
           <button onClick={() => navigate('/vehicles')}>➕ Add Vehicle</button>
           <button onClick={() => navigate('/expenses')}>💸 Log Expense</button>
@@ -176,22 +244,18 @@ export default function Dashboard() {
           </ul>
         </div>
 
-        {/* Bar Chart Section */}
+        {/* Chart Section */}
         <div className="chart-section">
-          <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Expense Breakdown</h2>
+          <h2>Expense Breakdown</h2>
           <Bar
             data={getChartData()}
             options={{
               responsive: true,
-              plugins: {
-                legend: { display: false },
-              },
+              plugins: { legend: { display: false } },
               scales: {
                 y: {
                   beginAtZero: true,
-                  ticks: {
-                    precision: 0,
-                  },
+                  ticks: { precision: 0 },
                 },
               },
             }}
@@ -202,7 +266,7 @@ export default function Dashboard() {
   );
 }
 
-// ✅ Reusable Card Component
+// ✅ Reusable Card
 function Card({ title, value }) {
   return (
     <div className="card">

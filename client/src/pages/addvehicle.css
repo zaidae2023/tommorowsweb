@@ -1,24 +1,48 @@
+/* Reset & base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to right, #f0f4f8, #e0eafc); /* soft blue */
+  overflow-x: hidden;
+}
+
+/* Container for Add Vehicle */
 .add-vehicle-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Card layout */
+.add-vehicle-container > form,
+.vehicle-form {
   max-width: 500px;
-  margin: 40px auto;
   background: #fff;
   padding: 30px;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  font-family: 'Inter', sans-serif;
-}
-
-.add-vehicle-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.vehicle-form {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+/* Title */
+.add-vehicle-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
 .vehicle-form input {
   padding: 12px;
   font-size: 15px;
@@ -26,6 +50,7 @@
   border-radius: 8px;
 }
 
+/* Buttons */
 .vehicle-form button {
   padding: 12px;
   font-size: 16px;
@@ -34,8 +59,33 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .vehicle-form button:hover {
   background-color: #155ac4;
+}
+
+/* Success or error message */
+.add-vehicle-container p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Safety Ratings Box */
+.vehicle-form .ratings-box {
+  padding: 15px;
+  background-color: #f8f9fb;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.vehicle-form .ratings-box h4 {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.vehicle-form .ratings-box p {
+  margin: 4px 0;
+  font-size: 14px;
 }

@@ -16,13 +16,14 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ✅ POST /api/vehicles - Add new vehicle
+// ✅ POST /api/vehicles - Add new vehicle with optional VIN
 router.post('/', async (req, res) => {
   try {
-    const { name, model, year, registration } = req.body;
+    const { vin, name, model, year, registration } = req.body;
 
     const newVehicle = new Vehicle({
       userId: req.user._id,
+      vin: vin?.trim(),
       name,
       model,
       year,
@@ -33,6 +34,11 @@ router.post('/', async (req, res) => {
     res.status(201).json({ message: 'Vehicle added successfully', vehicle: newVehicle });
   } catch (err) {
     console.error('Error adding vehicle:', err);
+    if (err.code === 11000) {
+      // Handle unique constraint error
+      const field = Object.keys(err.keyPattern)[0];
+      return res.status(400).json({ message: `Duplicate ${field} found. It must be unique.` });
+    }
     res.status(500).json({ message: 'Failed to add vehicle', error: err.message });
   }
 });

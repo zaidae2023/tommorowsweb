@@ -1,43 +1,64 @@
 .dashboard-container {
-  padding: 30px;
+  padding: 40px 20px;
   font-family: 'Inter', sans-serif;
   background: linear-gradient(135deg, #f0f4f8, #e0eafc);
   min-height: 100vh;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  align-items: center;
 }
 
 .dashboard-container h1 {
-  margin-bottom: 10px;
-  color: #333;
-  align-self: center;
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+  color: #1e1e1e;
 }
 
 .dashboard-container p {
-  align-self: center;
-  color: #666;
+  color: #555;
+  margin-bottom: 40px;
+  font-size: 1rem;
+}
+
+/* Grid Layout */
+.dashboard-top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1000px;
   margin-bottom: 30px;
 }
 
-/* Cards Layout */
-.dashboard-cards {
+/* Weather Card */
+.weather-card {
+  background: #f0f4ff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
+  align-items: center;
+  gap: 15px;
 }
 
+.weather-card img {
+  width: 60px;
+}
+
+.weather-card h4 {
+  margin: 0 0 4px;
+}
+
+.weather-card p {
+  margin: 0;
+}
+
+/* Cards */
 .card {
   background: #fff;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  flex: 1;
-  min-width: 220px;
-  max-width: 300px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -47,37 +68,24 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
-.vehicle-card {
-  border-top: 5px solid #4CAF50;
-}
-
-.expenses-card {
-  border-top: 5px solid #FF5722;
-}
-
-.service-card {
-  border-top: 5px solid #2196F3;
-}
-
 .card h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #444;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 6px;
 }
 
 .card p {
-  font-size: 22px;
-  font-weight: bold;
-  margin: 5px 0;
-  color: #555;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
 }
 
 /* Quick Links */
 .quick-links {
-  margin: 30px auto;
   display: flex;
-  flex-wrap: wrap;
   gap: 15px;
+  margin: 30px 0;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -97,19 +105,20 @@
   background-color: #159b85;
 }
 
-/* Recent Activity */
-.recent-activity {
-  margin-top: 30px;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* Expenses Section */
+.recent-activity,
+.chart-section {
+  width: 100%;
   max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.recent-activity h2 {
+.recent-activity h2,
+.chart-section h2 {
   text-align: center;
   margin-bottom: 15px;
   color: #333;

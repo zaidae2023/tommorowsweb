@@ -1,141 +1,168 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './settings.css';
 import Navbar from '../components/navbar';
-import defaultAvatar from '../assets/default-avatar.png';
 
 export default function Settings() {
-  const [user, setUser] = useState({
-    name: '',
-    email: '',
-    avatar: '',
-  });
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
+  const [message, setMessage] = useState('');
+  const fileInputRef = useRef(null);
 
-  // ✅ Fetch user profile on mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
         });
         const data = await res.json();
         if (res.ok) {
-          setUser(data);
+          setFullName(data.fullName || '');
+          setEmail(data.email || '');
+          setAvatar(data.avatar ? `${import.meta.env.VITE_API_URL}${data.avatar}` : '');
+        } else {
+          setMessage(data.message || 'Failed to load profile');
         }
       } catch (err) {
         console.error('Error fetching profile:', err);
+        setMessage('Error fetching profile');
       }
     };
     fetchProfile();
   }, []);
 
-  // ✅ Handle name change
-  const handleNameChange = (e) => {
-    setUser((prev) => ({ ...prev, name: e.target.value }));
+  const handleImageClick = () => {
+    fileInputRef.current.click();
   };
 
-  // ✅ Save profile info
-  const handleSave = async () => {
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
     try {
-      const token = localStorage.getItem('token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/avatar`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setAvatar(`${import.meta.env.VITE_API_URL}${data.avatar}?t=${Date.now()}`);
+        setMessage('✅ Avatar uploaded');
+      } else {
+        setMessage(data.message || '❌ Failed to upload avatar');
+      }
+    } catch (err) {
+      console.error('Avatar upload error:', err);
+      setMessage('❌ Error uploading avatar');
+    }
+  };
+
+  const handleDeletePhoto = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/avatar`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setAvatar('');
+        setMessage('🗑️ Avatar deleted');
+      } else {
+        setMessage(data.message || '❌ Failed to delete avatar');
+      }
+    } catch (err) {
+      console.error('Avatar delete error:', err);
+      setMessage('❌ Error deleting avatar');
+    }
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ name: user.name }),
+        body: JSON.stringify({ fullName }),
       });
+
       const data = await res.json();
       if (res.ok) {
-        alert('Profile updated');
-        setUser((prev) => ({ ...prev, name: data.name }));
+        setMessage('✅ Profile updated successfully');
+      } else {
+        setMessage(data.message || '❌ Failed to update profile');
       }
     } catch (err) {
-      console.error('Failed to update profile:', err);
-    }
-  };
-
-  // ✅ Upload new profile picture
-  const handleImageUpload = async () => {
-    if (!selectedFile) return;
-
-    const formData = new FormData();
-    formData.append('avatar', selectedFile);
-
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/avatar`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-      const data = await res.json();
-      if (res.ok) {
-        alert('Avatar updated');
-        setUser((prev) => ({ ...prev, avatar: data.avatar }));
-        setSelectedFile(null);
-      }
-    } catch (err) {
-      console.error('Avatar upload failed:', err);
-    }
-  };
-
-  // ✅ Delete profile picture
-  const handleDeleteAvatar = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/avatar`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (res.ok) {
-        alert('Avatar deleted');
-        setUser((prev) => ({ ...prev, avatar: '' }));
-      }
-    } catch (err) {
-      console.error('Failed to delete avatar:', err);
+      console.error('Profile update error:', err);
+      setMessage('❌ Error updating profile');
     }
   };
 
   return (
-    <div className="settings-container">
+    <>
       <Navbar />
-      <div className="settings-box">
-        <h2>Profile Settings</h2>
+      <div className="settings-page">
+        <div className="settings-card">
+          <h2 className="settings-title">Profile Settings</h2>
 
-        <div className="avatar-section">
-          <img
-            src={user.avatar || defaultAvatar}
-            alt="Avatar"
-            className="avatar-preview"
-          />
-          <div>
-            <input type="file" onChange={(e) => setSelectedFile(e.target.files[0])} />
-            <button onClick={handleImageUpload}>Change</button>
-            <button className="delete-btn" onClick={handleDeleteAvatar}>Delete</button>
-          </div>
+          {message && <p className="settings-message">{message}</p>}
+
+          <form className="settings-form" onSubmit={handleSave}>
+            <div className="avatar-wrapper">
+              <img
+                src={avatar || '/default-avatar.png'}
+                alt="Avatar"
+                className="avatar-image"
+                onClick={handleImageClick}
+                title="Click to change photo"
+              />
+              {avatar && (
+                <button
+                  type="button"
+                  className="avatar-delete-btn"
+                  onClick={handleDeletePhoto}
+                  title="Delete photo"
+                >
+                  ✖
+                </button>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleImageChange}
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Email</label>
+              <input type="email" value={email} readOnly />
+            </div>
+
+            <button type="submit" className="save-btn">Save Changes</button>
+          </form>
         </div>
-
-        <div className="input-group">
-          <label>Name</label>
-          <input type="text" value={user.name} onChange={handleNameChange} />
-        </div>
-
-        <div className="input-group">
-          <label>Email</label>
-          <input type="email" value={user.email} disabled />
-        </div>
-
-        <button className="save-btn" onClick={handleSave}>Save Changes</button>
       </div>
-    </div>
+    </>
   );
 }

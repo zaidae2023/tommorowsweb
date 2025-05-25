@@ -1,53 +1,109 @@
+/* Container styling */
 .expenses-container {
-  background-color: #fff;
-  padding: 30px;
+  background-color: #f4f7fa;
+  padding: 40px 20px;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
-  color: #333;
+  color: #222;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
+/* Header */
+.expenses-container h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+.expenses-container p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+/* Form styling */
 .expense-form {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 15px;
+  margin-bottom: 40px;
 }
 
 .expense-form input,
 .expense-form select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
 }
 
+.expense-form input:focus,
+.expense-form select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Submit button */
 .expense-form button {
   background-color: #007bff;
   color: white;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+.expense-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Message feedback */
+.expense-form p {
+  margin-top: 5px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Expense list */
 .expense-list {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
+/* Each expense card */
 .expense-item {
-  background: #f5f5f5;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  font-size: 15px;
+  line-height: 1.6;
+  position: relative;
 }
+
+/* Delete button */
 .delete-btn {
   background-color: #ff4d4f;
   color: white;
   border: none;
-  padding: 5px 10px;
-  margin-top: 5px;
-  border-radius: 5px;
+  padding: 8px 14px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 14px;
+  margin-top: 12px;
+  transition: background-color 0.3s ease;
 }
 
 .delete-btn:hover {
