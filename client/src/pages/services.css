@@ -159,3 +159,20 @@ body {
   color: #34495e;
   text-align: center;
 }
+
+.export-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #1abc9c, #1f7aec);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.export-btn:hover {
+  background: linear-gradient(90deg, #159b85, #1a5edb);
+}

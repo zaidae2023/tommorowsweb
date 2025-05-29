@@ -12,13 +12,12 @@ export default function Expenses() {
     type: 'Fuel',
     amount: '',
     note: '',
-    currency: 'USD', // ✅ Default currency
+    currency: 'USD',
   });
   const [message, setMessage] = useState('');
 
   const token = localStorage.getItem('token');
 
-  // ✅ Fetch all expenses
   const fetchExpenses = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/expenses`, {
@@ -35,7 +34,6 @@ export default function Expenses() {
     }
   }, [token]);
 
-  // ✅ Fetch all vehicles
   const fetchVehicles = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/vehicles`, {
@@ -49,13 +47,12 @@ export default function Expenses() {
     }
   }, [token]);
 
-  // ✅ Fetch currency codes from free API
   const fetchCurrencies = useCallback(async () => {
     try {
       const res = await fetch('https://open.er-api.com/v6/latest/USD');
       const data = await res.json();
       if (data?.rates) {
-        setCurrencyOptions(Object.keys(data.rates)); // ['USD', 'EUR', 'INR', etc.]
+        setCurrencyOptions(Object.keys(data.rates));
       }
     } catch (err) {
       console.error('Failed to fetch currencies:', err);
@@ -69,7 +66,7 @@ export default function Expenses() {
     }
     fetchExpenses();
     fetchVehicles();
-    fetchCurrencies(); // ✅ Fetch currencies once on load
+    fetchCurrencies();
   }, [token, fetchExpenses, fetchVehicles, fetchCurrencies]);
 
   const handleChange = (e) => {
@@ -92,7 +89,7 @@ export default function Expenses() {
       if (res.ok) {
         setMessage('✅ Expense added!');
         setForm({ vehicleId: '', type: 'Fuel', amount: '', note: '', currency: 'USD' });
-        await fetchExpenses(); // Refresh list
+        await fetchExpenses();
       } else {
         const data = await res.json();
         setMessage(data.message || '❌ Failed to add expense.');
@@ -123,12 +120,55 @@ export default function Expenses() {
     }
   };
 
+  // ✅ SECURE EXPORT FUNCTIONS
+  const exportExpensesCSV = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/expenses/csv`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'expenses.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('CSV export failed:', err);
+    }
+  };
+
+  const exportExpensesPDF = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/expenses/pdf`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'expenses.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('PDF export failed:', err);
+    }
+  };
+
   return (
     <>
       <Navbar />
       <div className="expenses-container">
         <h2>💸 Your Expenses</h2>
         <p><strong>Total:</strong> ${total}</p>
+
+        {/* ✅ Export Buttons */}
+        <div style={{ marginBottom: '20px', display: 'flex', gap: '12px' }}>
+          <button onClick={exportExpensesCSV} className="export-btn">📄 Export CSV</button>
+          <button onClick={exportExpensesPDF} className="export-btn">🧾 Export PDF</button>
+        </div>
 
         <form onSubmit={handleSubmit} className="expense-form">
           <select name="vehicleId" value={form.vehicleId} onChange={handleChange} required>
@@ -164,7 +204,6 @@ export default function Expenses() {
             onChange={handleChange}
           />
 
-          {/* ✅ Currency Dropdown */}
           <select name="currency" value={form.currency} onChange={handleChange} required>
             <option value="">Select Currency</option>
             {currencyOptions.map((cur) => (

@@ -1,9 +1,25 @@
-/* src/pages/dashboard.css */
+/* =======================
+   TuneUp Theme Variables
+========================== */
+:root {
+  --primary-color: #1f2f46;
+  --accent-color: #1abc9c;
+  --accent-hover: #159b85;
+  --highlight-color: #f1c40f;
+  --info-blue: #3498db;
+  --error-color: #e74c3c;
+  --error-bg: #fff5f5;
+  --light-bg: #f0f4f8;
+  --white: #ffffff;
+  --text-main: #222;
+  --text-sub: #666;
+}
+
 /* Dashboard Container */
 .dashboard-container {
   padding: 40px 20px;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #f0f4f8, #e0eafc);
+  background: linear-gradient(135deg, var(--light-bg), #e0eafc);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -13,19 +29,19 @@
 .dashboard-container h1 {
   font-size: 3rem;
   font-weight: 700;
-  color: #1f7aec;
+  color: var(--primary-color);
   text-align: center;
 }
 
 .dashboard-container p {
-  color: #666;
+  color: var(--text-sub);
   margin-bottom: 40px;
   font-size: 1.1rem;
   text-align: center;
   max-width: 600px;
 }
 
-/* 5-panel responsive grid */
+/* Responsive Grid */
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -36,7 +52,6 @@
   align-items: stretch;
 }
 
-/* Ensure each panel fills its grid cell */
 .info-grid > * {
   display: flex;
   flex-direction: column;
@@ -63,15 +78,17 @@
 
 .weather-card h4 {
   margin: 0 0 4px;
+  color: var(--primary-color);
 }
 
 .weather-card p {
   margin: 0;
+  color: var(--text-main);
 }
 
 /* Reusable Card */
 .card {
-  background: #ffffff;
+  background: var(--white);
   border-radius: 16px;
   padding: 24px;
   text-align: center;
@@ -87,14 +104,26 @@
 
 .card h2 {
   font-size: 1.1rem;
-  color: #333;
+  color: var(--primary-color);
   margin-bottom: 6px;
 }
 
 .card p {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #222;
+  color: var(--text-main);
+}
+
+/* Expiry Card Alert Styling */
+.card.expiry-card {
+  border-left: 6px solid var(--error-color);
+  background: var(--error-bg);
+  box-shadow: 0 0 10px rgba(231, 76, 60, 0.1);
+  color: var(--error-color);
+}
+
+.card.expiry-card h2 {
+  color: #c0392b;
 }
 
 /* Quick Links Buttons */
@@ -113,24 +142,38 @@
   padding: 12px 24px;
   border: none;
   border-radius: 10px;
-  background-color: #1abc9c;
-  color: white;
+  color: var(--white);
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(26, 188, 156, 0.2);
-  transition: all 0.3s ease;
+  background: linear-gradient(270deg, #ff6b35, #ff8a50, #ff6b35);
+  background-size: 400% 400%;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.25);
+  transition: transform 0.3s ease;
 }
 
 .quick-links button:hover {
-  background-color: #159b85;
+  animation: orangeShift 2s linear infinite;
   transform: translateY(-2px);
 }
+
+@keyframes orangeShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
 /* Recent Expenses & Chart Section */
 .recent-activity,
 .chart-section {
-  background: #fff;
+  background: var(--white);
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -141,7 +184,7 @@
 .chart-section h2 {
   text-align: center;
   margin-bottom: 15px;
-  color: #333;
+  color: var(--primary-color);
 }
 
 .recent-activity ul {
@@ -153,7 +196,7 @@
 .recent-activity li {
   position: relative;
   padding: 12px 16px;
-  border-left: 4px solid #1f7aec;
+  border-left: 4px solid var(--info-blue);
   background: #f9f9f9;
   border-radius: 8px;
   margin-bottom: 10px;

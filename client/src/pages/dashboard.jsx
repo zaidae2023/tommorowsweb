@@ -20,11 +20,11 @@ export default function Dashboard() {
   const [nextService, setNextService] = useState({ date: 'N/A', type: 'N/A' });
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState('');
+  const [documents, setDocuments] = useState([]);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  // handle token in URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
@@ -34,7 +34,6 @@ export default function Dashboard() {
     }
   }, [location, navigate]);
 
-  // fetch vehicles, expenses, next service
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
@@ -83,7 +82,25 @@ export default function Dashboard() {
     fetchData();
   }, [navigate]);
 
-  // fetch city by IP
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const res = await fetch('http://localhost:5000/api/documents', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setDocuments(data);
+      } catch (err) {
+        console.error('Document fetch error:', err);
+      }
+    };
+
+    fetchDocuments();
+  }, []);
+
   useEffect(() => {
     const fetchCityFromIP = async () => {
       try {
@@ -97,7 +114,6 @@ export default function Dashboard() {
     fetchCityFromIP();
   }, []);
 
-  // fetch weather
   useEffect(() => {
     const fetchWeather = async () => {
       if (!city) return;
@@ -120,7 +136,6 @@ export default function Dashboard() {
     fetchWeather();
   }, [city]);
 
-  // prepare chart data
   const getChartData = () => {
     const types = ['Fuel', 'Maintenance', 'Insurance'];
     const data = types.map((type) =>
@@ -141,7 +156,6 @@ export default function Dashboard() {
     };
   };
 
-  // car wash advice
   const getCarWashAdvice = () => {
     if (!weather?.condition) return '';
     const cond = weather.condition.toLowerCase();
@@ -154,12 +168,10 @@ export default function Dashboard() {
   return (
     <div>
       <Navbar />
-
       <div className="dashboard-container">
         <h1>Welcome to Your Dashboard</h1>
         <p>Here’s an overview of your vehicle activities 🚘</p>
 
-        {/* ⬇️ Quick Links moved here ⬇️ */}
         <div className="quick-links">
           <button onClick={() => navigate('/documents')}>📄 Documents</button>
           <button onClick={() => navigate('/vehicles')}>➕ Add Vehicle</button>
@@ -192,6 +204,22 @@ export default function Dashboard() {
                 : 'No upcoming service'
             }
           />
+
+          {documents
+            .filter((doc) => {
+              const daysLeft = Math.ceil((new Date(doc.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
+              return daysLeft <= 15;
+            })
+            .map((doc) => {
+              const daysLeft = Math.ceil((new Date(doc.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
+              return (
+                <Card
+                  key={doc._id}
+                  title={`${doc.docType} Expiry`}
+                  value={`Expires in ${daysLeft} days (${new Date(doc.expiryDate).toLocaleDateString()})`}
+                />
+              );
+            })}
 
           <div className="recent-activity">
             <h2>Recent Expenses</h2>
@@ -232,9 +260,11 @@ export default function Dashboard() {
 }
 
 function Card({ title, value }) {
+  const isExpiryAlert = title.toLowerCase().includes('expiry');
+
   return (
-    <div className="card">
-      <h2>{title}</h2>
+    <div className={`card ${isExpiryAlert ? 'expiry-card' : ''}`}>
+      <h2>{isExpiryAlert ? '⚠️ ' + title : title}</h2>
       <p>{value}</p>
     </div>
   );

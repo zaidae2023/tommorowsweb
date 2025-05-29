@@ -116,6 +116,43 @@ export default function Services() {
     }
   };
 
+  // ✅ Secure Export Functions
+  const exportServicesCSV = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/services/csv`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'services.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('CSV export failed:', err);
+    }
+  };
+
+  const exportServicesPDF = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/services/pdf`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'services.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('PDF export failed:', err);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -149,6 +186,13 @@ export default function Services() {
         </form>
 
         <h3 style={{ marginTop: '30px' }}>🗓️ Upcoming & Past Services</h3>
+
+        {/* ✅ Export Buttons */}
+        <div style={{ marginBottom: '20px', display: 'flex', gap: '12px' }}>
+          <button onClick={exportServicesCSV} className="export-btn">📄 Export CSV</button>
+          <button onClick={exportServicesPDF} className="export-btn">🧾 Export PDF</button>
+        </div>
+
         <ul className="service-list">
           {services.map((svc) => (
             <li key={svc._id} className={`service-item ${svc.status}`}>

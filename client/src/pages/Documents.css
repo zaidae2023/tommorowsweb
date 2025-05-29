@@ -1,0 +1,103 @@
+/* src/pages/documents.css */
+.documents-container {
+  padding: 40px 20px;
+  max-width: 700px;
+  margin: auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.document-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.document-form input,
+.document-form select,
+.document-form button {
+  padding: 12px;
+  font-size: 1rem;
+}
+
+.upload-message {
+  color: green;
+  font-weight: 500;
+}
+
+.uploaded-documents {
+  margin-top: 40px;
+}
+
+.uploaded-documents ul {
+  list-style: none;
+  padding: 0;
+}
+
+.uploaded-documents li {
+  background: #f4f7fa;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.uploaded-documents li.expiring {
+  border-left: 5px solid #ff6b6b;
+  background: #fff4f4;
+}
+
+.alert {
+  color: #d8000c;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.uploaded-documents ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.uploaded-documents li {
+  background: #f4f7fa;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.uploaded-documents li.expiring {
+  border-left: 5px solid #e74c3c;
+  background-color: #fff5f5;
+  color: #b03a2e;
+}
+
+.doc-info {
+  flex: 1;
+}
+
+.alert {
+  margin-left: 10px;
+  color: #c0392b;
+  font-weight: bold;
+}
+
+.view-link {
+  background-color: #1abc9c;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.view-link:hover {
+  background-color: #17a589;
+}

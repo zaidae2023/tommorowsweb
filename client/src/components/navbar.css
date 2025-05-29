@@ -1,73 +1,185 @@
-.navbar {
-  background-color: #1f7aec;
-  color: white;
-  padding: 0 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  height: 70px; /* fixed height to control layout */
+/* =======================
+   TuneUp Theme Variables
+========================== */
+:root {
+  --primary-color: #1a1f36;      /* Deep Navy */
+  --accent-color: #ff6b35;       /* Coral Orange */
+  --accent-hover: #e65a28;       /* Darker Coral on hover */
+  --highlight-color: #ff6b35;    /* Replaced yellow with orange */
+  --white: #ffffff;
+  --navbar-bg: var(--primary-color);
+  --text-color: var(--white);
 }
 
+/* =======================
+        Navbar Styles
+========================== */
+.navbar {
+  background-color: var(--navbar-bg);
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo and brand */
 .navbar-logo {
-  height: 100%;
   display: flex;
   align-items: center;
 }
 
 .navbar-logo-img {
-  max-height: 100%;
-  height: auto;
+  height: 40px;
   width: auto;
   object-fit: contain;
+  margin-right: 12px;
 }
 
-/* Hamburger toggle icon */
-.navbar-toggle {
-  display: none;
-  font-size: 26px;
-  cursor: pointer;
+.navbar-brand {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 1px;
+  text-decoration: none;
 }
 
-/* Nav links */
+/* Nav Links */
 .navbar-links {
-  list-style: none;
   display: flex;
-  gap: 20px;
-  margin: 0;
-  padding: 0;
+  list-style: none;
+  gap: 24px;
+  transition: all 0.3s ease;
 }
 
 .navbar-links li a {
-  color: white;
+  color: var(--white);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  position: relative;
+  padding: 6px 0;
+  transition: color 0.3s ease;
 }
 
-.navbar-links li a:hover {
-  color: #ffeb3b;
+.navbar-links li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--highlight-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.navbar-links li a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Navbar Actions (Upgrade + Profile) */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Upgrade Button */
+.upgrade-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, #f39c12, #f1c40f);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(241, 196, 15, 0.4);
+}
+
+.upgrade-btn:hover {
+  transform: scale(1.05);
+}
+
+.navbar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+
+/* Crown icon animation */
+.crown-icon {
+  animation: pulse 1.2s infinite alternate;
+  font-size: 18px;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    color: #f9e79f;
+  }
+  100% {
+    transform: scale(1.2);
+    color: #f1c40f;
+  }
+}
+
+/* Hamburger Icon */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: var(--white);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-  .navbar-toggle {
-    display: block;
+  .hamburger {
+    display: flex;
   }
 
   .navbar-links {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    background-color: #1f7aec;
     position: absolute;
-    top: 70px; /* Match .navbar height */
+    top: 70px;
     left: 0;
-    padding: 15px 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 99;
+    width: 100%;
+    background: var(--navbar-bg);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 30px;
+    display: none;
   }
 
   .navbar-links.active {
@@ -75,14 +187,16 @@
   }
 
   .navbar-links li {
+    width: 100%;
     margin-bottom: 10px;
   }
-}
 
-/* Replace the .navbar-logo with this */
-.navbar-logo-img {
-  height: 300px;
-  width: auto;
-  object-fit: contain;
-  margin-right: 20px; /* optional */
+  .navbar-links li a {
+    width: 100%;
+    display: block;
+  }
+
+  .navbar-actions {
+    gap: 12px;
+  }
 }

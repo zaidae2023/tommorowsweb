@@ -12,6 +12,9 @@ import Services from './pages/services';
 import Settings from './pages/settings';
 import Footer from './components/footer';
 import { UserProvider } from './context/usercontext.jsx';
+import Documents from './pages/Documents'; 
+import Upgrade from './pages/Upgrade';
+
 
 
 // ✅ Import based on actual filenames
@@ -39,6 +42,9 @@ function AppRoutes() {
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/services" element={<Services />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/upgrade" element={<Upgrade />} />
+
 
           {/* ✅ Footer Pages */}
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

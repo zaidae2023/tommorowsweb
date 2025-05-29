@@ -12,7 +12,8 @@ const authRoutes = require('./routes/authRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const profileRoutes = require('./routes/profileRoutes');
-
+const documentRoutes = require('./routes/documentRoutes');
+const exportRoutes = require('./routes/exportRoutes'); // ✅ Added export routes
 
 const app = express();
 
@@ -28,8 +29,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 
-// ✅ Serve uploaded avatars
-app.use('/uploads', express.static('uploads'));
+// ✅ Serve uploaded files
+app.use('/uploads', express.static('uploads')); // serves /uploads/avatars, /uploads/documents etc.
 
 // ✅ Root Route
 app.get('/', (req, res) => {
@@ -43,7 +44,8 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/profile', profileRoutes);
-
+app.use('/api/documents', documentRoutes);
+app.use('/api/export', exportRoutes); // ✅ Register export route here
 
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {

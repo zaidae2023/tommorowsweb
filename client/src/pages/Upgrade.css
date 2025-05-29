@@ -1,0 +1,115 @@
+/* src/pages/UpgradePage.css */
+
+.upgrade-page {
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to bottom right, #f0f4f8, #e0eafc);
+  min-height: 100vh;
+  text-align: center;
+  color: #1f2f46;
+}
+
+.upgrade-header {
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+
+.upgrade-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.upgrade-header h1 span {
+  color: #f1c40f;
+}
+
+.upgrade-header p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.crown-icon-big {
+  font-size: 48px;
+  color: #f1c40f;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Features Grid Container */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Individual Feature Card */
+.feature-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+  font-size: 32px;
+  color: #ff6b35;
+  margin-bottom: 12px;
+}
+
+.feature-card h3 {
+  font-size: 20px;
+  color: #1a1f36;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  font-size: 15px;
+  color: #555;
+}
+
+
+.upgrade-cta {
+  margin-top: 20px;
+}
+
+.upgrade-now-btn {
+  background: linear-gradient(90deg, #1abc9c, #1f7aec);
+  border: none;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.upgrade-now-btn:hover {
+  transform: scale(1.05);
+}
+
+.standalone-card {
+  max-width: 400px;
+  margin: 40px auto 50px; /* Increased bottom spacing */
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
