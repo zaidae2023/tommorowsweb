@@ -31,7 +31,8 @@ router.get('/', authMiddleware, async (req, res) => {
       fullName: user.fullName,
       email: user.email,
       avatar: user.avatar ? `/uploads/avatars/${path.basename(user.avatar)}` : '',
-      twoFactorEnabled: user.twoFactorEnabled || false, // ✅ Include 2FA toggle status
+      twoFactorEnabled: user.twoFactorEnabled || false,
+      plan: user.plan || 'free', // ✅ return current plan
     });
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch profile', error: err.message });
@@ -53,13 +54,20 @@ router.put('/', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ NEW: PUT /api/profile/twofactor - Toggle 2FA
+// ✅ PUT /api/profile/twofactor - Toggle 2FA (premium users only)
 router.put('/twofactor', authMiddleware, async (req, res) => {
   try {
     const { enabled } = req.body;
 
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // 🔒 Only premium users can enable 2FA
+    if (user.plan === 'free') {
+      return res.status(403).json({
+        message: '2FA is only available for premium users. Please upgrade your plan.',
+      });
+    }
 
     user.twoFactorEnabled = !!enabled;
     await user.save();

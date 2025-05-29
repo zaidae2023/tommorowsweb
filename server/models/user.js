@@ -1,4 +1,3 @@
-// models/user.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -16,7 +15,11 @@ const userSchema = new mongoose.Schema({
   // ✅ 2FA support
   twoFactorEnabled: { type: Boolean, default: false },
   otp: { type: String },
-  otpExpiry: { type: Date }
+  otpExpiry: { type: Date },
+
+  // ✅ Subscription plan and usage tracking
+  plan: { type: String, enum: ['free', 'premium'], default: 'free' },
+  exportsUsed: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('User', userSchema);

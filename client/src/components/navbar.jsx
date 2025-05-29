@@ -6,6 +6,7 @@ import './navbar.css';
 export default function Navbar() {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState('');
+  const [isPremium, setIsPremium] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -14,8 +15,11 @@ export default function Navbar() {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         const data = await res.json();
-        if (res.ok && data.avatar) {
-          setAvatar(`${import.meta.env.VITE_API_URL}${data.avatar}`);
+        if (res.ok) {
+          if (data.avatar) {
+            setAvatar(`${import.meta.env.VITE_API_URL}${data.avatar}`);
+          }
+          setIsPremium(data.isPremium); // ✅ Check and store premium status
         }
       } catch (err) {
         console.error('Failed to fetch profile avatar', err);
@@ -39,11 +43,18 @@ export default function Navbar() {
       </ul>
 
       <div className="navbar-actions">
-        {/* Upgrade Button */}
-        <button className="upgrade-btn" onClick={() => navigate('/upgrade')}>
-          <FaCrown className="crown-icon" />
-          Upgrade
-        </button>
+        {/* Show Premium badge or Upgrade button based on user status */}
+        {isPremium ? (
+          <div className="premium-badge">
+            <FaCrown className="animated-crown" />
+            <span>Premium</span>
+          </div>
+        ) : (
+          <button className="upgrade-btn" onClick={() => navigate('/upgrade')}>
+            <FaCrown className="crown-icon" />
+            Upgrade
+          </button>
+        )}
 
         {/* Profile Icon */}
         <Link to="/settings" className="profile-icon">

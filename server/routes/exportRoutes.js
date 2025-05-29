@@ -1,15 +1,27 @@
 const express = require('express');
-const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
 const { Parser } = require('json2csv');
 const PDFDocument = require('pdfkit');
 const Expense = require('../models/expense');
 const Service = require('../models/service');
+const User = require('../models/user'); // ✅ Import user model
+
+const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
 
 router.use(authMiddleware);
 
+// 🔒 Helper middleware for checking export limits
+const checkExportLimit = async (req, res, next) => {
+  const user = await User.findById(req.userId);
+  if (user.plan === 'free' && user.exportsUsed >= 3) {
+    return res.status(403).json({ message: 'Export limit reached. Upgrade to Premium to unlock unlimited exports.' });
+  }
+  req.userDoc = user; // attach full user doc for later updates
+  next();
+};
+
 // ✅ Export Expenses CSV
-router.get('/expenses/csv', async (req, res) => {
+router.get('/expenses/csv', checkExportLimit, async (req, res) => {
   try {
     const expenses = await Expense.find({ userId: req.userId }).populate('vehicleId', 'name model year');
     const fields = ['type', 'amount', 'currency', 'note', 'date', 'vehicleId.name', 'vehicleId.model', 'vehicleId.year'];
@@ -17,6 +29,13 @@ router.get('/expenses/csv', async (req, res) => {
     const csv = parser.parse(expenses);
     res.header('Content-Type', 'text/csv');
     res.attachment('expenses.csv');
+
+    // ✅ Increment exportsUsed for free user
+    if (req.userDoc.plan === 'free') {
+      req.userDoc.exportsUsed += 1;
+      await req.userDoc.save();
+    }
+
     res.send(csv);
   } catch (err) {
     res.status(500).json({ message: 'CSV export failed', error: err.message });
@@ -24,7 +43,7 @@ router.get('/expenses/csv', async (req, res) => {
 });
 
 // ✅ Export Services CSV
-router.get('/services/csv', async (req, res) => {
+router.get('/services/csv', checkExportLimit, async (req, res) => {
   try {
     const services = await Service.find({ userId: req.userId }).populate('vehicleId', 'name model year');
     const fields = ['type', 'date', 'note', 'status', 'vehicleId.name', 'vehicleId.model', 'vehicleId.year'];
@@ -32,6 +51,12 @@ router.get('/services/csv', async (req, res) => {
     const csv = parser.parse(services);
     res.header('Content-Type', 'text/csv');
     res.attachment('services.csv');
+
+    if (req.userDoc.plan === 'free') {
+      req.userDoc.exportsUsed += 1;
+      await req.userDoc.save();
+    }
+
     res.send(csv);
   } catch (err) {
     res.status(500).json({ message: 'CSV export failed', error: err.message });
@@ -39,13 +64,14 @@ router.get('/services/csv', async (req, res) => {
 });
 
 // ✅ Export Services PDF
-router.get('/services/pdf', async (req, res) => {
+router.get('/services/pdf', checkExportLimit, async (req, res) => {
   try {
     const services = await Service.find({ userId: req.userId }).populate('vehicleId', 'name model year');
     const doc = new PDFDocument();
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename=services.pdf');
     doc.pipe(res);
+
     doc.fontSize(18).text('Service Records', { underline: true }).moveDown();
 
     services.forEach((svc, i) => {
@@ -57,26 +83,30 @@ router.get('/services/pdf', async (req, res) => {
 
       doc
         .fontSize(12)
-        .text(
-          `${i + 1}. ${type} - ${status}\nDate: ${date}\nVehicle: ${vehicle}\nNote: ${note}`
-        )
+        .text(`${i + 1}. ${type} - ${status}\nDate: ${date}\nVehicle: ${vehicle}\nNote: ${note}`)
         .moveDown();
     });
 
     doc.end();
+
+    if (req.userDoc.plan === 'free') {
+      req.userDoc.exportsUsed += 1;
+      await req.userDoc.save();
+    }
   } catch (err) {
     res.status(500).json({ message: 'PDF export failed', error: err.message });
   }
 });
 
 // ✅ Export Expenses PDF
-router.get('/expenses/pdf', async (req, res) => {
+router.get('/expenses/pdf', checkExportLimit, async (req, res) => {
   try {
     const expenses = await Expense.find({ userId: req.userId }).populate('vehicleId', 'name model year');
     const doc = new PDFDocument();
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename=expenses.pdf');
     doc.pipe(res);
+
     doc.fontSize(18).text('Expense Records', { underline: true }).moveDown();
 
     expenses.forEach((exp, i) => {
@@ -89,13 +119,16 @@ router.get('/expenses/pdf', async (req, res) => {
 
       doc
         .fontSize(12)
-        .text(
-          `${i + 1}. ${type} - ${amount} ${currency}\nDate: ${date}\nVehicle: ${vehicle}\nNote: ${note}`
-        )
+        .text(`${i + 1}. ${type} - ${amount} ${currency}\nDate: ${date}\nVehicle: ${vehicle}\nNote: ${note}`)
         .moveDown();
     });
 
     doc.end();
+
+    if (req.userDoc.plan === 'free') {
+      req.userDoc.exportsUsed += 1;
+      await req.userDoc.save();
+    }
   } catch (err) {
     res.status(500).json({ message: 'PDF export failed', error: err.message });
   }

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const Vehicle = require('../models/vehicle');
+const User = require('../models/user'); // ✅ Import User model
 
 router.use(authMiddleware);
 
@@ -16,10 +17,19 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ✅ POST /api/vehicles - Add new vehicle with optional VIN
+// ✅ POST /api/vehicles - Add new vehicle (limit 1 for free users)
 router.post('/', async (req, res) => {
   try {
     const { vin, name, model, year, registration } = req.body;
+
+    const user = await User.findById(req.user._id);
+    const vehicleCount = await Vehicle.countDocuments({ userId: req.user._id });
+
+    if (user.plan === 'free' && vehicleCount >= 1) {
+      return res.status(403).json({
+        message: 'Free user limit reached. Upgrade to Premium to register more vehicles.'
+      });
+    }
 
     const newVehicle = new Vehicle({
       userId: req.user._id,
@@ -35,7 +45,6 @@ router.post('/', async (req, res) => {
   } catch (err) {
     console.error('Error adding vehicle:', err);
     if (err.code === 11000) {
-      // Handle unique constraint error
       const field = Object.keys(err.keyPattern)[0];
       return res.status(400).json({ message: `Duplicate ${field} found. It must be unique.` });
     }

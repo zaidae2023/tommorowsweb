@@ -200,3 +200,34 @@
     gap: 12px;
   }
 }
+
+/* =============================
+   Premium Badge (Non-clickable)
+============================= */
+.premium-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #f1c40f;
+  pointer-events: none;
+  user-select: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
+}
+
+/* Animated Crown for Premium */
+.animated-crown {
+  animation: spin 2s linear infinite;
+  font-size: 18px;
+  color: #f1c40f;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

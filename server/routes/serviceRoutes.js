@@ -1,14 +1,24 @@
 const express = require('express');
 const Service = require('../models/service');
+const User = require('../models/user'); // ✅ Import User model
 const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Protect all routes
 router.use(authMiddleware);
 
-// Add a new service
+// ✅ Add a new service (limit to 2 for free users)
 router.post('/', async (req, res) => {
   try {
+    const user = await User.findById(req.userId);
+    const serviceCount = await Service.countDocuments({ userId: req.userId });
+
+    if (user.plan === 'free' && serviceCount >= 2) {
+      return res.status(403).json({
+        message: 'Free user limit reached. Upgrade to Premium to schedule more services.'
+      });
+    }
+
     const { vehicleId, type, date, note } = req.body;
     const service = await Service.create({
       userId: req.userId,
@@ -16,8 +26,9 @@ router.post('/', async (req, res) => {
       type,
       date,
       note,
-      status: 'upcoming' // Default status on creation
+      status: 'upcoming'
     });
+
     res.status(201).json(service);
   } catch (err) {
     res.status(500).json({ message: 'Failed to add service', error: err.message });
@@ -63,7 +74,6 @@ router.get('/predictive', async (req, res) => {
       .sort({ date: 1 });
 
     const predictions = {};
-
     services.forEach((service) => {
       const key = `${service.vehicleId._id}_${service.type}`;
       if (!predictions[key]) predictions[key] = [];
@@ -94,8 +104,8 @@ router.get('/predictive', async (req, res) => {
           predictedNext < new Date()
             ? 'Overdue'
             : (predictedNext - new Date()) / (1000 * 60 * 60 * 24) <= 15
-            ? 'Due Soon'
-            : 'Good'
+              ? 'Due Soon'
+              : 'Good'
       });
     }
 
@@ -105,7 +115,7 @@ router.get('/predictive', async (req, res) => {
   }
 });
 
-// Update service status
+// ✅ Update service status
 router.put('/:id', async (req, res) => {
   try {
     const { status } = req.body;

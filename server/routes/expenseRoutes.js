@@ -1,12 +1,21 @@
 const express = require('express');
 const Expense = require('../models/expense');
+const User = require('../models/user'); // ✅ Import User model
 const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
-// ✅ Create new expense and populate vehicle info
+// ✅ Create new expense and limit to 3 for free users
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { vehicleId, type, amount, note, currency } = req.body; // ✅ include currency
+    const { vehicleId, type, amount, note, currency } = req.body;
+
+    // ✅ Get the user and check plan
+    const user = await User.findById(req.userId);
+    const expenseCount = await Expense.countDocuments({ userId: req.userId });
+
+    if (user.plan === 'free' && expenseCount >= 3) {
+      return res.status(403).json({ message: 'Free user limit reached. Upgrade to Premium to add more expenses.' });
+    }
 
     let newExpense = await Expense.create({
       userId: req.userId,
@@ -14,10 +23,9 @@ router.post('/', authMiddleware, async (req, res) => {
       type,
       amount,
       note,
-      currency: currency || 'USD', // ✅ fallback to USD if not provided
+      currency: currency || 'USD',
     });
 
-    // ✅ Populate vehicle details for frontend display
     newExpense = await newExpense.populate('vehicleId', 'name model year');
 
     res.status(201).json(newExpense);

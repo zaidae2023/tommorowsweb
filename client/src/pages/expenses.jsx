@@ -7,6 +7,8 @@ export default function Expenses() {
   const [vehicles, setVehicles] = useState([]);
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [total, setTotal] = useState(0);
+  const [userPlan, setUserPlan] = useState('free'); // ✅ plan state
+
   const [form, setForm] = useState({
     vehicleId: '',
     type: 'Fuel',
@@ -59,6 +61,18 @@ export default function Expenses() {
     }
   }, []);
 
+  const fetchUserProfile = useCallback(async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setUserPlan(data.plan || 'free');
+    } catch (err) {
+      console.error('Failed to fetch user profile:', err);
+    }
+  }, [token]);
+
   useEffect(() => {
     if (!token) {
       alert('Please login to view expenses.');
@@ -67,7 +81,8 @@ export default function Expenses() {
     fetchExpenses();
     fetchVehicles();
     fetchCurrencies();
-  }, [token, fetchExpenses, fetchVehicles, fetchCurrencies]);
+    fetchUserProfile(); // ✅ fetch plan
+  }, [token, fetchExpenses, fetchVehicles, fetchCurrencies, fetchUserProfile]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -120,12 +135,19 @@ export default function Expenses() {
     }
   };
 
-  // ✅ SECURE EXPORT FUNCTIONS
+  // ✅ SECURE EXPORT FUNCTIONS with limit alert
   const exportExpensesCSV = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/expenses/csv`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (res.status === 403) {
+        const data = await res.json();
+        alert(data.message || 'Export limit reached. Upgrade to Premium.');
+        return;
+      }
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -144,6 +166,13 @@ export default function Expenses() {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/expenses/pdf`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (res.status === 403) {
+        const data = await res.json();
+        alert(data.message || 'Export limit reached. Upgrade to Premium.');
+        return;
+      }
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -164,7 +193,6 @@ export default function Expenses() {
         <h2>💸 Your Expenses</h2>
         <p><strong>Total:</strong> ${total}</p>
 
-        {/* ✅ Export Buttons */}
         <div style={{ marginBottom: '20px', display: 'flex', gap: '12px' }}>
           <button onClick={exportExpensesCSV} className="export-btn">📄 Export CSV</button>
           <button onClick={exportExpensesPDF} className="export-btn">🧾 Export PDF</button>
@@ -204,12 +232,24 @@ export default function Expenses() {
             onChange={handleChange}
           />
 
-          <select name="currency" value={form.currency} onChange={handleChange} required>
+          <select
+            name="currency"
+            value={form.currency}
+            onChange={handleChange}
+            required
+            disabled={userPlan === 'free'} // 🔒 lock for free users
+          >
             <option value="">Select Currency</option>
             {currencyOptions.map((cur) => (
               <option key={cur} value={cur}>{cur}</option>
             ))}
           </select>
+
+          {userPlan === 'free' && (
+            <p style={{ color: '#e67e22', fontSize: '0.9rem' }}>
+              Multi-currency is a Premium feature. You’re limited to USD.
+            </p>
+          )}
 
           <button type="submit">Add Expense</button>
           {message && <p>{message}</p>}

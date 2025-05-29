@@ -116,12 +116,19 @@ export default function Services() {
     }
   };
 
-  // ✅ Secure Export Functions
+  // ✅ Export Functions with Export Limit Alert
   const exportServicesCSV = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/services/csv`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (res.status === 403) {
+        const data = await res.json();
+        alert(data.message || 'Export limit reached. Upgrade to Premium to unlock more exports.');
+        return;
+      }
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -140,6 +147,13 @@ export default function Services() {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/services/pdf`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (res.status === 403) {
+        const data = await res.json();
+        alert(data.message || 'Export limit reached. Upgrade to Premium to unlock more exports.');
+        return;
+      }
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');

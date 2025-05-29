@@ -1,19 +1,23 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const passport = require('passport');
-require('./passport'); // Passport config
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import passport from 'passport';
+import './passport.js'; // ✅ Include .js extension for ESM
 
 // ✅ Route Imports
-const vehicleRoutes = require('./routes/vehicleRoutes');
-const authRoutes = require('./routes/authRoutes');
-const expenseRoutes = require('./routes/expenseRoutes');
-const serviceRoutes = require('./routes/serviceRoutes');
-const profileRoutes = require('./routes/profileRoutes');
-const documentRoutes = require('./routes/documentRoutes');
-const exportRoutes = require('./routes/exportRoutes'); // ✅ Added export routes
+import vehicleRoutes from './routes/vehicleRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import serviceRoutes from './routes/serviceRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
+import documentRoutes from './routes/documentRoutes.js';
+import exportRoutes from './routes/exportRoutes.js';
+import stripeRoutes from './routes/stripeRoutes.js';
+import stripeWebhook from './routes/stripeWebhook.js';
 
 const app = express();
 
@@ -30,22 +34,25 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 // ✅ Serve uploaded files
-app.use('/uploads', express.static('uploads')); // serves /uploads/avatars, /uploads/documents etc.
+app.use('/uploads', express.static('uploads'));
 
-// ✅ Root Route
+// ✅ Stripe Webhook needs raw body
+app.use('/api/webhook', express.raw({ type: 'application/json' }), stripeWebhook);
+
+// ✅ Normal API Routes
 app.get('/', (req, res) => {
   console.log("✅ Root route accessed");
   res.send('🚗 Welcome to the TuneUp API backend!');
 });
 
-// ✅ API Routes
 app.use('/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/documents', documentRoutes);
-app.use('/api/export', exportRoutes); // ✅ Register export route here
+app.use('/api/export', exportRoutes);
+app.use('/api/stripe', stripeRoutes); // ✅ Stripe Checkout route
 
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
