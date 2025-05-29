@@ -18,13 +18,13 @@ export default function Dashboard() {
   const [vehicles, setVehicles] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [nextService, setNextService] = useState({ date: 'N/A', type: 'N/A' });
-
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState('');
 
   const location = useLocation();
   const navigate = useNavigate();
 
+  // handle token in URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
@@ -34,6 +34,7 @@ export default function Dashboard() {
     }
   }, [location, navigate]);
 
+  // fetch vehicles, expenses, next service
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
@@ -42,7 +43,6 @@ export default function Dashboard() {
         navigate('/login');
         return;
       }
-
       try {
         const [vehiclesRes, expensesRes, serviceRes] = await Promise.all([
           fetch('http://localhost:5000/api/vehicles', {
@@ -57,10 +57,7 @@ export default function Dashboard() {
         ]);
 
         const vehiclesData = await vehiclesRes.json();
-        const vehiclesList = Array.isArray(vehiclesData)
-          ? vehiclesData
-          : vehiclesData.vehicles || [];
-        setVehicles(vehiclesList);
+        setVehicles(Array.isArray(vehiclesData) ? vehiclesData : vehiclesData.vehicles || []);
 
         const expensesData = await expensesRes.json();
         setExpenses(expensesData);
@@ -75,8 +72,6 @@ export default function Dashboard() {
             type: firstService.type || 'Service',
             countdown: daysLeft,
           });
-        } else {
-          setNextService({ date: 'N/A', type: 'N/A', countdown: null });
         }
       } catch (err) {
         console.error('Dashboard fetch error:', err);
@@ -88,29 +83,29 @@ export default function Dashboard() {
     fetchData();
   }, [navigate]);
 
+  // fetch city by IP
   useEffect(() => {
     const fetchCityFromIP = async () => {
       try {
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
-        setCity(data?.city || 'Dubai');
+        setCity(data?.city || 'Delhi');
       } catch {
-        setCity('Dubai');
+        setCity('Delhi');
       }
     };
-
     fetchCityFromIP();
   }, []);
 
+  // fetch weather
   useEffect(() => {
-    if (!city) return;
     const fetchWeather = async () => {
+      if (!city) return;
       try {
         const res = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`
         );
         const data = await res.json();
-
         if (res.ok) {
           setWeather({
             temp: data.main.temp,
@@ -122,26 +117,10 @@ export default function Dashboard() {
         console.error('Weather fetch error:', err);
       }
     };
-
     fetchWeather();
   }, [city]);
 
-  const getCarWashAdvice = (condition) => {
-    const desc = condition.toLowerCase();
-    if (desc.includes('clear') || desc.includes('sun')) return '✅ Perfect day for a car wash!';
-    if (desc.includes('cloud')) return '✅ Okay for a car wash.';
-    if (desc.includes('rain') || desc.includes('storm')) return '❌ Not ideal – it\'s rainy.';
-    if (desc.includes('dust') || desc.includes('sand')) return '❌ Avoid – dusty conditions.';
-    return 'ℹ️ Check conditions before washing your car.';
-  };
-
-  const getAdviceColor = (condition) => {
-    const desc = condition.toLowerCase();
-    if (desc.includes('clear') || desc.includes('sun')) return '#2e7d32';
-    if (desc.includes('cloud')) return '#f57c00';
-    return '#c62828';
-  };
-
+  // prepare chart data
   const getChartData = () => {
     const types = ['Fuel', 'Maintenance', 'Insurance'];
     const data = types.map((type) =>
@@ -149,7 +128,6 @@ export default function Dashboard() {
         .filter((exp) => exp.type === type)
         .reduce((sum, exp) => sum + exp.amount, 0)
     );
-
     return {
       labels: types,
       datasets: [
@@ -163,31 +141,49 @@ export default function Dashboard() {
     };
   };
 
+  // car wash advice
+  const getCarWashAdvice = () => {
+    if (!weather?.condition) return '';
+    const cond = weather.condition.toLowerCase();
+    if (['rain', 'storm', 'drizzle', 'snow'].some((w) => cond.includes(w))) {
+      return '❌ Not a good time for a car wash.';
+    }
+    return '✅ Great time to wash your car!';
+  };
+
   return (
     <div>
       <Navbar />
+
       <div className="dashboard-container">
         <h1>Welcome to Your Dashboard</h1>
         <p>Here’s an overview of your vehicle activities 🚘</p>
 
-        {/* Grid Layout: Weather + Cards */}
-        <div className="dashboard-top-grid">
+        {/* ⬇️ Quick Links moved here ⬇️ */}
+        <div className="quick-links">
+          <button onClick={() => navigate('/documents')}>📄 Documents</button>
+          <button onClick={() => navigate('/vehicles')}>➕ Add Vehicle</button>
+          <button onClick={() => navigate('/expenses')}>💸 Log Expense</button>
+          <button onClick={() => navigate('/services')}>🛠️ Schedule Service</button>
+        </div>
+
+        <div className="info-grid">
           {weather && (
             <div className="weather-card">
               <img
-                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-                alt="weather-icon"
+                src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+                alt="weather icon"
               />
               <div>
-                <h4>{city}</h4>
+                <h4>🌤️ Weather in {city}</h4>
                 <p>{weather.temp}°C – {weather.condition}</p>
-                <p style={{ fontWeight: 'bold', color: getAdviceColor(weather.condition) }}>
-                  {getCarWashAdvice(weather.condition)}
-                </p>
+                <p><strong>{getCarWashAdvice()}</strong></p>
               </div>
             </div>
           )}
+
           <Card title="Registered Vehicles" value={vehicles.length} />
+
           <Card
             title="Next Service"
             value={
@@ -196,58 +192,45 @@ export default function Dashboard() {
                 : 'No upcoming service'
             }
           />
-        </div>
 
-        {/* Buttons */}
-        <div className="quick-links">
-          <button onClick={() => navigate('/vehicles')}>➕ Add Vehicle</button>
-          <button onClick={() => navigate('/expenses')}>💸 Log Expense</button>
-          <button onClick={() => navigate('/services')}>🛠️ Schedule Service</button>
-        </div>
+          <div className="recent-activity">
+            <h2>Recent Expenses</h2>
+            <ul>
+              {expenses.length > 0 ? (
+                expenses
+                  .slice(-3)
+                  .reverse()
+                  .map((exp, i) => (
+                    <li key={i}>
+                      {exp.type} – {exp.amount} {exp.currency} on{' '}
+                      {new Date(exp.date).toLocaleDateString()}
+                    </li>
+                  ))
+              ) : (
+                <li>No recent expenses logged.</li>
+              )}
+            </ul>
+          </div>
 
-        {/* Recent Expenses */}
-        <div className="recent-activity">
-          <h2>Recent Expenses</h2>
-          <ul>
-            {expenses.length > 0 ? (
-              expenses
-                .slice(-3)
-                .reverse()
-                .map((exp, i) => (
-                  <li key={i}>
-                    {exp.type} – {exp.amount} {exp.currency} on{' '}
-                    {new Date(exp.date).toLocaleDateString()}
-                  </li>
-                ))
-            ) : (
-              <li>No recent expenses logged.</li>
-            )}
-          </ul>
-        </div>
-
-        {/* Chart Section */}
-        <div className="chart-section">
-          <h2>Expense Breakdown</h2>
-          <Bar
-            data={getChartData()}
-            options={{
-              responsive: true,
-              plugins: { legend: { display: false } },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: { precision: 0 },
+          <div className="chart-section">
+            <h2>Expense Breakdown</h2>
+            <Bar
+              data={getChartData()}
+              options={{
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                  y: { beginAtZero: true, ticks: { precision: 0 } },
                 },
-              },
-            }}
-          />
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// ✅ Reusable Card
 function Card({ title, value }) {
   return (
     <div className="card">

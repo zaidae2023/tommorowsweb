@@ -6,12 +6,13 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 require('./passport'); // Passport config
 
-// Route Imports
+// ✅ Route Imports
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const authRoutes = require('./routes/authRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
-const profileRoutes = require('./routes/profileRoutes'); // ✅ Added
+const profileRoutes = require('./routes/profileRoutes');
+
 
 const app = express();
 
@@ -41,9 +42,10 @@ app.use('/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/services', serviceRoutes);
-app.use('/api/profile', profileRoutes); // ✅ Profile routes added
+app.use('/api/profile', profileRoutes);
 
-// ✅ Connect to MongoDB
+
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -60,7 +62,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   console.error('❌ MongoDB connection failed:', err.message);
 });
 
-// ✅ Catch-All Route for Undefined Endpoints
+// ✅ 404 Catch-All
 app.use((req, res) => {
   res.status(404).json({ message: 'Endpoint not found' });
 });

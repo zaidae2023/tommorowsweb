@@ -55,6 +55,56 @@ router.get('/upcoming', async (req, res) => {
   }
 });
 
+// ✅ Predictive Maintenance Route
+router.get('/predictive', async (req, res) => {
+  try {
+    const services = await Service.find({ userId: req.userId, status: 'completed' })
+      .populate('vehicleId', 'name model year')
+      .sort({ date: 1 });
+
+    const predictions = {};
+
+    services.forEach((service) => {
+      const key = `${service.vehicleId._id}_${service.type}`;
+      if (!predictions[key]) predictions[key] = [];
+      predictions[key].push(service);
+    });
+
+    const results = [];
+
+    for (const key in predictions) {
+      const logs = predictions[key];
+      if (logs.length < 2) continue;
+
+      const last = logs[logs.length - 1];
+      const secondLast = logs[logs.length - 2];
+
+      const lastDate = new Date(last.date);
+      const prevDate = new Date(secondLast.date);
+      const avgIntervalDays = (lastDate - prevDate) / (1000 * 60 * 60 * 24);
+
+      const predictedNext = new Date(lastDate.getTime() + avgIntervalDays * 24 * 60 * 60 * 1000);
+
+      results.push({
+        vehicle: last.vehicleId,
+        component: last.type,
+        lastServiced: lastDate.toDateString(),
+        expectedNext: predictedNext.toDateString(),
+        status:
+          predictedNext < new Date()
+            ? 'Overdue'
+            : (predictedNext - new Date()) / (1000 * 60 * 60 * 24) <= 15
+            ? 'Due Soon'
+            : 'Good'
+      });
+    }
+
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to generate predictions', error: err.message });
+  }
+});
+
 // Update service status
 router.put('/:id', async (req, res) => {
   try {
