@@ -48,20 +48,41 @@ body {
   outline: none;
 }
 
+/* Updated submit button with animated blue gradient */
 .service-form button {
   grid-column: span 2;
-  padding: 12px 20px;
-  background-color: #1f7aec;
-  color: #fff;
+  background: #1f7aec;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
   border: none;
-  border-radius: 10px;
-  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4);
+  padding: 12px 20px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: background 0.3s ease;
 }
 
-.service-form button:hover {
-  background-color: #1667c1;
+.service-form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  animation: animatedGradient 6s ease infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.service-form button:hover::before {
+  opacity: 1;
 }
 
 /* Message */
@@ -160,19 +181,45 @@ body {
   text-align: center;
 }
 
+/* Export button with animated blue gradient */
 .export-btn {
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  background: linear-gradient(90deg, #1abc9c, #1f7aec);
+  background: #1f7aec;
   color: white;
+  font-weight: 600;
+  font-size: 14px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4);
+  padding: 10px 16px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
   transition: background 0.3s ease;
 }
 
-.export-btn:hover {
-  background: linear-gradient(90deg, #159b85, #1a5edb);
+.export-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  animation: animatedGradient 6s ease infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.export-btn:hover::before {
+  opacity: 1;
+}
+
+/* Animated gradient keyframes */
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

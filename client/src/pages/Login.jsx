@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import googleIcon from '../assets/google.jpg';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -25,30 +27,28 @@ export default function Login() {
 
       if (res.ok) {
         if (data.requireOtp) {
-          // ✅ 2FA is ON → redirect to OTP verification page
           localStorage.setItem('emailForOtp', email);
-          navigate('/verify-otp');
+          toast.info('OTP required. Redirecting...');
+          setTimeout(() => navigate('/verify-otp'), 1500);
         } else if (data.token) {
-          // ✅ 2FA is OFF → login and save token
           localStorage.setItem('token', data.token);
-          localStorage.setItem('userEmail', email); // ✅ Save email for Stripe
-          navigate('/dashboard');
+          localStorage.setItem('userEmail', email);
+          toast.success('Login successful! Redirecting...');
+          setTimeout(() => navigate('/dashboard'), 1500);
         } else {
-          alert('Something went wrong. Please try again.');
+          toast.error('Something went wrong. Please try again.');
         }
       } else {
         if (res.status === 403) {
-          const goVerify = confirm('Email not verified. Would you like to enter OTP now?');
-          if (goVerify) {
-            navigate(`/verify-otp?email=${email}`);
-          }
+          toast.warn('Email not verified. Redirecting to OTP...');
+          setTimeout(() => navigate(`/verify-otp?email=${email}`), 1500);
         } else {
-          alert(data.message || 'Login failed');
+          toast.error(data.message || 'Login failed');
         }
       }
     } catch (err) {
       console.error('Login error:', err);
-      alert('Something went wrong. Please try again.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -97,6 +97,9 @@ export default function Login() {
           <span onClick={() => navigate('/forgot-password')}><b>Forgot Password?</b></span>
         </div>
       </div>
+
+      {/* ✅ Toast Container */}
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar closeOnClick pauseOnHover />
     </div>
   );
 }

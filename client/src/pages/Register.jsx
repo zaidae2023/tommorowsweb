@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './register.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -24,17 +26,15 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        // ✅ Store the email for later use (e.g., Stripe checkout)
         localStorage.setItem('userEmail', email);
-
-        alert('✅ Registration successful! OTP sent to your email.');
-        navigate(`/verify-otp?email=${email}`);
+        toast.success('Registration successful! OTP sent to your email.');
+        setTimeout(() => navigate(`/verify-otp?email=${email}`), 2000);
       } else {
-        alert(data.message || '❌ Registration failed.');
+        toast.error(data.message || 'Registration failed.');
       }
     } catch (err) {
       console.error('Register error:', err);
-      alert('❌ Something went wrong during registration.');
+      toast.error('Something went wrong during registration.');
     }
   };
 
@@ -80,6 +80,9 @@ export default function Register() {
           </span>
         </div>
       </div>
+
+      {/* ✅ Toast notification container */}
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar pauseOnHover />
     </div>
   );
 }

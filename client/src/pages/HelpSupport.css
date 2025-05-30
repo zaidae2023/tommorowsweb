@@ -1,18 +1,40 @@
+/* src/pages/help.css */
+
 .page-container {
   padding: 40px 20px;
   font-family: 'Inter', sans-serif;
   background-color: #fff;
-  color: #222;
+  color: #1f2f46;
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.7;
 }
 
-.page-container h1 {
-  font-size: 2rem;
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 800;
   margin-bottom: 20px;
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animatedGradient 6s ease infinite;
+  text-align: center;
 }
 
-.page-container h2 {
-  font-size: 1.3rem;
-  margin-top: 30px;
+.section-heading {
+  font-size: 1.5rem;
+  color: #1f7aec;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+
+.page-text {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .page-container ul {
@@ -22,13 +44,28 @@
 
 .page-container li {
   margin-bottom: 12px;
+  color: #444;
 }
 
 .page-container a {
-  color: #1abc9c;
+  color: #1f7aec;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .page-container a:hover {
   text-decoration: underline;
+}
+
+.page-note {
+  font-style: italic;
+  color: #555;
+  margin-top: 30px;
+}
+
+/* Gradient animation */
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

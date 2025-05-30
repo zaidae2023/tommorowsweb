@@ -50,21 +50,46 @@ html, body {
   border-radius: 8px;
 }
 
-/* Buttons */
 .vehicle-form button {
-  padding: 12px;
-  font-size: 16px;
-  background-color: #1f7aec;
+  background: #1f7aec;
   color: white;
+  font-weight: 600;
+  font-size: 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4);
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: background 0.3s ease;
 }
 
-.vehicle-form button:hover {
-  background-color: #155ac4;
+.vehicle-form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  animation: animatedGradient 6s ease infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
+
+.vehicle-form button:hover::before {
+  opacity: 1;
+}
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 
 /* Success or error message */
 .add-vehicle-container p {

@@ -2,7 +2,7 @@
   --primary-color: #1a1f36;
   --accent-color: #ff6b35;
   --accent-hover: #e65a28;
-  --highlight-color: #ff6b35;
+  --highlight-color: #1f7aec; /* ✅ Changed to blue */
   --white: #ffffff;
   --navbar-bg: var(--primary-color);
   --text-color: var(--white);
@@ -52,18 +52,12 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-decoration: none;
-  background: linear-gradient(270deg, #ff6b35, #ff8a50, #ff6b35);
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
   background-size: 400% 400%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: orangeShift 8s ease infinite;
-}
-
-@keyframes orangeShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  animation: animatedGradient 6s ease infinite;
 }
 
 /* Nav Links */
@@ -90,7 +84,7 @@
   left: 0;
   height: 2px;
   width: 100%;
-  background: var(--highlight-color);
+  background: var(--highlight-color); /* ✅ Now blue */
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -107,27 +101,43 @@
   gap: 20px;
 }
 
-/* Upgrade Button */
+/* Upgrade Button with blue theme */
 .upgrade-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(270deg, #ff6b35, #ff8a50, #ff6b35);
-  background-size: 400% 400%;
-  animation: orangeShift 8s ease infinite;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 30px;
+  background: #1f7aec;
+  color: white;
   font-weight: 600;
   font-size: 14px;
-  color: #fff;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  box-shadow: 0 4px 10px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4);
+  padding: 10px 16px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: background 0.3s ease;
 }
 
-.upgrade-btn:hover {
-  transform: scale(1.05);
+.upgrade-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  animation: animatedGradient 6s ease infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.upgrade-btn:hover::before {
+  opacity: 1;
 }
 
 .navbar-avatar {
@@ -245,4 +255,47 @@
   .navbar-actions {
     gap: 12px;
   }
+}
+
+/* Primary Button Utility */
+.primary-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  background: #1f7aec;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4);
+  transition: background 0.5s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.primary-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  animation: animatedGradient 6s ease infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.primary-btn:hover::before {
+  opacity: 1;
+}
+
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

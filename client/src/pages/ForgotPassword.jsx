@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './forgot.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,7 +13,6 @@ export default function ForgotPassword() {
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -26,13 +27,13 @@ export default function ForgotPassword() {
       const data = await res.json();
       if (res.ok) {
         setStep(2);
-        setMessage('📩 OTP sent to your email.');
+        toast.success('📩 OTP sent to your email.');
       } else {
-        setMessage(data.message || '❌ Failed to send OTP.');
+        toast.error(data.message || '❌ Failed to send OTP.');
       }
     } catch (err) {
       console.error('Send OTP error:', err);
-      setMessage('❌ Server error. Try again.');
+      toast.error('❌ Server error. Try again.');
     } finally {
       setLoading(false);
     }
@@ -48,16 +49,15 @@ export default function ForgotPassword() {
       });
       const data = await res.json();
       if (res.ok) {
-        // ✅ Save email to localStorage so it's available post-reset
         localStorage.setItem('userEmail', email);
-        setMessage('✅ Password reset successful! Redirecting to login...');
-        setTimeout(() => navigate('/login'), 2000); // Redirect after 2s
+        toast.success('✅ Password reset successful! Redirecting...');
+        setTimeout(() => navigate('/login'), 2000);
       } else {
-        setMessage(data.message || '❌ OTP verification failed.');
+        toast.error(data.message || '❌ OTP verification failed.');
       }
     } catch (err) {
       console.error('Verify OTP error:', err);
-      setMessage('❌ Server error. Try again.');
+      toast.error('❌ Server error. Try again.');
     } finally {
       setLoading(false);
     }
@@ -67,7 +67,7 @@ export default function ForgotPassword() {
     <div className="login-page">
       <div className="login-card">
         <h2>Reset Your Password 🔐</h2>
-        <p className="subtitle">{message}</p>
+        <p className="subtitle">Follow the steps below to recover your account</p>
 
         <div className="forgot-form">
           {step === 1 ? (
@@ -115,6 +115,9 @@ export default function ForgotPassword() {
           <span onClick={() => navigate('/login')}>← Back to <b>Login</b></span>
         </div>
       </div>
+
+      {/* ✅ Toast container */}
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar pauseOnHover />
     </div>
   );
 }
