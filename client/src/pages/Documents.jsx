@@ -9,6 +9,8 @@ export default function Documents() {
   const [documents, setDocuments] = useState([]);
   const [message, setMessage] = useState('');
   const [userPlan, setUserPlan] = useState('free');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedDocId, setSelectedDocId] = useState(null);
 
   const token = localStorage.getItem('token');
 
@@ -76,24 +78,30 @@ export default function Documents() {
     }
   };
 
-  const deleteDocument = async (docId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this document?');
-    if (!confirmDelete) return;
+  const handleDeleteClick = (docId) => {
+    setSelectedDocId(docId);
+    setShowDeleteModal(true);
+  };
 
+  const confirmDelete = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/documents/${docId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/documents/${selectedDocId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.ok) {
         fetchDocuments();
+        setMessage('Document deleted.');
       } else {
         setMessage('Failed to delete document.');
       }
     } catch (err) {
       console.error('Delete error:', err);
       setMessage('Error deleting document.');
+    } finally {
+      setShowDeleteModal(false);
+      setSelectedDocId(null);
     }
   };
 
@@ -158,10 +166,22 @@ export default function Documents() {
                       {days <= 15 && <span className="alert">⚠️ Renew Soon</span>}
                     </div>
                     <div className="doc-actions">
-                      <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="view-link">
-                        View / Download
-                      </a>
-                      <button onClick={() => deleteDocument(doc._id)} className="delete-btn">🗑️ Delete</button>
+                      <div className="button-group">
+                        <a
+                          href={fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="view-link"
+                        >
+                          View
+                        </a>
+                        <button
+                          onClick={() => handleDeleteClick(doc._id)}
+                          className="delete-btn"
+                        >
+                          🗑️ Delete
+                        </button>
+                      </div>
                     </div>
                   </li>
                 );
@@ -169,6 +189,20 @@ export default function Documents() {
             </ul>
           )}
         </div>
+
+        {/* Delete Modal */}
+        {showDeleteModal && (
+          <div className="delete-modal-overlay">
+            <div className="delete-modal">
+              <h3>Confirm Deletion</h3>
+              <p>Are you sure you want to delete this document?</p>
+              <div className="modal-actions">
+                <button className="cancel-btn" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                <button className="confirm-btn" onClick={confirmDelete}>Delete</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

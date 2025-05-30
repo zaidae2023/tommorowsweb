@@ -13,7 +13,6 @@ export default function Footer() {
         {/* Brand & tagline */}
         <div className="footer-section footer-brand">
           <h2 className="brand-title">TuneUp</h2>
-          <p className="brand-tagline">Your smart vehicle companion</p>
         </div>
 
         {/* Navigation links */}
@@ -22,14 +21,14 @@ export default function Footer() {
           <Link to="/">Home</Link>
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/services">Services</Link>
-          <Link to="/help">Help Center</Link>
         </div>
 
-        {/* Legal links */}
+        {/* Legal links with Help Center moved here */}
         <div className="footer-section footer-legal">
           <h3 className="section-title">Legal</h3>
           <Link to="/privacy-policy">Privacy Policy</Link>
           <Link to="/terms">Terms &amp; Conditions</Link>
+          <Link to="/help">Help Center</Link> {/* ✅ Moved here */}
         </div>
 
         {/* Contact / Let’s Connect */}
@@ -49,5 +48,5 @@ export default function Footer() {
         <p>&copy; {new Date().getFullYear()} TuneUp. All rights reserved.</p>
       </div>
     </footer>
-);
+  );
 }

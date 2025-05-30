@@ -18,10 +18,11 @@
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 10px;
+  color: black;
 }
 
 .upgrade-header h1 span {
-  color: #f1c40f;
+  color: #1f7aec;
 }
 
 .upgrade-header p {

@@ -1,9 +1,12 @@
-/* src/pages/documents.css */
 .documents-container {
   padding: 40px 20px;
   max-width: 700px;
   margin: auto;
   font-family: 'Inter', sans-serif;
+}
+
+h1, h2 {
+  color: black;
 }
 
 .document-form {
@@ -23,7 +26,6 @@
   font-size: 1rem;
 }
 
-/* Upload button with animated blue gradient */
 .document-form button {
   background: #1f7aec;
   color: white;
@@ -83,6 +85,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .uploaded-documents li.expiring {
@@ -101,18 +104,45 @@
   font-weight: bold;
 }
 
-/* View link with improved hover effect */
+/* Action wrapper */
+.doc-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.view-link,
+.delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  min-width: 110px;
+  height: 42px; /* NEW: Consistent height for both buttons */
+  box-sizing: border-box;
+}
+
+/* View Button */
 .view-link {
   background: #1f7aec;
   color: white;
-  padding: 8px 14px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 500;
   position: relative;
   overflow: hidden;
   z-index: 1;
-  transition: background 0.3s ease;
 }
 
 .view-link::before {
@@ -132,6 +162,96 @@
 
 .view-link:hover::before {
   opacity: 1;
+}
+
+/* Delete Button */
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+/* Delete Modal Styles */
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.delete-modal {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  max-width: 400px;
+  text-align: center;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.delete-modal h3 {
+  margin-bottom: 10px;
+  color: #e74c3c;
+  font-size: 1.5rem;
+}
+
+.delete-modal p {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 10px 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cancel-btn {
+  background: #ccc;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background: #bbb;
+}
+
+.confirm-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background: #c0392b;
 }
 
 /* Animated gradient keyframes */

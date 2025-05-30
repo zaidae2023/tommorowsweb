@@ -50,7 +50,7 @@ html, body {
 }
 
 .forgot-form input:focus {
-  border-color: #1abc9c;
+  border-color: #1f7aec; /* ✅ blue border on focus */
   outline: none;
 }
 
@@ -58,7 +58,7 @@ html, body {
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  background: #1abc9c;
+  background: #1f7aec; /* ✅ blue background */
   color: white;
   border: none;
   border-radius: 8px;
@@ -67,7 +67,7 @@ html, body {
 }
 
 .primary-btn:hover {
-  background-color: #17a88d;
+  background-color: #1357c5; /* ✅ darker blue on hover */
 }
 
 @keyframes fadeIn {

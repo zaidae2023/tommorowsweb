@@ -1,0 +1,66 @@
+/* src/pages/terms.css */
+
+.terms-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.7;
+  color: #1f2f46;
+}
+
+.terms-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animatedGradient 6s ease infinite;
+  text-align: center;
+}
+
+.terms-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f7aec;
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+
+.terms-paragraph {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.terms-list {
+  padding-left: 20px;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.terms-link {
+  color: #1f7aec;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.terms-link:hover {
+  color: #3a7bd5;
+}
+
+.terms-updated {
+  font-style: italic;
+  color: #555;
+  margin-top: 20px;
+}
+
+/* Gradient animation reused from privacy.css */
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

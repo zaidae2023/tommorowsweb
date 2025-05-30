@@ -12,7 +12,7 @@
         Navbar Styles
 ========================== */
 .navbar {
-  background: linear-gradient(270deg, #1a1f36, #2c3e50, #1a1f36);
+  background: linear-gradient(270deg, #29356b, #2c3e50, #1a1f36);
   background-size: 400% 400%;
   animation: navbarGradient 12s ease infinite;
   color: var(--text-color);

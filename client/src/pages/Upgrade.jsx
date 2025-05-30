@@ -105,7 +105,7 @@ export default function UpgradePage() {
 
         <div className="upgrade-cta">
           <button className="upgrade-now-btn" onClick={handleUpgrade}>
-            Upgrade Now 💳
+            Buy Premium only $10.00/month
           </button>
         </div>
       </div>

@@ -60,7 +60,7 @@ html, body {
 }
 
 .login-form input:focus {
-  border-color: #1abc9c;
+  border-color: #1f7aec; /* ✅ blue focus */
   outline: none;
 }
 
@@ -69,7 +69,7 @@ html, body {
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
-  background: #1f7aec; /* solid blue by default */
+  background: #1f7aec;
   color: white;
   border: none;
   border-radius: 8px;
@@ -99,7 +99,6 @@ html, body {
 .primary-btn:hover::before {
   opacity: 1;
 }
-
 
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
@@ -211,7 +210,7 @@ html, body {
 }
 
 .password-wrapper .toggle:hover {
-  color: #1abc9c;
+  color: #1f7aec; /* ✅ hover color blue */
 }
 
 .login-message {
@@ -224,13 +223,24 @@ html, body {
 }
 
 .login-message.success {
-  background-color: #e6f9f2;
-  color: #117a65;
-  border: 1px solid #1abc9c;
+  background-color: #e6f1fd;
+  color: #1f7aec;
+  border: 1px solid #1f7aec;
 }
 
 .login-message.error {
   background-color: #fff5f5;
   color: #c0392b;
   border: 1px solid #e74c3c;
+}
+
+.logo-wrapper {
+  margin-bottom: 16px;
+}
+
+.login-logo {
+  max-width: 140px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }

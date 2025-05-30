@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import googleIcon from '../assets/google.jpg';
+import logo from '../assets/logo.png'; // ✅ Import your logo image
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -59,8 +60,13 @@ export default function Login() {
   return (
     <div className="login-page">
       <div className="login-card">
-        <h2>Welcome Back 👋</h2>
-        <p className="subtitle">Login to your TuneUp account</p>
+        {/* ✅ Logo Added Here */}
+        <div className="logo-wrapper">
+          <img src={logo} alt="TuneUp Logo" className="login-logo" />
+        </div>
+
+        <h3>Welcome Back 👋</h3>
+        
 
         <form onSubmit={handleLogin} className="login-form">
           <input
@@ -98,7 +104,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* ✅ Toast Container */}
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar closeOnClick pauseOnHover />
     </div>
   );

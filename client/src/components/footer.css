@@ -1,19 +1,28 @@
-/* src/components/footer.css */
+/* =======================
+   Footer Styles - Updated
+========================== */
 
-/* Overall footer wrapper */
 .footer {
   position: relative;
-  background: linear-gradient(135deg, #f7f9fc, #e2e8f0);
-  color: #333;
+  background: linear-gradient(135deg, #1a1f36, #2c3e50, #1a1f36);
+  background-size: 400% 400%;
+  animation: navbarGradient 12s ease infinite;
+  color: var(--white);
   font-family: 'Inter', sans-serif;
   overflow: hidden;
 }
 
-/* Bold accent stripe at top */
+@keyframes navbarGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .footer-accent {
   height: 6px;
-  background: linear-gradient(90deg, #1abc9c, #1f7aec);
+  background: linear-gradient(90deg, #1f7aec, #3a7bd5); /* 💙 Blue tones only */
 }
+
 
 /* Main content grid */
 .footer-content {
@@ -37,7 +46,7 @@
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #1f7aec;
+  color: var(--highlight-color);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -57,13 +66,13 @@
 
 .footer-brand .brand-tagline {
   font-size: 0.95rem;
-  color: #555;
+  color: #ccc;
 }
 
 /* Navigation & legal links */
 .footer-nav a,
 .footer-legal a {
-  color: #333;
+  color: var(--white);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s, transform 0.2s;
@@ -71,40 +80,85 @@
 
 .footer-nav a:hover,
 .footer-legal a:hover {
-  color: #1f7aec;
+  color: var(--highlight-color);
   transform: translateX(4px);
 }
 
 /* Contact section */
 .footer-contact .contact-text {
   font-size: 0.9rem;
-  color: #555;
+  color: #ccc;
 }
 
 .footer-contact .contact-email {
   font-size: 1rem;
   font-weight: 500;
-  color: #1abc9c;
+  color: #ffffff; /* 🤍 Default white */
   text-decoration: none;
-  border-bottom: 1px dashed #1abc9c;
+  border-bottom: 1px dashed #ffffff;
   padding-bottom: 2px;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .footer-contact .contact-email:hover {
-  color: #1f7aec;
-  border-color: #1f7aec;
+  color: var(--highlight-color); /* 💙 On hover: blue */
+  border-color: var(--highlight-color);
 }
 
-/* Bottom bar */
+
+
+/* Footer buttons (reusing .primary-btn style) */
+.footer .primary-btn {
+  width: fit-content;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--highlight-color);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4);
+  transition: background 0.5s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.footer .primary-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  animation: animatedGradient 6s ease infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.footer .primary-btn:hover::before {
+  opacity: 1;
+}
+
 .footer-bottom {
   text-align: center;
   padding: 16px 20px;
   font-size: 0.8rem;
-  background: rgba(231, 235, 240, 0.9);
-  border-top: 1px solid rgba(200, 205, 210, 0.5);
-  color: #555;
+  background: rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff !important; /* ✅ Force white */
 }
+
+.footer-bottom p {
+  margin: 0;
+  color: #ffffff !important; /* ✅ Also target <p> directly */
+}
+
+
 
 /* Animated gradient keyframes */
 @keyframes animatedGradient {

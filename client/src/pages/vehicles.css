@@ -19,6 +19,7 @@
 .vehicles-title {
   font-size: 28px;
   font-weight: bold;
+  color: black;
 }
 
 .add-vehicle-btn {
@@ -99,4 +100,97 @@
   padding: 5px 10px;
   font-size: 12px;
   cursor: pointer;
+}
+
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(4px);
+}
+
+/* Modal Container */
+.confirm-modal {
+  background-color: #ffffff;
+  padding: 30px 30px 24px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  font-family: 'Inter', sans-serif;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal Title */
+.confirm-modal h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2f46;
+  margin-bottom: 12px;
+}
+
+/* Modal Description */
+.confirm-modal p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+/* Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Confirm Button */
+.confirm-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #cfcfcf;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
