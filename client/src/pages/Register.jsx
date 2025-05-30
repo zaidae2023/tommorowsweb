@@ -24,6 +24,9 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
+        // ✅ Store the email for later use (e.g., Stripe checkout)
+        localStorage.setItem('userEmail', email);
+
         alert('✅ Registration successful! OTP sent to your email.');
         navigate(`/verify-otp?email=${email}`);
       } else {

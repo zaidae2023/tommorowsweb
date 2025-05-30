@@ -29,22 +29,25 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 
 // ✅ Serve uploaded files
 app.use('/uploads', express.static('uploads'));
 
-// ✅ Stripe Webhook needs raw body
+// ✅ Stripe Webhook needs raw body - must be before express.json()
 app.use('/api/webhook', express.raw({ type: 'application/json' }), stripeWebhook);
 
-// ✅ Normal API Routes
+// ✅ Now apply express.json for all other routes
+app.use(express.json());
+
+// ✅ Root Route
 app.get('/', (req, res) => {
   console.log("✅ Root route accessed");
   res.send('🚗 Welcome to the TuneUp API backend!');
 });
 
+// ✅ Main Routes
 app.use('/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/expenses', expenseRoutes);
@@ -52,7 +55,7 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/export', exportRoutes);
-app.use('/api/stripe', stripeRoutes); // ✅ Stripe Checkout route
+app.use('/api/stripe', stripeRoutes);
 
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {

@@ -14,6 +14,8 @@ import Footer from './components/footer';
 import { UserProvider } from './context/usercontext.jsx';
 import Documents from './pages/Documents'; 
 import Upgrade from './pages/Upgrade';
+import OAuthSuccess from './pages/OAuthSuccess';
+import Success from './pages/Success'; // ✅ Import the Success page
 
 
 
@@ -44,6 +46,9 @@ function AppRoutes() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/documents" element={<Documents />} />
           <Route path="/upgrade" element={<Upgrade />} />
+          <Route path="/oauth-success" element={<OAuthSuccess />} />
+          <Route path="/success" element={<Success />} /> {/* ✅ Add this */}
+          
 
 
           {/* ✅ Footer Pages */}

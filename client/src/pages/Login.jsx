@@ -31,6 +31,7 @@ export default function Login() {
         } else if (data.token) {
           // ✅ 2FA is OFF → login and save token
           localStorage.setItem('token', data.token);
+          localStorage.setItem('userEmail', email); // ✅ Save email for Stripe
           navigate('/dashboard');
         } else {
           alert('Something went wrong. Please try again.');

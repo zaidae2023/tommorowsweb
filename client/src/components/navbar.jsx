@@ -19,7 +19,7 @@ export default function Navbar() {
           if (data.avatar) {
             setAvatar(`${import.meta.env.VITE_API_URL}${data.avatar}`);
           }
-          setIsPremium(data.isPremium); // ✅ Check and store premium status
+          setIsPremium(data.plan === 'premium'); // ✅ FIXED: check data.plan
         }
       } catch (err) {
         console.error('Failed to fetch profile avatar', err);
@@ -43,7 +43,6 @@ export default function Navbar() {
       </ul>
 
       <div className="navbar-actions">
-        {/* Show Premium badge or Upgrade button based on user status */}
         {isPremium ? (
           <div className="premium-badge">
             <FaCrown className="animated-crown" />
@@ -56,7 +55,6 @@ export default function Navbar() {
           </button>
         )}
 
-        {/* Profile Icon */}
         <Link to="/settings" className="profile-icon">
           {avatar ? (
             <img src={avatar} alt="Profile" className="navbar-avatar" />

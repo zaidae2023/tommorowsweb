@@ -1,44 +1,39 @@
-// routes/stripeRoutes.js
 import express from 'express';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
-import authMiddleware from '../middleware/authMiddleware.js'; // ✅ Import CommonJS module
-const { verifyToken } = authMiddleware; // ✅ Extract the named export
-
 dotenv.config();
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-router.post('/create-checkout-session', verifyToken, async (req, res) => {
+// ✅ Route to create a Subscription Checkout Session
+router.post('/create-checkout-session', async (req, res) => {
   try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required for Stripe Checkout' });
+    }
+
     const session = await stripe.checkout.sessions.create({
+      mode: 'subscription', // ✅ Required for recurring payments
       payment_method_types: ['card'],
-      mode: 'payment',
-      customer_email: req.user.email,
+      customer_email: email, // ✅ Used by webhook to find the user
       line_items: [
         {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: 'TuneUp Premium Subscription',
-            },
-            unit_amount: 499, // in cents ($4.99)
-          },
+          price: 'price_1RUCGCQxGI7D6wc7KnYghEGr', // ✅ Your recurring price ID
           quantity: 1,
         },
       ],
-      success_url: `${process.env.CLIENT_URL}/payment-success`,
-      cancel_url: `${process.env.CLIENT_URL}/upgrade`,
-      metadata: {
-        userId: req.user.id, // Pass user ID for webhook to use
-      },
+      success_url: 'http://localhost:5173/success',
+      cancel_url: 'http://localhost:5173/cancel',
     });
 
+    // ✅ Return the session URL for redirection
     res.json({ url: session.url });
-  } catch (error) {
-    console.error('Stripe error:', error);
-    res.status(500).json({ error: 'Payment session creation failed' });
+  } catch (err) {
+    console.error('❌ Stripe Error:', err.message);
+    res.status(500).json({ error: 'Stripe Checkout failed' });
   }
 });
 

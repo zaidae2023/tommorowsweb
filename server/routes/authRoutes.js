@@ -127,13 +127,20 @@ router.post('/verify-reset-otp', async (req, res) => {
 // -------------------- Google OAuth --------------------
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', passport.authenticate('google', {
-  failureRedirect: '/',
-  session: false,
-}), (req, res) => {
-  const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-  res.redirect(`http://localhost:5173/dashboard?token=${token}`);
-});
+router.get('/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/',
+    session: false,
+  }),
+  (req, res) => {
+    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const email = req.user.email;
+
+    // ✅ Redirect to frontend with token and email
+    res.redirect(`http://localhost:5173/oauth-success?token=${token}&email=${encodeURIComponent(email)}`);
+  }
+);
+
 
 // -------------------- Get Logged-in User Profile --------------------
 router.get('/profile', authenticate, async (req, res) => {

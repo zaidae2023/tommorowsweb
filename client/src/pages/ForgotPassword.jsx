@@ -48,6 +48,8 @@ export default function ForgotPassword() {
       });
       const data = await res.json();
       if (res.ok) {
+        // ✅ Save email to localStorage so it's available post-reset
+        localStorage.setItem('userEmail', email);
         setMessage('✅ Password reset successful! Redirecting to login...');
         setTimeout(() => navigate('/login'), 2000); // Redirect after 2s
       } else {

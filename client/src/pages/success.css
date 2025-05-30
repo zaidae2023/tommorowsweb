@@ -1,0 +1,61 @@
+.success-page {
+  background: linear-gradient(135deg, #1abc9c, #1f7aec);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  color: white;
+}
+
+.success-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  color: #1f2f46;
+  max-width: 400px;
+  width: 90%;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.success-icon {
+  color: #1abc9c;
+  font-size: 60px;
+  margin-bottom: 20px;
+  animation: popIn 0.4s ease-in-out;
+}
+
+.success-card h1 {
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.success-card p {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

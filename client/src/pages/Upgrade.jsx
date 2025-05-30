@@ -13,6 +13,36 @@ import {
 } from 'react-icons/fa';
 
 export default function UpgradePage() {
+  const handleUpgrade = async () => {
+    const email = localStorage.getItem('userEmail');
+
+    if (!email) {
+      alert('User email not found. Please log in again.');
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:5000/api/stripe/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url; // 🔁 Redirect to Stripe
+      } else {
+        alert('Failed to create checkout session.');
+      }
+    } catch (error) {
+      console.error('Stripe Checkout Error:', error);
+      alert('Upgrade failed. Please try again.');
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -29,69 +59,54 @@ export default function UpgradePage() {
           </p>
         </div>
 
-        {/* Main Features Grid */}
         <div className="features-grid">
           <div className="feature-card">
             <FaFileExport className="feature-icon" />
             <h3>Unlimited Exports</h3>
-            <p>
-              Export unlimited PDF and CSV reports of your vehicle data anytime.
-            </p>
+            <p>Export unlimited PDF and CSV reports of your vehicle data anytime.</p>
           </div>
 
           <div className="feature-card">
             <FaCalendarAlt className="feature-icon" />
             <h3>Unlimited Scheduled Services</h3>
-            <p>
-              Set as many reminders as you need for maintenance and repairs.
-            </p>
+            <p>Set as many reminders as you need for maintenance and repairs.</p>
           </div>
 
           <div className="feature-card">
             <FaCar className="feature-icon" />
             <h3>Add Unlimited Vehicles</h3>
-            <p>
-              No limits—track all your personal or business vehicles in one place.
-            </p>
+            <p>No limits—track all your personal or business vehicles in one place.</p>
           </div>
 
           <div className="feature-card">
             <FaMoneyBill className="feature-icon" />
             <h3>Track All Expenses</h3>
-            <p>
-              Log unlimited fuel, insurance, maintenance, and other expenses.
-            </p>
+            <p>Log unlimited fuel, insurance, maintenance, and other expenses.</p>
           </div>
 
           <div className="feature-card">
             <FaShieldAlt className="feature-icon" />
             <h3>2-Factor Authentication</h3>
-            <p>
-              Keep your account more secure with OTP-based login verification.
-            </p>
+            <p>Keep your account more secure with OTP-based login verification.</p>
           </div>
 
           <div className="feature-card">
             <FaFileAlt className="feature-icon" />
             <h3>Documents Upload</h3>
-            <p>
-              Upload unlimited registration or insurance documents and set expiry dates for timely reminders.
-            </p>
+            <p>Upload unlimited registration or insurance documents and set expiry dates for timely reminders.</p>
           </div>
         </div>
 
-        {/* ✅ Multi-Currency card centered below */}
         <div className="feature-card standalone-card">
           <FaGlobe className="feature-icon" />
           <h3>Multi-Currency Support</h3>
-          <p>
-            Manage your expenses in your preferred currency, wherever you are.
-          </p>
+          <p>Manage your expenses in your preferred currency, wherever you are.</p>
         </div>
 
-        {/* CTA */}
         <div className="upgrade-cta">
-          <button className="upgrade-now-btn">Upgrade Now</button>
+          <button className="upgrade-now-btn" onClick={handleUpgrade}>
+            Upgrade Now 💳
+          </button>
         </div>
       </div>
     </>
