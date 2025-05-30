@@ -8,6 +8,7 @@ export default function Settings() {
   const [avatar, setAvatar] = useState('');
   const [message, setMessage] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [plan, setPlan] = useState('free'); // 👈 NEW: Track user plan
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function Settings() {
           setEmail(data.email || '');
           setAvatar(data.avatar ? `${import.meta.env.VITE_API_URL}${data.avatar}` : '');
           setTwoFactorEnabled(data.twoFactorEnabled || false);
+          setPlan(data.plan || 'free'); // 👈 Store plan
         } else {
           setMessage(data.message || 'Failed to load profile');
         }
@@ -34,6 +36,8 @@ export default function Settings() {
   }, []);
 
   const handle2FAToggle = async () => {
+    if (plan === 'free') return; // 👈 Prevent toggle for free users
+
     try {
       const updated = !twoFactorEnabled;
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/twofactor`, {
@@ -194,23 +198,24 @@ export default function Settings() {
             </div>
 
             <div className="input-group toggle-group">
-              <label htmlFor="2fa-toggle">2-Factor Authentication</label>
-              <label className="switch">
+              <label htmlFor="2fa-toggle">
+                2-Factor Authentication
+                {plan === 'free' && <span style={{ color: 'red', fontSize: '12px', marginLeft: '10px' }}>Premium Only</span>}
+              </label>
+              <label className="switch" title={plan === 'free' ? 'Upgrade to Premium to enable 2FA' : ''}>
                 <input
                   type="checkbox"
                   id="2fa-toggle"
                   checked={twoFactorEnabled}
                   onChange={handle2FAToggle}
+                  disabled={plan === 'free'} // 👈 Lock toggle
                 />
                 <span className="slider round"></span>
               </label>
             </div>
 
             <button type="submit" className="save-btn">Save Changes</button>
-
-            <button type="button" className="logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
+            <button type="button" className="logout-btn" onClick={handleLogout}>Logout</button>
           </form>
         </div>
       </div>

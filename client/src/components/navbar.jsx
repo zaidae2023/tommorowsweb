@@ -7,6 +7,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState('');
   const [isPremium, setIsPremium] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -19,7 +20,7 @@ export default function Navbar() {
           if (data.avatar) {
             setAvatar(`${import.meta.env.VITE_API_URL}${data.avatar}`);
           }
-          setIsPremium(data.plan === 'premium'); // ✅ FIXED: check data.plan
+          setIsPremium(data.plan === 'premium');
         }
       } catch (err) {
         console.error('Failed to fetch profile avatar', err);
@@ -34,12 +35,18 @@ export default function Navbar() {
         <Link to="/" className="navbar-brand">TuneUp</Link>
       </div>
 
-      <ul className="navbar-links">
-        <li><Link to="/dashboard">Dashboard</Link></li>
-        <li><Link to="/vehicles">Vehicles</Link></li>
-        <li><Link to="/expenses">Expenses</Link></li>
-        <li><Link to="/services">Services</Link></li>
-        <li><Link to="/documents">Documents</Link></li>
+      <div className={`hamburger ${menuOpen ? 'active' : ''}`} onClick={() => setMenuOpen(!menuOpen)}>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <ul className={`navbar-links ${menuOpen ? 'active' : ''}`}>
+        <li><Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>
+        <li><Link to="/vehicles" onClick={() => setMenuOpen(false)}>Vehicles</Link></li>
+        <li><Link to="/expenses" onClick={() => setMenuOpen(false)}>Expenses</Link></li>
+        <li><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link></li>
+        <li><Link to="/documents" onClick={() => setMenuOpen(false)}>Documents</Link></li>
       </ul>
 
       <div className="navbar-actions">

@@ -1,11 +1,8 @@
-/* =======================
-   TuneUp Theme Variables
-========================== */
 :root {
-  --primary-color: #1a1f36;      /* Deep Navy */
-  --accent-color: #ff6b35;       /* Coral Orange */
-  --accent-hover: #e65a28;       /* Darker Coral on hover */
-  --highlight-color: #ff6b35;    /* Replaced yellow with orange */
+  --primary-color: #1a1f36;
+  --accent-color: #ff6b35;
+  --accent-hover: #e65a28;
+  --highlight-color: #ff6b35;
   --white: #ffffff;
   --navbar-bg: var(--primary-color);
   --text-color: var(--white);
@@ -15,7 +12,9 @@
         Navbar Styles
 ========================== */
 .navbar {
-  background-color: var(--navbar-bg);
+  background: linear-gradient(270deg, #1a1f36, #2c3e50, #1a1f36);
+  background-size: 400% 400%;
+  animation: navbarGradient 12s ease infinite;
   color: var(--text-color);
   display: flex;
   justify-content: space-between;
@@ -27,6 +26,12 @@
   z-index: 1000;
   font-family: 'Inter', sans-serif;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes navbarGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Logo and brand */
@@ -43,11 +48,22 @@
 }
 
 .navbar-brand {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--white);
+  font-size: 1.6rem;
+  font-weight: 700;
   letter-spacing: 1px;
   text-decoration: none;
+  background: linear-gradient(270deg, #ff6b35, #ff8a50, #ff6b35);
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: orangeShift 8s ease infinite;
+}
+
+@keyframes orangeShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Nav Links */
@@ -84,7 +100,7 @@
   transform: scaleX(1);
 }
 
-/* Navbar Actions (Upgrade + Profile) */
+/* Navbar Actions */
 .navbar-actions {
   display: flex;
   align-items: center;
@@ -96,7 +112,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(90deg, #f39c12, #f1c40f);
+  background: linear-gradient(270deg, #ff6b35, #ff8a50, #ff6b35);
+  background-size: 400% 400%;
+  animation: orangeShift 8s ease infinite;
   border: none;
   padding: 10px 16px;
   border-radius: 30px;
@@ -105,7 +123,7 @@
   color: #fff;
   cursor: pointer;
   transition: transform 0.2s ease;
-  box-shadow: 0 4px 10px rgba(241, 196, 15, 0.4);
+  box-shadow: 0 4px 10px rgba(255, 107, 53, 0.4);
 }
 
 .upgrade-btn:hover {
@@ -119,7 +137,6 @@
   object-fit: cover;
   border: 2px solid #fff;
 }
-
 
 /* Crown icon animation */
 .crown-icon {
@@ -164,6 +181,34 @@
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
+/* Premium Badge */
+.premium-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #f1c40f;
+  pointer-events: none;
+  user-select: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
+}
+
+.animated-crown {
+  animation: spin 2s linear infinite;
+  font-size: 18px;
+  color: #f1c40f;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .hamburger {
@@ -180,6 +225,7 @@
     align-items: flex-start;
     padding: 20px 30px;
     display: none;
+    overflow: hidden;
   }
 
   .navbar-links.active {
@@ -199,35 +245,4 @@
   .navbar-actions {
     gap: 12px;
   }
-}
-
-/* =============================
-   Premium Badge (Non-clickable)
-============================= */
-.premium-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px 16px;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #f1c40f;
-  pointer-events: none;
-  user-select: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
-}
-
-/* Animated Crown for Premium */
-.animated-crown {
-  animation: spin 2s linear infinite;
-  font-size: 18px;
-  color: #f1c40f;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
