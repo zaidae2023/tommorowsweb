@@ -169,8 +169,10 @@ export default function Dashboard() {
     <div>
       <Navbar />
       <div className="dashboard-container">
-        <h1>Welcome to Your Dashboard</h1>
-        <p>Here’s an overview of your vehicle activities 🚘</p>
+        <h1 className="typing-glow-title"><span>Welcome to Your Dashboard!</span></h1>
+
+
+        
 
         <div className="quick-links">
           <button onClick={() => navigate('/documents')}>📄 Documents</button>

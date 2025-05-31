@@ -31,6 +31,7 @@
   font-weight: 700;
   color: var(--primary-color);
   text-align: center;
+  animation: welcomeFadeInUp 1.2s ease-in-out both;
 }
 
 .dashboard-container p {
@@ -39,6 +40,8 @@
   font-size: 1.1rem;
   text-align: center;
   max-width: 600px;
+  animation: welcomeFadeInUp 1.6s ease-in-out both;
+  animation-delay: 0.3s;
 }
 
 /* Responsive Grid */
@@ -177,14 +180,6 @@
   transform: translateY(-2px);
 }
 
-/* Animated Gradient Keyframes */
-@keyframes animatedGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-
 /* Recent Expenses & Chart Section */
 .recent-activity,
 .chart-section {
@@ -231,9 +226,68 @@
   }
 }
 
+/* Welcome Animation */
+@keyframes welcomeFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-5px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animated Gradient Keyframes */
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* Responsive tweaks */
 @media (max-width: 768px) {
   .info-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Typing + Glowing Animated Title */
+.typing-glow-title {
+  text-align: center;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.typing-glow-title span {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 3rem;
+  font-weight: 700;
+  border-right: 3px solid var(--highlight-color); /* cursor */
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation:
+    typing 3s steps(30, end),
+    blink 0.75s step-end infinite,
+    animatedGradient 6s ease infinite;
+}
+
+/* Typing keyframes */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Cursor blink */
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: var(--highlight-color); }
 }

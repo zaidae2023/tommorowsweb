@@ -223,3 +223,84 @@ body {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* ========================
+   Delete Confirmation Modal
+=========================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 380px;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-box h3 {
+  margin-bottom: 10px;
+  font-size: 22px;
+  color: #e74c3c;
+}
+
+.modal-box p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+.confirm-btn {
+  background: #e74c3c;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background: #c0392b;
+}
+
+.cancel-btn {
+  background: transparent;
+  color: #333;
+  border: 1px solid #999;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #f0f0f0;
+}
+
+/* ✅ Make delete text white on hover */
+.service-item button:last-of-type:hover {
+  background-color: #e74c3c;
+  color: #fff;
+}

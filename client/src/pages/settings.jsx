@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './settings.css';
 import Navbar from '../components/navbar';
+import { FaCamera } from 'react-icons/fa'; // ✅ Camera icon
 
 export default function Settings() {
   const [fullName, setFullName] = useState('');
@@ -8,7 +9,8 @@ export default function Settings() {
   const [avatar, setAvatar] = useState('');
   const [message, setMessage] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [plan, setPlan] = useState('free'); // 👈 NEW: Track user plan
+  const [plan, setPlan] = useState('free');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -23,7 +25,7 @@ export default function Settings() {
           setEmail(data.email || '');
           setAvatar(data.avatar ? `${import.meta.env.VITE_API_URL}${data.avatar}` : '');
           setTwoFactorEnabled(data.twoFactorEnabled || false);
-          setPlan(data.plan || 'free'); // 👈 Store plan
+          setPlan(data.plan || 'free');
         } else {
           setMessage(data.message || 'Failed to load profile');
         }
@@ -36,7 +38,7 @@ export default function Settings() {
   }, []);
 
   const handle2FAToggle = async () => {
-    if (plan === 'free') return; // 👈 Prevent toggle for free users
+    if (plan === 'free') return;
 
     try {
       const updated = !twoFactorEnabled;
@@ -136,12 +138,9 @@ export default function Settings() {
     }
   };
 
-  const handleLogout = () => {
-    const confirmLogout = window.confirm('Are you sure you want to logout?');
-    if (confirmLogout) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-    }
+  const confirmLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
   };
 
   return (
@@ -155,22 +154,28 @@ export default function Settings() {
 
           <form className="settings-form" onSubmit={handleSave}>
             <div className="avatar-wrapper">
-              <img
-                src={avatar || '/default-avatar.png'}
-                alt="Avatar"
-                className="avatar-image"
-                onClick={handleImageClick}
-                title="Click to change photo"
-              />
-              {avatar && (
-                <button
-                  type="button"
-                  className="avatar-delete-btn"
-                  onClick={handleDeletePhoto}
-                  title="Delete photo"
-                >
-                  ✖
-                </button>
+              {avatar ? (
+                <>
+                  <img
+                    src={avatar}
+                    alt="Avatar"
+                    className="avatar-image"
+                    onClick={handleImageClick}
+                    title="Click to change photo"
+                  />
+                  <button
+                    type="button"
+                    className="avatar-delete-btn"
+                    onClick={handleDeletePhoto}
+                    title="Delete photo"
+                  >
+                    ✖
+                  </button>
+                </>
+              ) : (
+                <div className="avatar-placeholder" onClick={handleImageClick} title="Upload profile photo">
+                  <FaCamera size={28} />
+                </div>
               )}
               <input
                 type="file"
@@ -200,7 +205,11 @@ export default function Settings() {
             <div className="input-group toggle-group">
               <label htmlFor="2fa-toggle">
                 2-Factor Authentication
-                {plan === 'free' && <span style={{ color: 'red', fontSize: '12px', marginLeft: '10px' }}>Premium Only</span>}
+                {plan === 'free' && (
+                  <span style={{ color: 'red', fontSize: '12px', marginLeft: '10px' }}>
+                    Premium Only
+                  </span>
+                )}
               </label>
               <label className="switch" title={plan === 'free' ? 'Upgrade to Premium to enable 2FA' : ''}>
                 <input
@@ -208,17 +217,30 @@ export default function Settings() {
                   id="2fa-toggle"
                   checked={twoFactorEnabled}
                   onChange={handle2FAToggle}
-                  disabled={plan === 'free'} // 👈 Lock toggle
+                  disabled={plan === 'free'}
                 />
                 <span className="slider round"></span>
               </label>
             </div>
 
             <button type="submit" className="save-btn">Save Changes</button>
-            <button type="button" className="logout-btn" onClick={handleLogout}>Logout</button>
+            <button type="button" className="logout-btn" onClick={() => setShowLogoutModal(true)}>Logout</button>
           </form>
         </div>
       </div>
+
+      {showLogoutModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout?</p>
+            <div className="modal-buttons">
+              <button className="modal-cancel" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+              <button className="modal-confirm" onClick={confirmLogout}>Yes, Logout</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -143,6 +143,7 @@ h1, h2 {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  margin-bottom: -11.5px;
 }
 
 .view-link::before {
@@ -163,6 +164,7 @@ h1, h2 {
 .view-link:hover::before {
   opacity: 1;
 }
+
 
 /* Delete Button */
 .delete-btn {
@@ -259,4 +261,8 @@ h1, h2 {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+.view-link:hover {
+  color: white; /* ✅ Keeps text white when animated gradient appears */
 }

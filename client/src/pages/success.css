@@ -1,5 +1,5 @@
 .success-page {
-  background: linear-gradient(135deg, #1abc9c, #1f7aec);
+  background: linear-gradient(135deg, #1f7aec, #1a3fcc); /* blue gradient */
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -13,7 +13,7 @@
   padding: 40px;
   border-radius: 16px;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(31, 122, 236, 0.3); /* blue-ish shadow */
   color: #1f2f46;
   max-width: 400px;
   width: 90%;
@@ -21,7 +21,7 @@
 }
 
 .success-icon {
-  color: #1abc9c;
+  color: #1f7aec; /* webapp blue */
   font-size: 60px;
   margin-bottom: 20px;
   animation: popIn 0.4s ease-in-out;

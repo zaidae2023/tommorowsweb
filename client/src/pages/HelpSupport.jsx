@@ -1,9 +1,30 @@
 // src/pages/HelpSupport.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/navbar';
-import './HelpSupport.css'; // ✅ Updated CSS filename for consistency
+import './HelpSupport.css';
+
+const faqs = [
+  {
+    question: "🔑 How do I reset my password?",
+    answer: "Click on “Forgot Password” on the login page. An OTP will be sent to your email to reset your password securely.",
+  },
+  {
+    question: "🚗 How can I add a vehicle?",
+    answer: "Go to the “Add Vehicle” page, fill in the required details like make, model, year, and VIN, and click “Save”.",
+  },
+  {
+    question: "📊 Why aren’t my expenses showing?",
+    answer: "Ensure you’re logged in, and check your internet connection. Refresh the dashboard and try again.",
+  },
+];
 
 export default function HelpSupport() {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
     <>
       <Navbar />
@@ -16,14 +37,19 @@ export default function HelpSupport() {
         </p>
 
         <h2 className="help-section-title">💬 Frequently Asked Questions</h2>
-        <ul className="help-list">
-          <li>🔑 <strong>How do I reset my password?</strong><br />
-            Click on “Forgot Password” on the login page. An OTP will be sent to your email to reset your password securely.</li>
-          <li>🚗 <strong>How can I add a vehicle?</strong><br />
-            Go to the “Add Vehicle” page, fill in the required details like make, model, year, and VIN, and click “Save”.</li>
-          <li>📊 <strong>Why aren’t my expenses showing?</strong><br />
-            Ensure you’re logged in, and check your internet connection. Refresh the dashboard and try again.</li>
-        </ul>
+        <div className="faq-wrapper">
+          {faqs.map((faq, index) => (
+            <div className="faq-item" key={index}>
+              <div className="faq-question" onClick={() => toggleFAQ(index)}>
+                {faq.question}
+                <span className="faq-icon">{openIndex === index ? '–' : '+'}</span>
+              </div>
+              {openIndex === index && (
+                <div className="faq-answer">{faq.answer}</div>
+              )}
+            </div>
+          ))}
+        </div>
 
         <h2 className="help-section-title">📨 Contact Support</h2>
         <p className="help-paragraph">

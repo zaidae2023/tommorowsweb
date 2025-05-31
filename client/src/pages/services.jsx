@@ -12,6 +12,7 @@ export default function Services() {
     note: '',
   });
   const [message, setMessage] = useState('');
+  const [deleteId, setDeleteId] = useState(null); // ✅ Modal delete ID
 
   const token = localStorage.getItem('token');
 
@@ -94,12 +95,13 @@ export default function Services() {
     }
   };
 
-  const deleteService = async (id) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this service?');
-    if (!confirmDelete) return;
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+  };
 
+  const confirmDelete = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/services/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/services/${deleteId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -108,6 +110,7 @@ export default function Services() {
 
       if (res.ok) {
         fetchServices();
+        setDeleteId(null);
       } else {
         console.error('Failed to delete service');
       }
@@ -116,7 +119,10 @@ export default function Services() {
     }
   };
 
-  // ✅ Export Functions with Export Limit Alert
+  const cancelDelete = () => {
+    setDeleteId(null);
+  };
+
   const exportServicesCSV = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/services/csv`, {
@@ -199,9 +205,8 @@ export default function Services() {
           {message && <p>{message}</p>}
         </form>
 
-        <h3 style={{ marginTop: '30px' }}>🗓️ Upcoming & Past Services</h3>
+        <h3>🗓️ Upcoming & Past Services</h3>
 
-        {/* ✅ Export Buttons */}
         <div style={{ marginBottom: '20px', display: 'flex', gap: '12px' }}>
           <button onClick={exportServicesCSV} className="export-btn">📄 Export CSV</button>
           <button onClick={exportServicesPDF} className="export-btn">🧾 Export PDF</button>
@@ -221,10 +226,7 @@ export default function Services() {
                     <button onClick={() => updateStatus(svc._id, 'missed')}>Mark Missed</button>
                   </>
                 )}
-                <button
-                  onClick={() => deleteService(svc._id)}
-                  style={{ marginLeft: '10px', color: 'red' }}
-                >
+                <button onClick={() => handleDeleteClick(svc._id)} style={{ marginLeft: '10px' }}>
                   Delete
                 </button>
               </div>
@@ -232,6 +234,19 @@ export default function Services() {
           ))}
         </ul>
       </div>
+
+      {deleteId && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>Are you sure?</h3>
+            <p>This service will be permanently deleted.</p>
+            <div className="modal-actions">
+              <button onClick={confirmDelete} className="confirm-btn">Yes, Delete</button>
+              <button onClick={cancelDelete} className="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
