@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './Services.css';
 import Navbar from '../components/navbar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Services() {
   const [vehicles, setVehicles] = useState([]);
@@ -12,7 +14,7 @@ export default function Services() {
     note: '',
   });
   const [message, setMessage] = useState('');
-  const [deleteId, setDeleteId] = useState(null); // ✅ Modal delete ID
+  const [deleteId, setDeleteId] = useState(null);
 
   const token = localStorage.getItem('token');
 
@@ -131,7 +133,7 @@ export default function Services() {
 
       if (res.status === 403) {
         const data = await res.json();
-        alert(data.message || 'Export limit reached. Upgrade to Premium to unlock more exports.');
+        toast.error(data.message || 'Export limit reached. Upgrade to Premium to unlock more exports.');
         return;
       }
 
@@ -156,7 +158,7 @@ export default function Services() {
 
       if (res.status === 403) {
         const data = await res.json();
-        alert(data.message || 'Export limit reached. Upgrade to Premium to unlock more exports.');
+        toast.error(data.message || 'Export limit reached. Upgrade to Premium to unlock more exports.');
         return;
       }
 
@@ -247,6 +249,8 @@ export default function Services() {
           </div>
         </div>
       )}
+
+      <ToastContainer position="top-center" autoClose={3000} />
     </>
   );
 }

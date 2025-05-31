@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './Expenses.css';
 import Navbar from '../components/navbar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Expenses() {
   const [expenses, setExpenses] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [total, setTotal] = useState(0);
-  const [userPlan, setUserPlan] = useState('free'); // ✅ plan state
-
+  const [userPlan, setUserPlan] = useState('free');
   const [form, setForm] = useState({
     vehicleId: '',
     type: 'Fuel',
@@ -75,13 +76,13 @@ export default function Expenses() {
 
   useEffect(() => {
     if (!token) {
-      alert('Please login to view expenses.');
+      toast.error('Please login to view expenses.');
       return;
     }
     fetchExpenses();
     fetchVehicles();
     fetchCurrencies();
-    fetchUserProfile(); // ✅ fetch plan
+    fetchUserProfile();
   }, [token, fetchExpenses, fetchVehicles, fetchCurrencies, fetchUserProfile]);
 
   const handleChange = (e) => {
@@ -135,7 +136,6 @@ export default function Expenses() {
     }
   };
 
-  // ✅ SECURE EXPORT FUNCTIONS with limit alert
   const exportExpensesCSV = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/expenses/csv`, {
@@ -144,7 +144,7 @@ export default function Expenses() {
 
       if (res.status === 403) {
         const data = await res.json();
-        alert(data.message || 'Export limit reached. Upgrade to Premium.');
+        toast.error(data.message || 'Export limit reached. Upgrade to Premium.');
         return;
       }
 
@@ -169,7 +169,7 @@ export default function Expenses() {
 
       if (res.status === 403) {
         const data = await res.json();
-        alert(data.message || 'Export limit reached. Upgrade to Premium.');
+        toast.error(data.message || 'Export limit reached. Upgrade to Premium.');
         return;
       }
 
@@ -237,7 +237,7 @@ export default function Expenses() {
             value={form.currency}
             onChange={handleChange}
             required
-            disabled={userPlan === 'free'} // 🔒 lock for free users
+            disabled={userPlan === 'free'}
           >
             <option value="">Select Currency</option>
             {currencyOptions.map((cur) => (
@@ -270,6 +270,7 @@ export default function Expenses() {
           ))}
         </ul>
       </div>
+      <ToastContainer position="top-center" autoClose={3000} />
     </>
   );
 }
