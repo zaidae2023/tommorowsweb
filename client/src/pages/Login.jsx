@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import googleIcon from '../assets/google.jpg';
-import logo from '../assets/logo.png'; // ✅ Import your logo image
+import logo from '../assets/Logo.png'; // ✅ Import your logo image
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
