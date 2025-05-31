@@ -10,6 +10,8 @@ const authenticate = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+
 // -------------------- Register with Email OTP --------------------
 router.post('/register', async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -64,7 +66,6 @@ router.post('/login', async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-  // ✅ Check 2FA toggle
   if (user.twoFactorEnabled) {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiry = Date.now() + 5 * 60 * 1000;
@@ -136,11 +137,10 @@ router.get('/google/callback',
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     const email = req.user.email;
 
-    // ✅ Redirect to frontend with token and email
-    res.redirect(`http://localhost:5173/oauth-success?token=${token}&email=${encodeURIComponent(email)}`);
+    // ✅ Dynamic redirect to frontend
+    res.redirect(`${CLIENT_URL}/oauth-success?token=${token}&email=${encodeURIComponent(email)}`);
   }
 );
-
 
 // -------------------- Get Logged-in User Profile --------------------
 router.get('/profile', authenticate, async (req, res) => {
