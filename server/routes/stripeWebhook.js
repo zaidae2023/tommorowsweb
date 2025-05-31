@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
 
   try {
     event = stripe.webhooks.constructEvent(
-      req.body,
+      req.body.toString('utf8'),  // <-- Pass raw body as UTF-8 string here
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
