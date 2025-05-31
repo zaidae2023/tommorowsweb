@@ -1,4 +1,3 @@
-// routes/stripeWebhook.js
 import express from 'express';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
@@ -12,6 +11,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // ⚠️ This route must be mounted using express.raw() in app.js
 router.post('/', async (req, res) => {
   console.log('🔥 Stripe webhook HIT');
+
+  // Debug logs to inspect raw request data & headers
+  console.log('Headers:', req.headers);
+  console.log('Stripe Signature Header:', req.headers['stripe-signature']);
+  if (req.body && Buffer.isBuffer(req.body)) {
+    console.log('Raw body length:', req.body.length);
+    console.log('Raw body preview:', req.body.toString('utf8').slice(0, 200));
+  } else {
+    console.warn('⚠️ Warning: req.body is not a buffer!');
+  }
 
   const sig = req.headers['stripe-signature'];
   let event;
