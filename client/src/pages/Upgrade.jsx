@@ -22,7 +22,7 @@ export default function UpgradePage() {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/stripe/create-checkout-session', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
