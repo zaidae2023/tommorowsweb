@@ -16,6 +16,7 @@ import Documents from './pages/Documents';
 import Upgrade from './pages/Upgrade';
 import OAuthSuccess from './pages/OAuthSuccess';
 import Success from './pages/Success'; // ✅ Import the Success page
+import Cancel from './pages/Cancel'; // ✅ Add this import
 
 
 
@@ -48,6 +49,7 @@ function AppRoutes() {
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/oauth-success" element={<OAuthSuccess />} />
           <Route path="/success" element={<Success />} /> {/* ✅ Add this */}
+          <Route path="/cancel" element={<Cancel />} /> // ✅ Add this route
           
 
 

@@ -25,8 +25,8 @@ router.post('/create-checkout-session', async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: 'https://your-netlify-site.netlify.app/success',
-      cancel_url: 'https://your-netlify-site.netlify.app/cancel',
+      success_url: 'https://meek-macaron-f162ab.netlify.app/success',
+      cancel_url: 'https://meek-macaron-f162ab.netlify.app/cancel',
     });
 
     res.json({ url: session.url });
