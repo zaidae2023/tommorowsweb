@@ -16,20 +16,19 @@ router.post('/create-checkout-session', async (req, res) => {
     }
 
     const session = await stripe.checkout.sessions.create({
-      mode: 'subscription', // ✅ Required for recurring payments
+      mode: 'subscription',
       payment_method_types: ['card'],
-      customer_email: email, // ✅ Used by webhook to find the user
+      customer_email: email,
       line_items: [
         {
-          price: 'price_1RUCGCQxGI7D6wc7KnYghEGr', // ✅ Your recurring price ID
+          price: 'price_1RUCGCQxGI7D6wc7KnYghEGr',
           quantity: 1,
         },
       ],
-      success_url: 'http://localhost:5173/success',
-      cancel_url: 'http://localhost:5173/cancel',
+      success_url: 'https://your-netlify-site.netlify.app/success',
+      cancel_url: 'https://your-netlify-site.netlify.app/cancel',
     });
 
-    // ✅ Return the session URL for redirection
     res.json({ url: session.url });
   } catch (err) {
     console.error('❌ Stripe Error:', err.message);

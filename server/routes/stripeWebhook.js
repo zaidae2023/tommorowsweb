@@ -1,3 +1,4 @@
+// routes/stripeWebhook.js
 import express from 'express';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
@@ -8,6 +9,7 @@ dotenv.config();
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// ⚠️ This route must be mounted using express.raw() in app.js
 router.post('/', async (req, res) => {
   console.log('🔥 Stripe webhook HIT');
 
@@ -29,20 +31,21 @@ router.post('/', async (req, res) => {
   // Log full event for debugging
   console.log('📦 Full event:', JSON.stringify(event, null, 2));
 
-  // Handle subscription events
+  // ✅ Handle subscription-related events
   if (
     event.type === 'checkout.session.completed' ||
     event.type === 'invoice.payment_succeeded'
   ) {
     const session = event.data.object;
     const email = session.customer_email;
+
     console.log('📧 Checkout email:', email);
 
     try {
       const user = await User.findOne({ email });
 
       if (user) {
-        user.plan = 'premium'; // ✅ Correct field
+        user.plan = 'premium'; // ✅ Set to 'premium'
         await user.save();
         console.log(`🎉 User ${email} upgraded to Premium`);
       } else {
