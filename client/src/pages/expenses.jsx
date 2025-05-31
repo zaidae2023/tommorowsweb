@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import './Expenses.css';
+import './expenses.css';
 import Navbar from '../components/navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
