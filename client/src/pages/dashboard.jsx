@@ -42,18 +42,24 @@ export default function Dashboard() {
         navigate('/login');
         return;
       }
+
       try {
+        const base = import.meta.env.VITE_API_URL;
         const [vehiclesRes, expensesRes, serviceRes] = await Promise.all([
-          fetch('http://localhost:5000/api/vehicles', {
+          fetch(`${base}/api/vehicles`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch('http://localhost:5000/api/expenses', {
+          fetch(`${base}/api/expenses`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch('http://localhost:5000/api/services/upcoming', {
+          fetch(`${base}/api/services/upcoming`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
+
+        if (!vehiclesRes.ok || !expensesRes.ok || !serviceRes.ok) {
+          throw new Error('Session expired');
+        }
 
         const vehiclesData = await vehiclesRes.json();
         setVehicles(Array.isArray(vehiclesData) ? vehiclesData : vehiclesData.vehicles || []);
@@ -88,7 +94,7 @@ export default function Dashboard() {
       if (!token) return;
 
       try {
-        const res = await fetch('http://localhost:5000/api/documents', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/documents`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -170,9 +176,6 @@ export default function Dashboard() {
       <Navbar />
       <div className="dashboard-container">
         <h1 className="typing-glow-title"><span>Welcome to Your Dashboard!</span></h1>
-
-
-        
 
         <div className="quick-links">
           <button onClick={() => navigate('/documents')}>📄 Documents</button>
