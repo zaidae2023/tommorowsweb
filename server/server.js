@@ -21,13 +21,13 @@ import stripeWebhook from './routes/stripeWebhook.js';
 
 const app = express();
 
-// ✅ Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://meek-macaron-f162ab.netlify.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 
 app.use(cookieParser());
 app.use(passport.initialize());
