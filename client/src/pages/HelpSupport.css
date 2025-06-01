@@ -1,5 +1,4 @@
-/* src/pages/help.css */
-
+/* Container for the Help page content */
 .help-container {
   max-width: 900px;
   margin: 0 auto;
@@ -9,6 +8,7 @@
   color: #1f2f46;
 }
 
+/* Main title styling with animated gradient text */
 .help-title {
   font-size: 2.5rem;
   font-weight: 800;
@@ -22,6 +22,7 @@
   text-align: center;
 }
 
+/* Section titles such as FAQ, Contact, Guides */
 .help-section-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -30,24 +31,28 @@
   margin-bottom: 16px;
 }
 
+/* Paragraph text style */
 .help-paragraph {
   font-size: 1rem;
   color: #333;
   margin-bottom: 20px;
 }
 
+/* Style for unordered lists (e.g., contact info, guides) */
 .help-list {
   padding-left: 20px;
   color: #444;
   margin-bottom: 20px;
 }
 
+/* Note at the bottom of the help page */
 .help-note {
   font-style: italic;
   color: #555;
   margin-top: 30px;
 }
 
+/* Links inside the help content (e.g., support email) */
 .help-link {
   color: #1f7aec;
   text-decoration: underline;
@@ -58,17 +63,21 @@
   color: #3a7bd5;
 }
 
+/* Gradient animation used for the help title text */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* FAQ Styles */
+/* ================== FAQ Styles ================== */
+
+/* Wrapper for all FAQ items */
 .faq-wrapper {
   margin-top: 20px;
 }
 
+/* Each FAQ item container */
 .faq-item {
   background: #f1f4fa;
   border-radius: 12px;
@@ -78,6 +87,7 @@
   transition: all 0.3s ease;
 }
 
+/* The clickable FAQ question area */
 .faq-question {
   font-weight: 600;
   padding: 16px 20px;
@@ -90,11 +100,13 @@
   border-left: 4px solid #1f7aec;
 }
 
+/* + or – icon shown next to each question */
 .faq-icon {
   font-size: 20px;
   color: #1f7aec;
 }
 
+/* Answer text shown when a question is expanded */
 .faq-answer {
   padding: 16px 20px;
   color: #333;
@@ -103,6 +115,7 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Fade-in animation used for showing answers */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }

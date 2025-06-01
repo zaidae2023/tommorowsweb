@@ -1,26 +1,36 @@
+// Import React and necessary hooks
 import React, { useEffect, useState, useRef } from 'react';
+
+// Import custom styling and components
 import './settings.css';
 import Navbar from '../components/navbar';
-import { FaCamera } from 'react-icons/fa'; // ✅ Camera icon
+import { FaCamera } from 'react-icons/fa'; // Camera icon for placeholder
 
 export default function Settings() {
+  // User profile-related states
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
   const [message, setMessage] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [plan, setPlan] = useState('free');
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [plan, setPlan] = useState('free'); // Tracks user's current plan
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // Toggle logout confirmation modal
+
+  // File input reference for image upload
   const fileInputRef = useRef(null);
 
+  // Fetch user profile data on component mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
+
         const data = await res.json();
+
         if (res.ok) {
+          // Update state with user data
           setFullName(data.fullName || '');
           setEmail(data.email || '');
           setAvatar(data.avatar ? `${import.meta.env.VITE_API_URL}${data.avatar}` : '');
@@ -34,14 +44,17 @@ export default function Settings() {
         setMessage('Error fetching profile');
       }
     };
+
     fetchProfile();
   }, []);
 
+  // Toggle 2FA for premium users
   const handle2FAToggle = async () => {
-    if (plan === 'free') return;
+    if (plan === 'free') return; // Block for free users
 
     try {
       const updated = !twoFactorEnabled;
+
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/twofactor`, {
         method: 'PUT',
         headers: {
@@ -50,7 +63,9 @@ export default function Settings() {
         },
         body: JSON.stringify({ enabled: updated }),
       });
+
       const data = await res.json();
+
       if (res.ok) {
         setTwoFactorEnabled(updated);
         setMessage(`✅ 2FA ${updated ? 'enabled' : 'disabled'}`);
@@ -63,10 +78,12 @@ export default function Settings() {
     }
   };
 
+  // Trigger file upload dialog
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
 
+  // Handle profile picture upload
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -82,7 +99,9 @@ export default function Settings() {
       });
 
       const data = await res.json();
+
       if (res.ok) {
+        // Append timestamp to force refresh
         setAvatar(`${import.meta.env.VITE_API_URL}${data.avatar}?t=${Date.now()}`);
         setMessage('✅ Avatar uploaded');
       } else {
@@ -94,6 +113,7 @@ export default function Settings() {
     }
   };
 
+  // Handle profile picture deletion
   const handleDeletePhoto = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/avatar`, {
@@ -102,6 +122,7 @@ export default function Settings() {
       });
 
       const data = await res.json();
+
       if (res.ok) {
         setAvatar('');
         setMessage('🗑️ Avatar deleted');
@@ -114,8 +135,10 @@ export default function Settings() {
     }
   };
 
+  // Save profile (e.g., name)
   const handleSave = async (e) => {
     e.preventDefault();
+
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
         method: 'PUT',
@@ -127,6 +150,7 @@ export default function Settings() {
       });
 
       const data = await res.json();
+
       if (res.ok) {
         setMessage('✅ Profile updated successfully');
       } else {
@@ -138,6 +162,7 @@ export default function Settings() {
     }
   };
 
+  // Handle user logout
   const confirmLogout = () => {
     localStorage.removeItem('token');
     window.location.href = '/login';
@@ -145,14 +170,20 @@ export default function Settings() {
 
   return (
     <>
+      {/* Top navigation */}
       <Navbar />
+
+      {/* Main settings layout */}
       <div className="settings-page">
         <div className="settings-card">
           <h2 className="settings-title">Profile Settings</h2>
 
+          {/* Display message */}
           {message && <p className="settings-message">{message}</p>}
 
+          {/* Profile form */}
           <form className="settings-form" onSubmit={handleSave}>
+            {/* Avatar upload section */}
             <div className="avatar-wrapper">
               {avatar ? (
                 <>
@@ -173,6 +204,7 @@ export default function Settings() {
                   </button>
                 </>
               ) : (
+                // Camera icon placeholder if no avatar
                 <div className="avatar-placeholder" onClick={handleImageClick} title="Upload profile photo">
                   <FaCamera size={28} />
                 </div>
@@ -186,6 +218,7 @@ export default function Settings() {
               />
             </div>
 
+            {/* Full name input */}
             <div className="input-group">
               <label>Full Name</label>
               <input
@@ -197,11 +230,13 @@ export default function Settings() {
               />
             </div>
 
+            {/* Email field (read-only) */}
             <div className="input-group">
               <label>Email</label>
               <input type="email" value={email} readOnly />
             </div>
 
+            {/* 2FA toggle switch */}
             <div className="input-group toggle-group">
               <label htmlFor="2fa-toggle">
                 2-Factor Authentication
@@ -223,12 +258,14 @@ export default function Settings() {
               </label>
             </div>
 
+            {/* Save and logout buttons */}
             <button type="submit" className="save-btn">Save Changes</button>
             <button type="button" className="logout-btn" onClick={() => setShowLogoutModal(true)}>Logout</button>
           </form>
         </div>
       </div>
 
+      {/* Logout confirmation modal */}
       {showLogoutModal && (
         <div className="modal-overlay">
           <div className="modal-box">

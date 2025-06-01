@@ -1,43 +1,48 @@
+/* Full-screen success page container */
 .success-page {
-  background: linear-gradient(135deg, #1f7aec, #1a3fcc); /* blue gradient */
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Inter', sans-serif;
-  color: white;
+  background: linear-gradient(135deg, #1f7aec, #1a3fcc); /* Blue gradient background */
+  height: 100vh;                      /* Full viewport height */
+  display: flex;                      /* Flexbox for centering */
+  justify-content: center;           /* Center horizontally */
+  align-items: center;               /* Center vertically */
+  font-family: 'Inter', sans-serif;  /* Clean font */
+  color: white;                      /* Default text color */
 }
 
+/* Success message card container */
 .success-card {
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(31, 122, 236, 0.3); /* blue-ish shadow */
-  color: #1f2f46;
-  max-width: 400px;
-  width: 90%;
-  animation: fadeInUp 0.6s ease-out;
+  background: white;                 /* White card background */
+  padding: 40px;                     /* Inner spacing */
+  border-radius: 16px;               /* Rounded corners */
+  text-align: center;                /* Center-align text */
+  box-shadow: 0 10px 30px rgba(31, 122, 236, 0.3); /* Blue-tinted shadow */
+  color: #1f2f46;                    /* Dark blue text */
+  max-width: 400px;                  /* Maximum width */
+  width: 90%;                        /* Responsive width */
+  animation: fadeInUp 0.6s ease-out; /* Entry animation */
 }
 
+/* Success check icon styling */
 .success-icon {
-  color: #1f7aec; /* webapp blue */
-  font-size: 60px;
+  color: #1f7aec;                    /* Match brand blue */
+  font-size: 60px;                   /* Large icon size */
   margin-bottom: 20px;
-  animation: popIn 0.4s ease-in-out;
+  animation: popIn 0.4s ease-in-out; /* Zoom-in effect */
 }
 
+/* Success title */
 .success-card h1 {
   margin-bottom: 10px;
   font-size: 28px;
 }
 
+/* Success message text */
 .success-card p {
   font-size: 16px;
   margin-bottom: 6px;
 }
 
-/* Animations */
+/* Fade-in upward animation for card */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -49,6 +54,7 @@
   }
 }
 
+/* Pop-in animation for icon */
 @keyframes popIn {
   0% {
     transform: scale(0.6);

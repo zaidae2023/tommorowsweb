@@ -12,12 +12,12 @@ const userSchema = new mongoose.Schema({
   verifyToken: { type: String },
   verifyTokenExpiry: { type: Date },
 
-  // ✅ 2FA support
+  //  2FA support
   twoFactorEnabled: { type: Boolean, default: false },
   otp: { type: String },
   otpExpiry: { type: Date },
 
-  // ✅ Subscription plan and usage tracking
+  //  Subscription plan and usage tracking
   plan: { type: String, enum: ['free', 'premium'], default: 'free' },
   exportsUsed: { type: Number, default: 0 }
 });

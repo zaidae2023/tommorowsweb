@@ -137,7 +137,7 @@ router.get('/google/callback',
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     const email = req.user.email;
 
-    // ✅ Dynamic redirect to frontend
+    // Dynamic redirect to frontend
     res.redirect(`${CLIENT_URL}/oauth-success?token=${token}&email=${encodeURIComponent(email)}`);
   }
 );

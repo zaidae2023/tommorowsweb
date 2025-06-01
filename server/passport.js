@@ -2,9 +2,9 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./models/user');
-require('dotenv').config(); // ✅ Load environment variables
+require('dotenv').config(); // Load environment variables
 
-// ✅ Google OAuth Strategy
+// Google OAuth Strategy
 passport.use(new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -16,10 +16,10 @@ passport.use(new GoogleStrategy(
     try {
       const email = profile.emails[0].value;
 
-      // ✅ Check if user exists
+      // Check if user exists
       let user = await User.findOne({ email });
 
-      // ✅ If user doesn't exist, create one
+      // If user doesn't exist, create one
       if (!user) {
         user = await User.create({
           fullName: profile.displayName,
@@ -38,7 +38,7 @@ passport.use(new GoogleStrategy(
   }
 ));
 
-// ✅ Serialize and deserialize user (if needed for sessions)
+//Serialize and deserialize user (if needed for sessions)
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });

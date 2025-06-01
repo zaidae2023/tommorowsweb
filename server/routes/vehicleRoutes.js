@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const Vehicle = require('../models/vehicle');
-const User = require('../models/user'); // ✅ Import User model
+const User = require('../models/user'); //Import User model
 
 router.use(authMiddleware);
 
-// ✅ GET /api/vehicles - Get all vehicles for the logged-in user
+// GET /api/vehicles - Get all vehicles for the logged-in user
 router.get('/', async (req, res) => {
   try {
     const vehicles = await Vehicle.find({ userId: req.user._id });
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ✅ POST /api/vehicles - Add new vehicle (limit 1 for free users)
+// POST /api/vehicles - Add new vehicle (limit 1 for free users)
 router.post('/', async (req, res) => {
   try {
     const { vin, name, model, year, registration } = req.body;
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// ✅ DELETE /api/vehicles/:id - Delete a vehicle by ID
+// DELETE /api/vehicles/:id - Delete a vehicle by ID
 router.delete('/:id', async (req, res) => {
   try {
     const vehicle = await Vehicle.findOneAndDelete({ _id: req.params.id, userId: req.user._id });

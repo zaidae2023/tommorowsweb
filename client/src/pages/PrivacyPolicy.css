@@ -1,53 +1,62 @@
-/* src/pages/privacy.css */
+/* ===========================
+   Privacy Policy Page Styles
+=========================== */
+
+/* Main container for the privacy policy content */
 .privacy-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 50px 20px;
-  font-family: 'Inter', sans-serif;
-  line-height: 1.7;
-  color: #1f2f46;
+  max-width: 900px;               /* Limits width for readability */
+  margin: 0 auto;                 /* Centers the container */
+  padding: 50px 20px;             /* Adds spacing inside the container */
+  font-family: 'Inter', sans-serif; /* Uses a clean modern font */
+  line-height: 1.7;               /* Improves text spacing */
+  color: #1f2f46;                 /* Main text color */
 }
 
+/*  Page title with animated gradient text */
 .privacy-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 20px;
-  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  font-size: 2.5rem;              /* Large title size */
+  font-weight: 800;              /* Bold font */
+  margin-bottom: 20px;           /* Space below title */
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5); /* Animated blue gradient */
   background-size: 400% 400%;
-  background-clip: text; /* ✅ Standard */
-  -webkit-background-clip: text; /* ✅ Vendor prefix */
-  -webkit-text-fill-color: transparent;
-  animation: animatedGradient 6s ease infinite;
-  text-align: center;
+  background-clip: text;         /* Applies gradient to text */
+  -webkit-background-clip: text; /* For Safari/Chrome */
+  -webkit-text-fill-color: transparent; /* Makes text transparent to show gradient */
+  animation: animatedGradient 6s ease infinite; /* Looping gradient animation */
+  text-align: center;            /* Centered text */
 }
 
-
+/*  Section headings for each part of the policy */
 .privacy-section-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f7aec;
+  color: #1f7aec;                 /* Web app accent blue */
   margin-top: 40px;
   margin-bottom: 16px;
 }
 
+/*  Paragraph styling */
 .privacy-paragraph {
   font-size: 1rem;
   color: #333;
   margin-bottom: 20px;
 }
 
+/*  List styling for bullet points */
 .privacy-list {
-  padding-left: 20px;
+  padding-left: 20px;             /* Indent list */
   color: #444;
   margin-bottom: 20px;
 }
 
+/*  Styling for contact info text */
 .privacy-contact {
   font-style: italic;
   color: #555;
   margin-top: 30px;
 }
 
+/*  Keyframes for animated gradient in title */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

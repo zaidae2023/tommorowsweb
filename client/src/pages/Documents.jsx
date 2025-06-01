@@ -1,19 +1,26 @@
+// Import required modules and components
 import React, { useEffect, useState, useCallback } from 'react';
 import Navbar from '../components/navbar';
 import './Documents.css';
 
 export default function Documents() {
+  // Form input states
   const [docType, setDocType] = useState('Insurance');
   const [file, setFile] = useState(null);
   const [expiryDate, setExpiryDate] = useState('');
-  const [documents, setDocuments] = useState([]);
-  const [message, setMessage] = useState('');
-  const [userPlan, setUserPlan] = useState('free');
+
+  // App states
+  const [documents, setDocuments] = useState([]);         // List of uploaded documents
+  const [message, setMessage] = useState('');             // Success/Error message
+  const [userPlan, setUserPlan] = useState('free');       // User's plan: free or premium
+
+  // Modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedDocId, setSelectedDocId] = useState(null);
+  const [selectedDocId, setSelectedDocId] = useState(null); // ID of document to delete
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token'); // Get JWT token from local storage
 
+  // Fetch uploaded documents from backend
   const fetchDocuments = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/documents`, {
@@ -26,6 +33,7 @@ export default function Documents() {
     }
   }, [token]);
 
+  // Fetch user profile to check plan (free/premium)
   const fetchUserProfile = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
@@ -38,11 +46,13 @@ export default function Documents() {
     }
   }, [token]);
 
+  // Fetch data when component loads
   useEffect(() => {
     fetchDocuments();
     fetchUserProfile();
   }, [fetchDocuments, fetchUserProfile]);
 
+  // Handle document upload form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file || !expiryDate) {
@@ -68,7 +78,7 @@ export default function Documents() {
         setDocType('Insurance');
         setFile(null);
         setExpiryDate('');
-        fetchDocuments();
+        fetchDocuments(); // Refresh the list
       } else {
         setMessage(data.message || 'Upload failed. Please try again.');
       }
@@ -78,11 +88,13 @@ export default function Documents() {
     }
   };
 
+  // Trigger the delete modal
   const handleDeleteClick = (docId) => {
     setSelectedDocId(docId);
     setShowDeleteModal(true);
   };
 
+  // Confirm and delete the document
   const confirmDelete = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/documents/${selectedDocId}`, {
@@ -91,7 +103,7 @@ export default function Documents() {
       });
 
       if (res.ok) {
-        fetchDocuments();
+        fetchDocuments(); // Refresh list after delete
         setMessage('Document deleted.');
       } else {
         setMessage('Failed to delete document.');
@@ -105,12 +117,14 @@ export default function Documents() {
     }
   };
 
+  // Calculate days left from expiry date
   const daysLeft = (date) => {
     const d = new Date(date);
     const now = new Date();
     return Math.ceil((d - now) / (1000 * 60 * 60 * 24));
   };
 
+  // Limit document upload for free plan
   const isUploadDisabled = userPlan === 'free' && documents.length >= 3;
 
   return (
@@ -119,6 +133,7 @@ export default function Documents() {
       <div className="documents-container">
         <h1>Upload Your Vehicle Documents</h1>
 
+        {/* Show upgrade warning for free users */}
         {isUploadDisabled && (
           <div className="upgrade-warning">
             <p>🚫 Free users can upload up to 3 documents only.</p>
@@ -128,6 +143,7 @@ export default function Documents() {
           </div>
         )}
 
+        {/* Show upload form if allowed */}
         {!isUploadDisabled && (
           <form className="document-form" onSubmit={handleSubmit}>
             <label>Document Type</label>
@@ -148,6 +164,7 @@ export default function Documents() {
           </form>
         )}
 
+        {/* Uploaded documents list */}
         <div className="uploaded-documents">
           <h2>Your Documents</h2>
           {documents.length === 0 ? (
@@ -190,7 +207,7 @@ export default function Documents() {
           )}
         </div>
 
-        {/* Delete Modal */}
+        {/* Confirm Delete Modal */}
         {showDeleteModal && (
           <div className="delete-modal-overlay">
             <div className="delete-modal">

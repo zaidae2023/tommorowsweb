@@ -1,4 +1,6 @@
-/* Global override to ensure clean background */
+/* ===== Global Styles ===== */
+
+/* Set a clean background and font for the whole page */
 body {
   background: #f5f7fa;
   font-family: 'Inter', sans-serif;
@@ -6,7 +8,7 @@ body {
   padding: 0;
 }
 
-/* Services container */
+/* ===== Container for the entire Services section ===== */
 .services-container {
   max-width: 1000px;
   margin: 40px auto;
@@ -17,7 +19,7 @@ body {
   color: #333;
 }
 
-/* Heading */
+/* ===== Headings ===== */
 .services-container h2 {
   font-size: 28px;
   margin-bottom: 30px;
@@ -25,7 +27,15 @@ body {
   color: #2c3e50;
 }
 
-/* Form styling */
+/* Section sub-heading */
+.services-container h3 {
+  font-size: 22px;
+  margin: 40px 0 20px;
+  color: #34495e;
+  text-align: center;
+}
+
+/* ===== Service Form ===== */
 .service-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -33,6 +43,7 @@ body {
   margin-bottom: 30px;
 }
 
+/* Inputs and dropdowns inside the form */
 .service-form input,
 .service-form select {
   padding: 12px;
@@ -42,13 +53,14 @@ body {
   transition: border 0.3s ease;
 }
 
+/* Focus style for inputs */
 .service-form input:focus,
 .service-form select:focus {
   border-color: #007bff;
   outline: none;
 }
 
-/* Updated submit button with animated blue gradient */
+/* Submit button with animated gradient background */
 .service-form button {
   grid-column: span 2;
   background: #1f7aec;
@@ -66,6 +78,7 @@ body {
   transition: background 0.3s ease;
 }
 
+/* Hidden animated background for hover effect */
 .service-form button::before {
   content: '';
   position: absolute;
@@ -81,11 +94,12 @@ body {
   transition: opacity 0.4s ease;
 }
 
+/* Show gradient on hover */
 .service-form button:hover::before {
   opacity: 1;
 }
 
-/* Message */
+/* Message under the form */
 .service-form p {
   grid-column: span 2;
   margin-top: -10px;
@@ -93,14 +107,16 @@ body {
   font-weight: 500;
 }
 
-/* Services list */
+/* ===== Services List Styling ===== */
+
+/* Remove default list styles */
 .service-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Individual service item */
+/* Each service box */
 .service-item {
   background: #f8fafd;
   padding: 20px;
@@ -111,10 +127,12 @@ body {
   transition: box-shadow 0.3s ease;
 }
 
+/* Hover effect for service item */
 .service-item:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
+/* Different border colors based on status */
 .service-item.completed {
   border-color: #27ae60;
 }
@@ -123,6 +141,7 @@ body {
   border-color: #e74c3c;
 }
 
+/* Text styles inside service item */
 .service-item strong {
   font-size: 16px;
   color: #2c3e50;
@@ -132,7 +151,8 @@ body {
   color: #555;
 }
 
-/* Buttons inside service item */
+/* ===== Buttons inside service item ===== */
+
 .service-item button {
   margin-top: 10px;
   margin-right: 10px;
@@ -144,44 +164,36 @@ body {
   transition: all 0.3s ease;
 }
 
+/* "Mark Completed" button */
 .service-item button:first-of-type {
   background-color: #1abc9c;
   color: white;
 }
-
 .service-item button:first-of-type:hover {
   background-color: #16a085;
 }
 
+/* "Mark Missed" button */
 .service-item button:nth-of-type(2) {
   background-color: #f39c12;
   color: white;
 }
-
 .service-item button:nth-of-type(2):hover {
   background-color: #d68910;
 }
 
+/* "Delete" button */
 .service-item button:last-of-type {
   background-color: transparent;
   color: #e74c3c;
   border: 1px solid #e74c3c;
 }
-
 .service-item button:last-of-type:hover {
   background-color: #e74c3c;
-  color: white;
+  color: #fff; /* Make text white on hover */
 }
 
-/* Section heading */
-.services-container h3 {
-  font-size: 22px;
-  margin: 40px 0 20px;
-  color: #34495e;
-  text-align: center;
-}
-
-/* Export button with animated blue gradient */
+/* ===== Export Buttons (CSV/PDF) ===== */
 .export-btn {
   background: #1f7aec;
   color: white;
@@ -198,6 +210,7 @@ body {
   transition: background 0.3s ease;
 }
 
+/* Hidden animated background */
 .export-btn::before {
   content: '';
   position: absolute;
@@ -213,21 +226,19 @@ body {
   transition: opacity 0.4s ease;
 }
 
+/* Reveal animation on hover */
 .export-btn:hover::before {
   opacity: 1;
 }
 
-/* Animated gradient keyframes */
+/* ===== Keyframe for animated gradient ===== */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* ========================
-   Delete Confirmation Modal
-=========================== */
-
+/* ===== Modal Overlay for Delete Confirmation ===== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -242,6 +253,7 @@ body {
   z-index: 999;
 }
 
+/* Modal box styling */
 .modal-box {
   background: #fff;
   padding: 30px 20px;
@@ -252,6 +264,7 @@ body {
   animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Modal text styles */
 .modal-box h3 {
   margin-bottom: 10px;
   font-size: 22px;
@@ -263,12 +276,14 @@ body {
   color: #555;
 }
 
+/* Buttons inside modal */
 .modal-actions {
   display: flex;
   justify-content: space-around;
   gap: 15px;
 }
 
+/* Confirm delete button */
 .confirm-btn {
   background: #e74c3c;
   color: #fff;
@@ -284,6 +299,7 @@ body {
   background: #c0392b;
 }
 
+/* Cancel delete button */
 .cancel-btn {
   background: transparent;
   color: #333;
@@ -297,10 +313,4 @@ body {
 
 .cancel-btn:hover {
   background: #f0f0f0;
-}
-
-/* ✅ Make delete text white on hover */
-.service-item button:last-of-type:hover {
-  background-color: #e74c3c;
-  color: #fff;
 }

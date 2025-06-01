@@ -1,8 +1,11 @@
+// Import React and useState for managing form and state
 import React, { useState } from 'react';
-import './addvehicle.css';
-import Navbar from '../components/navbar';
+import './addvehicle.css'; // CSS for styling
+import Navbar from '../components/navbar'; // Reusable Navbar component
 
+// Main component function
 export default function AddVehicle() {
+  // Form state for vehicle details
   const [form, setForm] = useState({
     vin: '',
     name: '',
@@ -11,33 +14,39 @@ export default function AddVehicle() {
     registration: '',
   });
 
+  // Message display, loading state, and safety ratings
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [safetyRatings, setSafetyRatings] = useState(null);
 
+  // Update form fields when user types
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Fetch vehicle details from VIN using NHTSA API
   const fetchVehicleDetails = async () => {
     setMessage('');
     setSafetyRatings(null);
 
+    // Validate VIN length
     if (!form.vin || form.vin.length !== 17) {
       setMessage('❌ VIN must be exactly 17 characters.');
       return;
     }
 
     try {
-      // Step 1: VIN decoding
+      // Step 1: Decode VIN to get make, model, and year
       const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/${form.vin}?format=json`);
       const data = await res.json();
 
+      // Helper to extract field value from response
       const get = (field) => data.Results.find(item => item.Variable === field)?.Value || '';
       const make = get('Make');
       const model = get('Model');
       const year = get('Model Year');
 
+      // Update form with decoded values
       setForm(prev => ({
         ...prev,
         name: make,
@@ -47,7 +56,7 @@ export default function AddVehicle() {
 
       setMessage('✅ Vehicle details fetched from VIN.');
 
-      // Step 2: Fetch Safety Ratings summary
+      // Step 2: Get safety ratings summary
       const ratingRes = await fetch(`https://api.nhtsa.gov/SafetyRatings/modelyear/${year}/make/${make}/model/${model}?format=json`);
       const ratingData = await ratingRes.json();
 
@@ -55,7 +64,7 @@ export default function AddVehicle() {
       if (firstResult) {
         const vehicleId = firstResult.VehicleId;
 
-        // Step 3: Fetch detailed safety ratings
+        // Step 3: Get detailed safety ratings by vehicleId
         const detailRes = await fetch(`https://api.nhtsa.gov/SafetyRatings/VehicleId/${vehicleId}?format=json`);
         const detailData = await detailRes.json();
 
@@ -74,8 +83,9 @@ export default function AddVehicle() {
     }
   };
 
+  // Handle form submit to save vehicle in backend
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent page reload
     setLoading(true);
     setMessage('');
 
@@ -91,6 +101,7 @@ export default function AddVehicle() {
 
       const data = await res.json();
 
+      // Handle response
       if (res.ok) {
         setMessage('✅ Vehicle added successfully!');
         setForm({ vin: '', name: '', model: '', year: '', registration: '' });
@@ -106,15 +117,21 @@ export default function AddVehicle() {
     }
   };
 
+  // Render UI
   return (
     <>
       <Navbar />
       <div className="add-vehicle-container">
         <h2>Add New Vehicle</h2>
+
+        {/* Show success or error message */}
         {message && (
           <p style={{ color: message.startsWith('✅') ? 'green' : 'red' }}>{message}</p>
         )}
+
+        {/* Vehicle form */}
         <form className="vehicle-form" onSubmit={handleSubmit}>
+          {/* VIN input and Fetch button */}
           <input
             type="text"
             name="vin"
@@ -125,6 +142,7 @@ export default function AddVehicle() {
           />
           <button type="button" onClick={fetchVehicleDetails}>Fetch Details</button>
 
+          {/* Other vehicle fields */}
           <input
             type="text"
             name="name"
@@ -160,6 +178,7 @@ export default function AddVehicle() {
             required
           />
 
+          {/* Display safety ratings if available */}
           {safetyRatings && (
             <div style={{
               marginTop: '15px',
@@ -175,6 +194,7 @@ export default function AddVehicle() {
             </div>
           )}
 
+          {/* Submit button */}
           <button type="submit" disabled={loading}>
             {loading ? 'Adding...' : 'Add Vehicle'}
           </button>

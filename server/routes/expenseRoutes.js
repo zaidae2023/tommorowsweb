@@ -1,15 +1,15 @@
 const express = require('express');
 const Expense = require('../models/expense');
-const User = require('../models/user'); // ✅ Import User model
+const User = require('../models/user'); //  Import User model
 const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
-// ✅ Create new expense and limit to 3 for free users
+//  Create new expense and limit to 3 for free users
 router.post('/', authMiddleware, async (req, res) => {
   try {
     const { vehicleId, type, amount, note, currency } = req.body;
 
-    // ✅ Get the user and check plan
+    //  Get the user and check plan
     const user = await User.findById(req.userId);
     const expenseCount = await Expense.countDocuments({ userId: req.userId });
 
@@ -34,7 +34,7 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Get all expenses with vehicle details
+//  Get all expenses with vehicle details
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const expenses = await Expense.find({ userId: req.userId })
@@ -46,7 +46,7 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Delete an expense by ID
+//  Delete an expense by ID
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const expense = await Expense.findOneAndDelete({

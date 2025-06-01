@@ -3,14 +3,14 @@ const { Parser } = require('json2csv');
 const PDFDocument = require('pdfkit');
 const Expense = require('../models/expense');
 const Service = require('../models/service');
-const User = require('../models/user'); // ✅ Import user model
+const User = require('../models/user'); //  Import user model
 
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.use(authMiddleware);
 
-// 🔒 Helper middleware for checking export limits
+// Helper middleware for checking export limits
 const checkExportLimit = async (req, res, next) => {
   const user = await User.findById(req.userId);
   if (user.plan === 'free' && user.exportsUsed >= 3) {
@@ -20,7 +20,7 @@ const checkExportLimit = async (req, res, next) => {
   next();
 };
 
-// ✅ Export Expenses CSV
+//  Export Expenses CSV
 router.get('/expenses/csv', checkExportLimit, async (req, res) => {
   try {
     const expenses = await Expense.find({ userId: req.userId }).populate('vehicleId', 'name model year');
@@ -30,7 +30,7 @@ router.get('/expenses/csv', checkExportLimit, async (req, res) => {
     res.header('Content-Type', 'text/csv');
     res.attachment('expenses.csv');
 
-    // ✅ Increment exportsUsed for free user
+    //  Increment exportsUsed for free user
     if (req.userDoc.plan === 'free') {
       req.userDoc.exportsUsed += 1;
       await req.userDoc.save();
@@ -42,7 +42,7 @@ router.get('/expenses/csv', checkExportLimit, async (req, res) => {
   }
 });
 
-// ✅ Export Services CSV
+//  Export Services CSV
 router.get('/services/csv', checkExportLimit, async (req, res) => {
   try {
     const services = await Service.find({ userId: req.userId }).populate('vehicleId', 'name model year');
@@ -63,7 +63,7 @@ router.get('/services/csv', checkExportLimit, async (req, res) => {
   }
 });
 
-// ✅ Export Services PDF
+// Export Services PDF
 router.get('/services/pdf', checkExportLimit, async (req, res) => {
   try {
     const services = await Service.find({ userId: req.userId }).populate('vehicleId', 'name model year');
@@ -98,7 +98,7 @@ router.get('/services/pdf', checkExportLimit, async (req, res) => {
   }
 });
 
-// ✅ Export Expenses PDF
+// Export Expenses PDF
 router.get('/expenses/pdf', checkExportLimit, async (req, res) => {
   try {
     const expenses = await Expense.find({ userId: req.userId }).populate('vehicleId', 'name model year');

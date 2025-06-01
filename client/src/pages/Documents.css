@@ -1,3 +1,4 @@
+/* Main container for the documents page */
 .documents-container {
   padding: 40px 20px;
   max-width: 700px;
@@ -5,10 +6,12 @@
   font-family: 'Inter', sans-serif;
 }
 
+/* Headings styling */
 h1, h2 {
   color: black;
 }
 
+/* Style for the document upload form */
 .document-form {
   display: flex;
   flex-direction: column;
@@ -19,6 +22,7 @@ h1, h2 {
   box-shadow: 0 8px 20px rgba(0,0,0,0.05);
 }
 
+/* Input, select, and button fields inside form */
 .document-form input,
 .document-form select,
 .document-form button {
@@ -26,6 +30,7 @@ h1, h2 {
   font-size: 1rem;
 }
 
+/* Submit button styling with animated gradient effect */
 .document-form button {
   background: #1f7aec;
   color: white;
@@ -42,6 +47,7 @@ h1, h2 {
   transition: background 0.3s ease;
 }
 
+/* Animated blue background for button hover */
 .document-form button::before {
   content: '';
   position: absolute;
@@ -61,21 +67,25 @@ h1, h2 {
   opacity: 1;
 }
 
+/* Message shown after uploading a document */
 .upload-message {
   color: green;
   font-weight: 500;
 }
 
+/* Section for showing uploaded documents */
 .uploaded-documents {
   margin-top: 40px;
 }
 
+/* Style for the list of documents */
 .uploaded-documents ul {
   list-style: none;
   padding: 0;
   margin-top: 20px;
 }
 
+/* Each document card */
 .uploaded-documents li {
   background: #f4f7fa;
   padding: 15px;
@@ -88,35 +98,40 @@ h1, h2 {
   flex-wrap: wrap;
 }
 
+/* Highlight expiring documents with red border and text */
 .uploaded-documents li.expiring {
   border-left: 5px solid #e74c3c;
   background-color: #fff5f5;
   color: #b03a2e;
 }
 
+/* Wrapper for document text info */
 .doc-info {
   flex: 1;
 }
 
+/* Warning label */
 .alert {
   margin-left: 10px;
   color: #c0392b;
   font-weight: bold;
 }
 
-/* Action wrapper */
+/* Wrapper for view and delete buttons */
 .doc-actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
+/* Group buttons with spacing */
 .button-group {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
+/* Shared button styles for View and Delete */
 .view-link,
 .delete-btn {
   display: flex;
@@ -132,11 +147,11 @@ h1, h2 {
   text-decoration: none;
   white-space: nowrap;
   min-width: 110px;
-  height: 42px; /* NEW: Consistent height for both buttons */
+  height: 42px;
   box-sizing: border-box;
 }
 
-/* View Button */
+/* View button styles with animated background */
 .view-link {
   background: #1f7aec;
   color: white;
@@ -165,8 +180,11 @@ h1, h2 {
   opacity: 1;
 }
 
+.view-link:hover {
+  color: white;
+}
 
-/* Delete Button */
+/* Delete button basic style */
 .delete-btn {
   background: #e74c3c;
   color: white;
@@ -176,7 +194,7 @@ h1, h2 {
   background: #c0392b;
 }
 
-/* Delete Modal Styles */
+/* Fullscreen dark overlay for modal */
 .delete-modal-overlay {
   position: fixed;
   top: 0;
@@ -191,11 +209,13 @@ h1, h2 {
   animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Fade-in animation */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
+/* Modal box style */
 .delete-modal {
   background: #fff;
   padding: 30px;
@@ -206,6 +226,7 @@ h1, h2 {
   animation: slideUp 0.3s ease;
 }
 
+/* Slide-up animation for modal */
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
@@ -222,12 +243,14 @@ h1, h2 {
   margin-bottom: 20px;
 }
 
+/* Button group in modal */
 .modal-actions {
   display: flex;
   justify-content: center;
   gap: 15px;
 }
 
+/* Cancel and Delete button styles */
 .cancel-btn,
 .confirm-btn {
   padding: 10px 18px;
@@ -238,6 +261,7 @@ h1, h2 {
   transition: background 0.3s ease;
 }
 
+/* Cancel button gray */
 .cancel-btn {
   background: #ccc;
   color: #333;
@@ -247,6 +271,7 @@ h1, h2 {
   background: #bbb;
 }
 
+/* Confirm delete button red */
 .confirm-btn {
   background: #e74c3c;
   color: white;
@@ -256,13 +281,9 @@ h1, h2 {
   background: #c0392b;
 }
 
-/* Animated gradient keyframes */
+/* Animated gradient keyframe for buttons */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-
-.view-link:hover {
-  color: white; /* ✅ Keeps text white when animated gradient appears */
 }

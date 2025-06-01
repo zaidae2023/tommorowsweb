@@ -1,19 +1,26 @@
+//  Import React and required dependencies
 import React from 'react';
-import Navbar from '../components/navbar';
-import './PrivacyPolicy.css'; // ✅ Import external CSS
+import Navbar from '../components/navbar'; // Reusable navbar component
+import './PrivacyPolicy.css'; // External CSS for styling the privacy policy page
 
+//  Main functional component for the Privacy Policy page
 export default function PrivacyPolicy() {
   return (
     <>
+      {/* Navbar at the top */}
       <Navbar />
 
+      {/* Main container for the policy content */}
       <div className="privacy-container">
+        {/* Page title */}
         <h1 className="privacy-title">Privacy Policy</h1>
 
+        {/* Introduction paragraph */}
         <p className="privacy-paragraph">
           At <strong>TuneUp</strong>, your privacy is our priority. This Privacy Policy explains how we collect, use, and protect your personal information when you use our web app.
         </p>
 
+        {/* Section: What data we collect */}
         <section>
           <h2 className="privacy-section-title">📋 What We Collect</h2>
           <ul className="privacy-list">
@@ -23,6 +30,7 @@ export default function PrivacyPolicy() {
           </ul>
         </section>
 
+        {/* Section: How we use collected data */}
         <section>
           <h2 className="privacy-section-title">🔒 How We Use Your Data</h2>
           <ul className="privacy-list">
@@ -32,6 +40,7 @@ export default function PrivacyPolicy() {
           </ul>
         </section>
 
+        {/* Section: Data sharing practices */}
         <section>
           <h2 className="privacy-section-title">📤 Sharing Your Data</h2>
           <p className="privacy-paragraph">
@@ -39,6 +48,7 @@ export default function PrivacyPolicy() {
           </p>
         </section>
 
+        {/* Section: How we protect user data */}
         <section>
           <h2 className="privacy-section-title">🛡️ Data Protection</h2>
           <p className="privacy-paragraph">
@@ -46,6 +56,7 @@ export default function PrivacyPolicy() {
           </p>
         </section>
 
+        {/* Section: User rights and control over data */}
         <section>
           <h2 className="privacy-section-title">👤 Your Rights</h2>
           <ul className="privacy-list">
@@ -55,12 +66,14 @@ export default function PrivacyPolicy() {
           </ul>
         </section>
 
+        {/* Section: Updates to the privacy policy */}
         <section>
           <h2 className="privacy-section-title">📅 Policy Updates</h2>
           <p className="privacy-paragraph">
             This policy may be updated occasionally to reflect changes in law or app features. We'll notify users about significant updates.
           </p>
 
+          {/* Contact info for privacy-related concerns */}
           <p className="privacy-contact">
             If you have any questions about this Privacy Policy, contact us at <a href="mailto:privacy@tuneupapp.com">privacy@tuneupapp.com</a>.
           </p>

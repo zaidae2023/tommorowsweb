@@ -1,7 +1,12 @@
+// React and core hooks
 import React, { useEffect, useState } from 'react';
 import './dashboard.css';
+
+// Custom components and React Router hooks
 import Navbar from '../components/navbar';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+// Chart.js setup for bar chart visualization
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -12,9 +17,11 @@ import {
   Legend,
 } from 'chart.js';
 
+// Register ChartJS components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 export default function Dashboard() {
+  // State variables to store app data
   const [vehicles, setVehicles] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [nextService, setNextService] = useState({ date: 'N/A', type: 'N/A' });
@@ -22,9 +29,11 @@ export default function Dashboard() {
   const [city, setCity] = useState('');
   const [documents, setDocuments] = useState([]);
 
+  // Navigation and URL parameters
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Store token from query params if it exists
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
@@ -34,6 +43,7 @@ export default function Dashboard() {
     }
   }, [location, navigate]);
 
+  // Fetch vehicles, expenses, and upcoming service on load
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
@@ -45,28 +55,28 @@ export default function Dashboard() {
 
       try {
         const base = import.meta.env.VITE_API_URL;
+
+        // Send all 3 requests in parallel
         const [vehiclesRes, expensesRes, serviceRes] = await Promise.all([
-          fetch(`${base}/api/vehicles`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch(`${base}/api/expenses`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch(`${base}/api/services/upcoming`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
+          fetch(`${base}/api/vehicles`, { headers: { Authorization: `Bearer ${token}` } }),
+          fetch(`${base}/api/expenses`, { headers: { Authorization: `Bearer ${token}` } }),
+          fetch(`${base}/api/services/upcoming`, { headers: { Authorization: `Bearer ${token}` } }),
         ]);
 
+        // If any response is unauthorized or invalid, redirect
         if (!vehiclesRes.ok || !expensesRes.ok || !serviceRes.ok) {
           throw new Error('Session expired');
         }
 
+        // Store vehicles
         const vehiclesData = await vehiclesRes.json();
         setVehicles(Array.isArray(vehiclesData) ? vehiclesData : vehiclesData.vehicles || []);
 
+        // Store expenses
         const expensesData = await expensesRes.json();
         setExpenses(expensesData);
 
+        // Set next upcoming service
         const serviceData = await serviceRes.json();
         if (Array.isArray(serviceData) && serviceData.length > 0) {
           const firstService = serviceData[0];
@@ -88,6 +98,7 @@ export default function Dashboard() {
     fetchData();
   }, [navigate]);
 
+  // Fetch uploaded documents
   useEffect(() => {
     const fetchDocuments = async () => {
       const token = localStorage.getItem('token');
@@ -107,6 +118,7 @@ export default function Dashboard() {
     fetchDocuments();
   }, []);
 
+  // Get city name based on user IP address
   useEffect(() => {
     const fetchCityFromIP = async () => {
       try {
@@ -120,6 +132,7 @@ export default function Dashboard() {
     fetchCityFromIP();
   }, []);
 
+  // Fetch weather info using the city name
   useEffect(() => {
     const fetchWeather = async () => {
       if (!city) return;
@@ -142,6 +155,7 @@ export default function Dashboard() {
     fetchWeather();
   }, [city]);
 
+  // Prepare data for bar chart
   const getChartData = () => {
     const types = ['Fuel', 'Maintenance', 'Insurance'];
     const data = types.map((type) =>
@@ -162,6 +176,7 @@ export default function Dashboard() {
     };
   };
 
+  // Suggest whether it's a good time to wash the car
   const getCarWashAdvice = () => {
     if (!weather?.condition) return '';
     const cond = weather.condition.toLowerCase();
@@ -171,12 +186,14 @@ export default function Dashboard() {
     return '✅ Great time to wash your car!';
   };
 
+  // Dashboard layout
   return (
     <div>
       <Navbar />
       <div className="dashboard-container">
         <h1 className="typing-glow-title"><span>Welcome to Your Dashboard!</span></h1>
 
+        {/* Quick navigation buttons */}
         <div className="quick-links">
           <button onClick={() => navigate('/documents')}>📄 Documents</button>
           <button onClick={() => navigate('/vehicles')}>➕ Add Vehicle</button>
@@ -185,6 +202,7 @@ export default function Dashboard() {
         </div>
 
         <div className="info-grid">
+          {/* Weather card */}
           {weather && (
             <div className="weather-card">
               <img
@@ -199,6 +217,7 @@ export default function Dashboard() {
             </div>
           )}
 
+          {/* Vehicle and Service Info Cards */}
           <Card title="Registered Vehicles" value={vehicles.length} />
 
           <Card
@@ -210,6 +229,7 @@ export default function Dashboard() {
             }
           />
 
+          {/* Expiring documents warning */}
           {documents
             .filter((doc) => {
               const daysLeft = Math.ceil((new Date(doc.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
@@ -226,6 +246,7 @@ export default function Dashboard() {
               );
             })}
 
+          {/* List of recent expenses */}
           <div className="recent-activity">
             <h2>Recent Expenses</h2>
             <ul>
@@ -245,6 +266,7 @@ export default function Dashboard() {
             </ul>
           </div>
 
+          {/* Expense chart section */}
           <div className="chart-section">
             <h2>Expense Breakdown</h2>
             <Bar
@@ -264,6 +286,7 @@ export default function Dashboard() {
   );
 }
 
+// Reusable card component
 function Card({ title, value }) {
   const isExpiryAlert = title.toLowerCase().includes('expiry');
 

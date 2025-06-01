@@ -6,7 +6,7 @@ dotenv.config();
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// ✅ Route to create a Subscription Checkout Session
+// Route to create a Subscription Checkout Session
 router.post('/create-checkout-session', async (req, res) => {
   try {
     const { email } = req.body;

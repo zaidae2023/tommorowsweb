@@ -1,65 +1,75 @@
-/* Container styling */
+/* ===== Container Styling ===== */
+
+/* Main container for the Expenses page */
 .expenses-container {
-  background-color: #f4f7fa;
-  padding: 40px 20px;
-  min-height: 100vh;
-  font-family: 'Inter', sans-serif;
-  color: #222;
-  max-width: 800px;
-  margin: 0 auto;
+  background-color: #f4f7fa;           /* Light background for a clean look */
+  padding: 40px 20px;                  /* Inner spacing */
+  min-height: 100vh;                   /* Full screen height */
+  font-family: 'Inter', sans-serif;    /* Smooth modern font */
+  color: #222;                         /* Dark text */
+  max-width: 800px;                    /* Limit width for readability */
+  margin: 0 auto;                      /* Center the container */
 }
 
-/* Header */
+/* ===== Header Text ===== */
+
+/* Main title */
 .expenses-container h2 {
   font-size: 32px;
   margin-bottom: 10px;
-  color: #1a1a1a;
+  color: #1a1a1a;                      /* Darker heading */
 }
 
+/* Subtext */
 .expenses-container p {
   font-size: 18px;
   margin-bottom: 30px;
-  color: #555;
+  color: #555;                         /* Medium gray for description */
 }
 
-/* Form styling */
+/* ===== Form Styling ===== */
+
+/* Form container */
 .expense-form {
-  background: #ffffff;
+  background: #ffffff;                /* White card background */
   padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;                /* Rounded corners */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); /* Soft shadow */
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 15px;                          /* Space between inputs */
   margin-bottom: 40px;
 }
 
+/* Inputs and selects inside the form */
 .expense-form input,
 .expense-form select {
   padding: 12px;
-  border: 1px solid #dcdfe6;
+  border: 1px solid #dcdfe6;         /* Light border */
   border-radius: 8px;
   font-size: 15px;
   background-color: #fff;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease; /* Smooth border animation */
 }
 
+/* Highlight border on focus */
 .expense-form input:focus,
 .expense-form select:focus {
-  border-color: #007bff;
+  border-color: #007bff;             /* Blue border */
   outline: none;
 }
 
-/* Submit button (with animated blue gradient) */
+/* ===== Form Submit Button ===== */
+
 .expense-form button {
-  background: #1f7aec;
+  background: #1f7aec;               /* Primary blue background */
   color: white;
   font-weight: 600;
   font-size: 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4);
+  box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4); /* Glowing shadow */
   padding: 12px;
   position: relative;
   overflow: hidden;
@@ -67,6 +77,7 @@
   transition: background 0.3s ease;
 }
 
+/* Button animated gradient layer */
 .expense-form button::before {
   content: '';
   position: absolute;
@@ -82,18 +93,22 @@
   transition: opacity 0.4s ease;
 }
 
+/* Show gradient on hover */
 .expense-form button:hover::before {
   opacity: 1;
 }
 
-/* Message feedback */
+/* ===== Message Feedback ===== */
+
 .expense-form p {
   margin-top: 5px;
   font-weight: bold;
-  color: #007bff;
+  color: #007bff;                    /* Info blue */
 }
 
-/* Expense list */
+/* ===== Expense List ===== */
+
+/* Remove default bullets and space */
 .expense-list {
   list-style: none;
   padding: 0;
@@ -102,20 +117,22 @@
   gap: 20px;
 }
 
-/* Each expense card */
+/* ===== Each Expense Card ===== */
+
 .expense-item {
   background: #ffffff;
   padding: 20px;
   border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04); /* Soft shadow */
   font-size: 15px;
   line-height: 1.6;
   position: relative;
 }
 
-/* Delete button */
+/* ===== Delete Button ===== */
+
 .delete-btn {
-  background-color: #ff4d4f;
+  background-color: #ff4d4f;         /* Red delete button */
   color: white;
   border: none;
   padding: 8px 14px;
@@ -126,13 +143,15 @@
   transition: background-color 0.3s ease;
 }
 
+/* Darker red on hover */
 .delete-btn:hover {
   background-color: #d9363e;
 }
 
-/* Export button (with animated blue gradient) */
+/* ===== Export Buttons (CSV / PDF) ===== */
+
 .export-btn {
-  background: #1f7aec;
+  background: #1f7aec;               /* Blue theme */
   color: white;
   font-weight: 600;
   font-size: 14px;
@@ -147,6 +166,7 @@
   transition: background 0.3s ease;
 }
 
+/* Gradient animation effect behind button */
 .export-btn::before {
   content: '';
   position: absolute;
@@ -162,11 +182,13 @@
   transition: opacity 0.4s ease;
 }
 
+/* Show animated gradient when hovered */
 .export-btn:hover::before {
   opacity: 1;
 }
 
-/* Animated gradient keyframes */
+/* ===== Animated Gradient Keyframes ===== */
+
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

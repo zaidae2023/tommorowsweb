@@ -1,64 +1,69 @@
-/* src/pages/terms.css */
-
+/* Main container for the Terms & Conditions page */
 .terms-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 50px 20px;
+  max-width: 900px;              /* Limits width for readability */
+  margin: 0 auto;                /* Center align */
+  padding: 50px 20px;            /* Inner spacing */
   font-family: 'Inter', sans-serif;
-  line-height: 1.7;
-  color: #1f2f46;
+  line-height: 1.7;              /* Comfortable line spacing */
+  color: #1f2f46;                /* Primary text color */
 }
 
+/* Page title styling with gradient animation */
 .terms-title {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 20px;
-  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5); /* Blue gradient */
   background-size: 400% 400%;
-  background-clip: text;
+  background-clip: text;         /* Clip gradient to text only */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: animatedGradient 6s ease infinite;
+  animation: animatedGradient 6s ease infinite; /* Moving gradient effect */
   text-align: center;
 }
 
+/* Section heading inside terms */
 .terms-section-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f7aec;
+  color: #1f7aec;                /* Accent blue color */
   margin-top: 40px;
   margin-bottom: 16px;
 }
 
+/* General paragraph text styling */
 .terms-paragraph {
   font-size: 1rem;
   color: #333;
   margin-bottom: 20px;
 }
 
+/* Bullet list style for points */
 .terms-list {
-  padding-left: 20px;
+  padding-left: 20px;            /* Indent from the left */
   color: #444;
   margin-bottom: 20px;
 }
 
+/* Link styling for policy or email links */
 .terms-link {
-  color: #1f7aec;
+  color: #1f7aec;                /* Accent blue color */
   text-decoration: underline;
-  transition: color 0.2s;
+  transition: color 0.2s;        /* Smooth hover transition */
 }
 
 .terms-link:hover {
-  color: #3a7bd5;
+  color: #3a7bd5;                /* Slightly brighter on hover */
 }
 
+/* Styling for last updated text */
 .terms-updated {
   font-style: italic;
   color: #555;
   margin-top: 20px;
 }
 
-/* Gradient animation reused from privacy.css */
+/* Reusable animated gradient background for text */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

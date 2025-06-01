@@ -1,10 +1,12 @@
+// Import necessary libraries and components
 import React, { useEffect, useState, useCallback } from 'react';
 import './services.css';
-import Navbar from '../components/navbar';
-import { ToastContainer, toast } from 'react-toastify';
+import Navbar from '../components/navbar'; // Navigation bar
+import { ToastContainer, toast } from 'react-toastify'; // For popup messages
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Services() {
+  // States for vehicles, services, form fields, messages, and deletion
   const [vehicles, setVehicles] = useState([]);
   const [services, setServices] = useState([]);
   const [form, setForm] = useState({
@@ -16,8 +18,9 @@ export default function Services() {
   const [message, setMessage] = useState('');
   const [deleteId, setDeleteId] = useState(null);
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token'); // Get auth token
 
+  // Fetch vehicles from the backend
   const fetchVehicles = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/vehicles`, {
@@ -30,6 +33,7 @@ export default function Services() {
     }
   }, [token]);
 
+  // Fetch all services
   const fetchServices = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/services`, {
@@ -42,15 +46,18 @@ export default function Services() {
     }
   }, [token]);
 
+  // Load vehicles and services on component mount
   useEffect(() => {
     fetchVehicles();
     fetchServices();
   }, [fetchVehicles, fetchServices]);
 
+  // Handle input field changes in the form
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Handle service form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
@@ -80,6 +87,7 @@ export default function Services() {
     }
   };
 
+  // Update service status (e.g., to 'completed' or 'missed')
   const updateStatus = async (id, status) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/services/${id}`, {
@@ -97,17 +105,17 @@ export default function Services() {
     }
   };
 
+  // Trigger delete confirmation modal
   const handleDeleteClick = (id) => {
     setDeleteId(id);
   };
 
+  // Confirm and delete a service
   const confirmDelete = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/services/${deleteId}`, {
         method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.ok) {
@@ -121,10 +129,12 @@ export default function Services() {
     }
   };
 
+  // Cancel delete confirmation
   const cancelDelete = () => {
     setDeleteId(null);
   };
 
+  // Export services as CSV file
   const exportServicesCSV = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/services/csv`, {
@@ -133,7 +143,7 @@ export default function Services() {
 
       if (res.status === 403) {
         const data = await res.json();
-        toast.error(data.message || 'Export limit reached. Upgrade to Premium to unlock more exports.');
+        toast.error(data.message || 'Export limit reached. Upgrade to Premium.');
         return;
       }
 
@@ -150,6 +160,7 @@ export default function Services() {
     }
   };
 
+  // Export services as PDF file
   const exportServicesPDF = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/services/pdf`, {
@@ -158,7 +169,7 @@ export default function Services() {
 
       if (res.status === 403) {
         const data = await res.json();
-        toast.error(data.message || 'Export limit reached. Upgrade to Premium to unlock more exports.');
+        toast.error(data.message || 'Export limit reached. Upgrade to Premium.');
         return;
       }
 
@@ -175,12 +186,14 @@ export default function Services() {
     }
   };
 
+  // Component UI rendering
   return (
     <>
       <Navbar />
       <div className="services-container">
         <h2>🔧 Vehicle Services</h2>
 
+        {/* Service Form */}
         <form onSubmit={handleSubmit} className="service-form">
           <select name="vehicleId" value={form.vehicleId} onChange={handleChange} required>
             <option value="">Select Vehicle</option>
@@ -209,11 +222,13 @@ export default function Services() {
 
         <h3>🗓️ Upcoming & Past Services</h3>
 
+        {/* Export buttons */}
         <div style={{ marginBottom: '20px', display: 'flex', gap: '12px' }}>
           <button onClick={exportServicesCSV} className="export-btn">📄 Export CSV</button>
           <button onClick={exportServicesPDF} className="export-btn">🧾 Export PDF</button>
         </div>
 
+        {/* Service List */}
         <ul className="service-list">
           {services.map((svc) => (
             <li key={svc._id} className={`service-item ${svc.status}`}>
@@ -222,6 +237,7 @@ export default function Services() {
               <em>Note:</em> {svc.note || 'N/A'}<br />
               <em>Status:</em> {svc.status}
               <div style={{ marginTop: '5px' }}>
+                {/* Status update buttons */}
                 {svc.status === 'upcoming' && (
                   <>
                     <button onClick={() => updateStatus(svc._id, 'completed')}>Mark Completed</button>
@@ -237,6 +253,7 @@ export default function Services() {
         </ul>
       </div>
 
+      {/* Delete Confirmation Modal */}
       {deleteId && (
         <div className="modal-overlay">
           <div className="modal-box">
@@ -250,6 +267,7 @@ export default function Services() {
         </div>
       )}
 
+      {/* Toast for notifications */}
       <ToastContainer position="top-center" autoClose={3000} />
     </>
   );

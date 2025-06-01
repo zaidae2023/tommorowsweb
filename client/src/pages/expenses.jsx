@@ -1,3 +1,4 @@
+// Import necessary React hooks and components
 import React, { useEffect, useState, useCallback } from 'react';
 import './expenses.css';
 import Navbar from '../components/navbar';
@@ -5,11 +6,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Expenses() {
+  // State to hold expenses, vehicles, currency list, total amount, user plan, form input, and message
   const [expenses, setExpenses] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [total, setTotal] = useState(0);
   const [userPlan, setUserPlan] = useState('free');
+
+  // Form data
   const [form, setForm] = useState({
     vehicleId: '',
     type: 'Fuel',
@@ -17,10 +21,13 @@ export default function Expenses() {
     note: '',
     currency: 'USD',
   });
+
   const [message, setMessage] = useState('');
 
+  // Get token from localStorage
   const token = localStorage.getItem('token');
 
+  // Fetch user's expenses
   const fetchExpenses = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/expenses`, {
@@ -29,6 +36,7 @@ export default function Expenses() {
       const data = await res.json();
       if (Array.isArray(data)) {
         setExpenses(data);
+        // Calculate total expenses
         const totalAmount = data.reduce((sum, exp) => sum + exp.amount, 0);
         setTotal(totalAmount);
       }
@@ -37,6 +45,7 @@ export default function Expenses() {
     }
   }, [token]);
 
+  // Fetch user's vehicles
   const fetchVehicles = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/vehicles`, {
@@ -50,6 +59,7 @@ export default function Expenses() {
     }
   }, [token]);
 
+  // Fetch available currency codes
   const fetchCurrencies = useCallback(async () => {
     try {
       const res = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -62,6 +72,7 @@ export default function Expenses() {
     }
   }, []);
 
+  // Fetch user's subscription plan (free/premium)
   const fetchUserProfile = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
@@ -74,6 +85,7 @@ export default function Expenses() {
     }
   }, [token]);
 
+  // Fetch all required data when component loads
   useEffect(() => {
     if (!token) {
       toast.error('Please login to view expenses.');
@@ -85,10 +97,12 @@ export default function Expenses() {
     fetchUserProfile();
   }, [token, fetchExpenses, fetchVehicles, fetchCurrencies, fetchUserProfile]);
 
+  // Handle input change for form fields
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Handle adding a new expense
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
@@ -105,7 +119,7 @@ export default function Expenses() {
       if (res.ok) {
         setMessage('✅ Expense added!');
         setForm({ vehicleId: '', type: 'Fuel', amount: '', note: '', currency: 'USD' });
-        await fetchExpenses();
+        await fetchExpenses(); // Refresh expenses after adding
       } else {
         const data = await res.json();
         setMessage(data.message || '❌ Failed to add expense.');
@@ -116,6 +130,7 @@ export default function Expenses() {
     }
   };
 
+  // Handle deleting an expense
   const handleDelete = async (id) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/expenses/${id}`, {
@@ -136,6 +151,7 @@ export default function Expenses() {
     }
   };
 
+  // Export expenses as CSV
   const exportExpensesCSV = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/expenses/csv`, {
@@ -161,6 +177,7 @@ export default function Expenses() {
     }
   };
 
+  // Export expenses as PDF
   const exportExpensesPDF = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/export/expenses/pdf`, {
@@ -193,11 +210,13 @@ export default function Expenses() {
         <h2>💸 Your Expenses</h2>
         <p><strong>Total:</strong> ${total}</p>
 
+        {/* Buttons to export data */}
         <div style={{ marginBottom: '20px', display: 'flex', gap: '12px' }}>
           <button onClick={exportExpensesCSV} className="export-btn">📄 Export CSV</button>
           <button onClick={exportExpensesPDF} className="export-btn">🧾 Export PDF</button>
         </div>
 
+        {/* Expense Form */}
         <form onSubmit={handleSubmit} className="expense-form">
           <select name="vehicleId" value={form.vehicleId} onChange={handleChange} required>
             <option value="">Select Vehicle</option>
@@ -232,6 +251,7 @@ export default function Expenses() {
             onChange={handleChange}
           />
 
+          {/* Currency dropdown (disabled for free users) */}
           <select
             name="currency"
             value={form.currency}
@@ -245,6 +265,7 @@ export default function Expenses() {
             ))}
           </select>
 
+          {/* Warning for free users about multi-currency */}
           {userPlan === 'free' && (
             <p style={{ color: '#e67e22', fontSize: '0.9rem' }}>
               Multi-currency is a Premium feature. You’re limited to USD.
@@ -255,6 +276,7 @@ export default function Expenses() {
           {message && <p>{message}</p>}
         </form>
 
+        {/* List of existing expenses */}
         <ul className="expense-list">
           {expenses.map((exp) => (
             <li key={exp._id} className="expense-item">
@@ -270,6 +292,8 @@ export default function Expenses() {
           ))}
         </ul>
       </div>
+
+      {/* Toast notification container */}
       <ToastContainer position="top-center" autoClose={3000} />
     </>
   );

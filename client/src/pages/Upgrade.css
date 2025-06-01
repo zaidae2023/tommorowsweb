@@ -1,19 +1,20 @@
-/* src/pages/UpgradePage.css */
-
+/* Main container for the upgrade page */
 .upgrade-page {
   padding: 40px 20px;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(to bottom right, #f0f4f8, #e0eafc);
+  background: linear-gradient(to bottom right, #f0f4f8, #e0eafc); /* Soft gradient background */
   min-height: 100vh;
   text-align: center;
-  color: #1f2f46;
+  color: #1f2f46; /* Primary text color */
 }
 
+/* Header section for title and description */
 .upgrade-header {
   max-width: 800px;
   margin: 0 auto 40px;
 }
 
+/* Page heading */
 .upgrade-header h1 {
   font-size: 3rem;
   font-weight: 800;
@@ -21,27 +22,31 @@
   color: black;
 }
 
+/* Highlight the word "Premium" in the heading */
 .upgrade-header h1 span {
-  color: #1f7aec;
+  color: #1f7aec; /* Accent blue */
 }
 
+/* Subheading text */
 .upgrade-header p {
   font-size: 1.2rem;
   color: #555;
 }
 
+/* Crown icon styling with bounce animation */
 .crown-icon-big {
   font-size: 48px;
-  color: #f1c40f;
+  color: #f1c40f; /* Golden color */
   animation: bounce 1.5s infinite;
 }
 
+/* Bounce animation for crown icon */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
 
-/* Features Grid Container */
+/* Grid layout for feature cards */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -51,7 +56,7 @@
   padding: 0 20px;
 }
 
-/* Individual Feature Card */
+/* Styling for each individual feature card */
 .feature-card {
   background: #ffffff;
   border-radius: 16px;
@@ -61,34 +66,38 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Card hover effect */
 .feature-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* ✅ Updated feature icon color to blue */
+/* Icon inside feature card */
 .feature-icon {
   font-size: 32px;
-  color: #1f7aec;
+  color: #1f7aec; /* Accent blue */
   margin-bottom: 12px;
 }
 
+/* Feature title */
 .feature-card h3 {
   font-size: 20px;
   color: #1a1f36;
   margin-bottom: 10px;
 }
 
+/* Feature description */
 .feature-card p {
   font-size: 15px;
   color: #555;
 }
 
+/* Container for the upgrade button */
 .upgrade-cta {
   margin-top: 20px;
 }
 
-/* ✅ Animated blue button */
+/* Upgrade button with animated gradient effect */
 .upgrade-now-btn {
   background: #1f7aec;
   color: white;
@@ -105,6 +114,7 @@
   transition: transform 0.2s ease;
 }
 
+/* Animated background gradient overlay for the button */
 .upgrade-now-btn::before {
   content: '';
   position: absolute;
@@ -120,14 +130,17 @@
   transition: opacity 0.4s ease;
 }
 
+/* Show animated gradient on hover */
 .upgrade-now-btn:hover::before {
   opacity: 1;
 }
 
+/* Slight zoom effect on hover */
 .upgrade-now-btn:hover {
   transform: scale(1.05);
 }
 
+/* Standalone feature card (e.g., Multi-Currency Support) */
 .standalone-card {
   max-width: 400px;
   margin: 40px auto 50px;
@@ -138,7 +151,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
-/* ✅ Keyframes for animated gradient */
+/* Keyframes for animated background gradient */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

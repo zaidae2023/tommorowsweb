@@ -1,6 +1,7 @@
 /* =======================
    TuneUp Theme Variables
-========================== */
+   ======================= */
+/* Define custom color variables for the app theme */
 :root {
   --primary-color: #1f2f46;
   --accent-color: #1abc9c;
@@ -15,7 +16,7 @@
   --text-sub: #666;
 }
 
-/* Dashboard Container */
+/* Dashboard container main layout */
 .dashboard-container {
   padding: 40px 20px;
   font-family: 'Inter', sans-serif;
@@ -26,6 +27,7 @@
   align-items: center;
 }
 
+/* Title styles */
 .dashboard-container h1 {
   font-size: 3rem;
   font-weight: 700;
@@ -34,6 +36,7 @@
   animation: welcomeFadeInUp 1.2s ease-in-out both;
 }
 
+/* Paragraph below title */
 .dashboard-container p {
   color: var(--text-sub);
   margin-bottom: 40px;
@@ -44,7 +47,7 @@
   animation-delay: 0.3s;
 }
 
-/* Responsive Grid */
+/* Grid layout for cards */
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -62,7 +65,7 @@
   flex: 1 1 auto;
 }
 
-/* Weather Card with Glassmorphism */
+/* Weather card with glass effect */
 .weather-card {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(8px);
@@ -90,7 +93,7 @@
   color: var(--text-main);
 }
 
-/* Reusable Card */
+/* General card style */
 .card {
   background: var(--white);
   border-radius: 16px;
@@ -101,24 +104,27 @@
   animation: fadeIn 0.7s ease-in-out both;
 }
 
+/* Card hover effect */
 .card:hover {
   transform: translateY(-6px);
   box-shadow: 0 14px 32px rgba(31, 122, 236, 0.2);
 }
 
+/* Card title */
 .card h2 {
   font-size: 1.1rem;
   color: var(--primary-color);
   margin-bottom: 6px;
 }
 
+/* Card value */
 .card p {
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--text-main);
 }
 
-/* Expiry Card Alert Styling */
+/* Expiry alert card style */
 .card.expiry-card {
   border-left: 6px solid var(--error-color);
   background: var(--error-bg);
@@ -130,7 +136,7 @@
   color: #c0392b;
 }
 
-/* Quick Links Buttons */
+/* Quick action buttons row */
 .quick-links {
   display: flex;
   gap: 15px;
@@ -139,6 +145,7 @@
   justify-content: center;
 }
 
+/* Quick action button styles */
 .quick-links button {
   display: flex;
   align-items: center;
@@ -150,7 +157,7 @@
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  background: #1f7aec; /* solid blue by default */
+  background: #1f7aec;
   box-shadow: 0 4px 14px rgba(31, 122, 236, 0.4);
   position: relative;
   overflow: hidden;
@@ -158,6 +165,7 @@
   transition: background 0.5s ease, transform 0.3s ease;
 }
 
+/* Animated gradient background on hover */
 .quick-links button::before {
   content: '';
   position: absolute;
@@ -173,15 +181,17 @@
   transition: opacity 0.4s ease;
 }
 
+/* Show gradient when hovering */
 .quick-links button:hover::before {
   opacity: 1;
 }
 
+/* Slight lift effect on hover */
 .quick-links button:hover {
   transform: translateY(-2px);
 }
 
-/* Recent Expenses & Chart Section */
+/* Expense list and chart section styling */
 .recent-activity,
 .chart-section {
   background: var(--white);
@@ -191,6 +201,7 @@
   animation: fadeIn 0.7s ease-in-out both;
 }
 
+/* Section titles */
 .recent-activity h2,
 .chart-section h2 {
   text-align: center;
@@ -198,12 +209,14 @@
   color: var(--primary-color);
 }
 
+/* Remove bullets from expense list */
 .recent-activity ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
 }
 
+/* Expense list items */
 .recent-activity li {
   position: relative;
   padding: 12px 16px;
@@ -215,7 +228,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-/* Fade-in Animation */
+/* Fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -227,7 +240,7 @@
   }
 }
 
-/* Welcome Animation */
+/* Entrance animation for dashboard title */
 @keyframes welcomeFadeInUp {
   0% {
     opacity: 0;
@@ -242,34 +255,35 @@
   }
 }
 
-/* Animated Gradient Keyframes */
+/* Animated gradient background */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Responsive tweaks */
+/* Mobile responsive tweak */
 @media (max-width: 768px) {
   .info-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Typing + Glowing Animated Title */
+/* Typing and glowing animated heading */
 .typing-glow-title {
   text-align: center;
   margin-bottom: 20px;
   overflow: hidden;
 }
 
+/* Text effect for animated title */
 .typing-glow-title span {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   font-size: 3rem;
   font-weight: 700;
-  border-right: 3px solid var(--highlight-color); /* cursor */
+  border-right: 3px solid var(--highlight-color);
   background: linear-gradient(-45deg, #1e3c72, #2a5298, #1f7aec, #3a7bd5);
   background-size: 400% 400%;
   background-clip: text;
@@ -281,13 +295,13 @@
     animatedGradient 6s ease infinite;
 }
 
-/* Typing keyframes */
+/* Typing animation effect */
 @keyframes typing {
   from { width: 0; }
   to { width: 100%; }
 }
 
-/* Cursor blink */
+/* Cursor blinking animation */
 @keyframes blink {
   0%, 100% { border-color: transparent; }
   50% { border-color: var(--highlight-color); }

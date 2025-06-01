@@ -1,30 +1,32 @@
-/* vehicles.css */
-
+/* Main vehicles page container */
 .vehicles-page {
-  background-color: #f4f7fa;
-  min-height: 100vh;
-  padding: 40px 20px;
-  color: #1e1e1e;
+  background-color: #f4f7fa;           /* Light background */
+  min-height: 100vh;                  /* Full height of viewport */
+  padding: 40px 20px;                 /* Page spacing */
+  color: #1e1e1e;                     /* Text color */
   font-family: "Segoe UI", sans-serif;
 }
 
+/* Header section containing title and button */
 .vehicles-header {
   max-width: 1200px;
   margin: 0 auto 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex;                      /* Side-by-side layout */
+  justify-content: space-between;    /* Space between title and button */
+  align-items: center;               /* Vertically center items */
 }
 
+/* Page title style */
 .vehicles-title {
   font-size: 28px;
   font-weight: bold;
   color: black;
 }
 
+/* Add Vehicle button */
 .add-vehicle-btn {
-  background: #1f7aec;
-  color: white;
+  background: #1f7aec;               /* Blue background */
+  color: white;                      /* White text */
   font-weight: 600;
   font-size: 14px;
   border: none;
@@ -38,6 +40,7 @@
   transition: background 0.3s ease;
 }
 
+/* Animated gradient background on hover */
 .add-vehicle-btn::before {
   content: '';
   position: absolute;
@@ -53,24 +56,28 @@
   transition: opacity 0.4s ease;
 }
 
+/* Show gradient on hover */
 .add-vehicle-btn:hover::before {
   opacity: 1;
 }
+
+/* Gradient animation keyframes */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-
+/* Grid layout for vehicle cards */
 .vehicles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
   gap: 24px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Individual vehicle card styling */
 .vehicle-card {
   background: #ffffff;
   border-radius: 16px;
@@ -80,15 +87,18 @@
   transition: transform 0.3s ease;
 }
 
+/* Lift card slightly on hover */
 .vehicle-card:hover {
   transform: translateY(-4px);
 }
 
+/* Vehicle name */
 .vehicle-card h3 {
   margin-bottom: 10px;
   color: #333;
 }
 
+/* Delete button on each card */
 .vehicle-delete-btn {
   position: absolute;
   top: 14px;
@@ -102,7 +112,7 @@
   cursor: pointer;
 }
 
-/* Overlay */
+/* Modal overlay (background blur and dark layer) */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -117,7 +127,7 @@
   backdrop-filter: blur(4px);
 }
 
-/* Modal Container */
+/* Modal container */
 .confirm-modal {
   background-color: #ffffff;
   padding: 30px 30px 24px;
@@ -130,7 +140,7 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Modal Title */
+/* Modal title */
 .confirm-modal h3 {
   font-size: 22px;
   font-weight: 700;
@@ -138,20 +148,21 @@
   margin-bottom: 12px;
 }
 
-/* Modal Description */
+/* Modal description */
 .confirm-modal p {
   font-size: 16px;
   color: #555;
   margin-bottom: 24px;
 }
 
-/* Buttons */
+/* Container for confirm/cancel buttons */
 .modal-buttons {
   display: flex;
   justify-content: center;
   gap: 16px;
 }
 
+/* Shared button styles */
 .confirm-btn,
 .cancel-btn {
   padding: 12px 22px;
@@ -163,7 +174,7 @@
   transition: background-color 0.2s ease;
 }
 
-/* Confirm Button */
+/* Confirm delete button */
 .confirm-btn {
   background-color: #e74c3c;
   color: white;
@@ -173,7 +184,7 @@
   background-color: #c0392b;
 }
 
-/* Cancel Button */
+/* Cancel button */
 .cancel-btn {
   background-color: #e0e0e0;
   color: #333;
@@ -183,7 +194,7 @@
   background-color: #cfcfcf;
 }
 
-/* Animation */
+/* Fade-in animation for modal */
 @keyframes fadeIn {
   0% {
     transform: scale(0.95);

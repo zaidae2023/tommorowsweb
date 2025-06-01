@@ -1,20 +1,19 @@
+/* ======= Color Variables for Theme ======= */
 :root {
-  --primary-color: #1a1f36;
-  --accent-color: #ff6b35;
-  --accent-hover: #e65a28;
-  --highlight-color: #1f7aec; /* ✅ Changed to blue */
-  --white: #ffffff;
-  --navbar-bg: var(--primary-color);
-  --text-color: var(--white);
+  --primary-color: #1a1f36;       /* Dark blue background */
+  --accent-color: #ff6b35;        /* Orange accent */
+  --accent-hover: #e65a28;        /* Darker orange on hover */
+  --highlight-color: #1f7aec;     /* Bright blue for highlights */
+  --white: #ffffff;               /* White */
+  --navbar-bg: var(--primary-color); /* Navbar background using primary color */
+  --text-color: var(--white);     /* Default text color */
 }
 
-/* =======================
-        Navbar Styles
-========================== */
+/* ======= Navbar Container Style ======= */
 .navbar {
-  background: linear-gradient(270deg, #29356b, #2c3e50, #1a1f36);
+  background: linear-gradient(270deg, #29356b, #2c3e50, #1a1f36); /* Gradient background */
   background-size: 400% 400%;
-  animation: navbarGradient 12s ease infinite;
+  animation: navbarGradient 12s ease infinite; /* Animate gradient */
   color: var(--text-color);
   display: flex;
   justify-content: space-between;
@@ -28,13 +27,14 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Animated background movement */
 @keyframes navbarGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Logo and brand */
+/* ======= Brand/Logo ======= */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -42,7 +42,6 @@
 
 .navbar-logo-img {
   height: 40px;
-  width: auto;
   object-fit: contain;
   margin-right: 12px;
 }
@@ -60,7 +59,7 @@
   animation: animatedGradient 6s ease infinite;
 }
 
-/* Nav Links */
+/* ======= Navigation Links ======= */
 .navbar-links {
   display: flex;
   list-style: none;
@@ -77,6 +76,7 @@
   transition: color 0.3s ease;
 }
 
+/* Hover underline effect */
 .navbar-links li a::after {
   content: '';
   position: absolute;
@@ -84,7 +84,7 @@
   left: 0;
   height: 2px;
   width: 100%;
-  background: var(--highlight-color); /* ✅ Now blue */
+  background: var(--highlight-color);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -94,14 +94,14 @@
   transform: scaleX(1);
 }
 
-/* Navbar Actions */
+/* ======= Right Side Actions (Upgrade, Avatar) ======= */
 .navbar-actions {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-/* Upgrade Button with blue theme */
+/* Upgrade Button Style */
 .upgrade-btn {
   display: flex;
   align-items: center;
@@ -121,6 +121,7 @@
   transition: background 0.3s ease;
 }
 
+/* Upgrade button animated background */
 .upgrade-btn::before {
   content: '';
   position: absolute;
@@ -140,6 +141,7 @@
   opacity: 1;
 }
 
+/* Profile avatar image */
 .navbar-avatar {
   width: 32px;
   height: 32px;
@@ -148,7 +150,7 @@
   border: 2px solid #fff;
 }
 
-/* Crown icon animation */
+/* Crown icon animation for fun */
 .crown-icon {
   animation: pulse 1.2s infinite alternate;
   font-size: 18px;
@@ -165,7 +167,7 @@
   }
 }
 
-/* Hamburger Icon */
+/* ======= Hamburger Menu (Mobile) ======= */
 .hamburger {
   display: none;
   cursor: pointer;
@@ -181,6 +183,7 @@
   transition: all 0.3s ease;
 }
 
+/* Hamburger toggle animation */
 .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
@@ -191,7 +194,7 @@
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* Premium Badge */
+/* ======= Premium Badge Style ======= */
 .premium-badge {
   display: flex;
   align-items: center;
@@ -208,6 +211,7 @@
   box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
 }
 
+/* Spinning crown animation */
 .animated-crown {
   animation: spin 2s linear infinite;
   font-size: 18px;
@@ -219,7 +223,7 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Responsive Styles */
+/* ======= Responsive Adjustments ======= */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
@@ -235,7 +239,6 @@
     align-items: flex-start;
     padding: 20px 30px;
     display: none;
-    overflow: hidden;
   }
 
   .navbar-links.active {
@@ -257,7 +260,7 @@
   }
 }
 
-/* Primary Button Utility */
+/* ======= Reusable Primary Button Style ======= */
 .primary-btn {
   width: 100%;
   padding: 12px;
@@ -294,6 +297,7 @@
   opacity: 1;
 }
 
+/* Reuse animated gradient for both buttons and branding */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

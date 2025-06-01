@@ -1,18 +1,19 @@
-/* Reset & base styles */
+/* Reset & base styles - ensures consistent spacing and layout across browsers */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Basic layout and font setup for the entire page */
 html, body {
   height: 100%;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(to right, #f0f4f8, #e0eafc); /* soft blue */
+  background: linear-gradient(to right, #f0f4f8, #e0eafc); /* soft blue background */
   overflow-x: hidden;
 }
 
-/* Container for Add Vehicle */
+/* Main container for the Add Vehicle page */
 .add-vehicle-container {
   min-height: 100vh;
   display: flex;
@@ -22,7 +23,7 @@ html, body {
   padding: 40px 20px;
 }
 
-/* Card layout */
+/* Form layout styled like a card */
 .add-vehicle-container > form,
 .vehicle-form {
   max-width: 500px;
@@ -33,16 +34,16 @@ html, body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 15px; /* space between form elements */
 }
 
-/* Title */
+/* Page heading */
 .add-vehicle-container h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-/* Inputs */
+/* Styling for all input fields inside the form */
 .vehicle-form input {
   padding: 12px;
   font-size: 15px;
@@ -50,8 +51,9 @@ html, body {
   border-radius: 8px;
 }
 
+/* Styling for all buttons inside the form */
 .vehicle-form button {
-  background: #1f7aec;
+  background: #1f7aec; /* primary blue */
   color: white;
   font-weight: 600;
   font-size: 16px;
@@ -66,6 +68,7 @@ html, body {
   transition: background 0.3s ease;
 }
 
+/* Animated gradient effect hidden under the button */
 .vehicle-form button::before {
   content: '';
   position: absolute;
@@ -81,23 +84,25 @@ html, body {
   transition: opacity 0.4s ease;
 }
 
+/* Show animated gradient on hover */
 .vehicle-form button:hover::before {
   opacity: 1;
 }
+
+/* Keyframes for animated gradient background */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-
-/* Success or error message */
+/* Message text for success or error */
 .add-vehicle-container p {
   font-size: 14px;
   margin-bottom: 10px;
 }
 
-/* Safety Ratings Box */
+/* Styling for the Safety Ratings box */
 .vehicle-form .ratings-box {
   padding: 15px;
   background-color: #f8f9fb;
@@ -105,11 +110,13 @@ html, body {
   border-radius: 10px;
 }
 
+/* Title inside the ratings box */
 .vehicle-form .ratings-box h4 {
   margin-bottom: 8px;
   font-size: 16px;
 }
 
+/* Paragraphs inside the ratings box */
 .vehicle-form .ratings-box p {
   margin: 4px 0;
   font-size: 14px;

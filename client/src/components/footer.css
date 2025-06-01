@@ -1,8 +1,5 @@
-/* =======================
-   Footer Styles - Updated
-========================== */
-
 .footer {
+  /* Background with animated gradient */
   position: relative;
   background: linear-gradient(135deg, #1a1f36, #2c3e50, #1a1f36);
   background-size: 400% 400%;
@@ -12,19 +9,20 @@
   overflow: hidden;
 }
 
+/* Gradient animation for footer background */
 @keyframes navbarGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
+/* Accent line at top of footer */
 .footer-accent {
   height: 6px;
-  background: linear-gradient(90deg, #1f7aec, #3a7bd5); /* 💙 Blue tones only */
+  background: linear-gradient(90deg, #1f7aec, #3a7bd5); /* Blue gradient */
 }
 
-
-/* Main content grid */
+/* Main layout of footer using grid */
 .footer-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -34,24 +32,24 @@
   margin: auto;
 }
 
-/* Each footer column */
+/* Each section (brand, links, contact) */
 .footer-section {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-/* Section headings */
+/* Section headings like 'Explore', 'Legal' */
 .section-title {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 8px;
-  color: var(--highlight-color);
+  color: var(--highlight-color); /* Blue */
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* Brand styling */
+/* Brand name with animated gradient text */
 .footer-brand .brand-title {
   font-size: 2rem;
   font-weight: 700;
@@ -64,12 +62,13 @@
   text-align: left;
 }
 
+/* Optional tagline under brand name */
 .footer-brand .brand-tagline {
   font-size: 0.95rem;
   color: #ccc;
 }
 
-/* Navigation & legal links */
+/* Links inside navigation and legal sections */
 .footer-nav a,
 .footer-legal a {
   color: var(--white);
@@ -78,36 +77,37 @@
   transition: color 0.2s, transform 0.2s;
 }
 
+/* Hover effect for footer links */
 .footer-nav a:hover,
 .footer-legal a:hover {
   color: var(--highlight-color);
   transform: translateX(4px);
 }
 
-/* Contact section */
+/* Text in the contact section */
 .footer-contact .contact-text {
   font-size: 0.9rem;
   color: #ccc;
 }
 
+/* Email link in contact section */
 .footer-contact .contact-email {
   font-size: 1rem;
   font-weight: 500;
-  color: #ffffff; /* 🤍 Default white */
+  color: #ffffff;
   text-decoration: none;
   border-bottom: 1px dashed #ffffff;
   padding-bottom: 2px;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
+/* Hover effect on contact email */
 .footer-contact .contact-email:hover {
-  color: var(--highlight-color); /* 💙 On hover: blue */
+  color: var(--highlight-color);
   border-color: var(--highlight-color);
 }
 
-
-
-/* Footer buttons (reusing .primary-btn style) */
+/* Button inside footer (if used) */
 .footer .primary-btn {
   width: fit-content;
   padding: 10px 20px;
@@ -125,6 +125,7 @@
   overflow: hidden;
 }
 
+/* Animated hover effect on button */
 .footer .primary-btn::before {
   content: '';
   position: absolute;
@@ -144,23 +145,22 @@
   opacity: 1;
 }
 
+/* Bottom copyright section */
 .footer-bottom {
   text-align: center;
   padding: 16px 20px;
   font-size: 0.8rem;
   background: rgba(255, 255, 255, 0.06);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff !important; /* ✅ Force white */
+  color: #ffffff !important;
 }
 
 .footer-bottom p {
   margin: 0;
-  color: #ffffff !important; /* ✅ Also target <p> directly */
+  color: #ffffff !important;
 }
 
-
-
-/* Animated gradient keyframes */
+/* Keyframes for animated button/brand gradient */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

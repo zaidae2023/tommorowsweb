@@ -7,7 +7,7 @@ const router = express.Router();
 // Protect all routes
 router.use(authMiddleware);
 
-// ✅ Add a new service (limit to 2 for free users)
+// Add a new service (limit to 2 for free users)
 router.post('/', async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ✅ Get upcoming services only
+// Get upcoming services only
 router.get('/upcoming', async (req, res) => {
   try {
     const today = new Date();
@@ -66,7 +66,7 @@ router.get('/upcoming', async (req, res) => {
   }
 });
 
-// ✅ Predictive Maintenance Route
+// Predictive Maintenance Route
 router.get('/predictive', async (req, res) => {
   try {
     const services = await Service.find({ userId: req.userId, status: 'completed' })
@@ -115,7 +115,7 @@ router.get('/predictive', async (req, res) => {
   }
 });
 
-// ✅ Update service status
+// Update service status
 router.put('/:id', async (req, res) => {
   try {
     const { status } = req.body;
@@ -130,7 +130,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// ✅ Delete a service
+//Delete a service
 router.delete('/:id', async (req, res) => {
   try {
     const deleted = await Service.findOneAndDelete({

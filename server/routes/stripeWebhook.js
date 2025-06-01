@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-    console.log('✅ Webhook verified:', event.type);
+    console.log('Webhook verified:', event.type);
   } catch (err) {
     console.error('❌ Signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
   // Log full event for debugging
   console.log('📦 Full event:', JSON.stringify(event, null, 2));
 
-  // ✅ Handle subscription-related events
+  // Handle subscription-related events
   if (
     event.type === 'checkout.session.completed' ||
     event.type === 'invoice.payment_succeeded'
@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
       const user = await User.findOne({ email });
 
       if (user) {
-        user.plan = 'premium'; // ✅ Set to 'premium'
+        user.plan = 'premium'; //Set to 'premium'
         await user.save();
         console.log(`🎉 User ${email} upgraded to Premium`);
       } else {

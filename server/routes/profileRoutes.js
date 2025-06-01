@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// 🗂️ Multer storage setup
+//  Multer storage setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dir = path.join(__dirname, '..', 'uploads', 'avatars');
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// ✅ GET /api/profile - Fetch profile
+//  GET /api/profile - Fetch profile
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -32,14 +32,14 @@ router.get('/', authMiddleware, async (req, res) => {
       email: user.email,
       avatar: user.avatar ? `/uploads/avatars/${path.basename(user.avatar)}` : '',
       twoFactorEnabled: user.twoFactorEnabled || false,
-      plan: user.plan || 'free', // ✅ return current plan
+      plan: user.plan || 'free', //  return current plan
     });
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch profile', error: err.message });
   }
 });
 
-// ✅ PUT /api/profile - Update fullName
+// PUT /api/profile - Update fullName
 router.put('/', authMiddleware, async (req, res) => {
   try {
     const { fullName } = req.body;
@@ -54,7 +54,7 @@ router.put('/', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ PUT /api/profile/twofactor - Toggle 2FA (premium users only)
+// PUT /api/profile/twofactor - Toggle 2FA (premium users only)
 router.put('/twofactor', authMiddleware, async (req, res) => {
   try {
     const { enabled } = req.body;
@@ -78,7 +78,7 @@ router.put('/twofactor', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ POST /api/profile/avatar - Upload avatar
+// POST /api/profile/avatar - Upload avatar
 router.post('/avatar', authMiddleware, upload.single('avatar'), async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -100,7 +100,7 @@ router.post('/avatar', authMiddleware, upload.single('avatar'), async (req, res)
   }
 });
 
-// ✅ DELETE /api/profile/avatar - Remove avatar
+//  DELETE /api/profile/avatar - Remove avatar
 router.delete('/avatar', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId);

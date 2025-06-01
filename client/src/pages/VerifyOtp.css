@@ -1,56 +1,61 @@
-/* verifyOtp.css */
-
+/* Container for the OTP verification box */
 .auth-box {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  font-family: 'Inter', sans-serif;
-  text-align: center;
+  max-width: 400px;                         /* Limit box width */
+  margin: 80px auto;                        /* Center the box vertically and horizontally */
+  padding: 30px;                            /* Inner spacing */
+  background: #ffffff;                      /* White background */
+  border-radius: 16px;                      /* Rounded corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  font-family: 'Inter', sans-serif;         /* Clean, modern font */
+  text-align: center;                       /* Center-align text and elements */
 }
 
+/* Title styling */
 .auth-box h2 {
-  margin-bottom: 20px;
-  font-size: 26px;
-  color: #1f7aec;
+  margin-bottom: 20px;                      /* Space below the title */
+  font-size: 26px;                          /* Large title */
+  color: #1f7aec;                           /* Blue color for the title */
 }
 
+/* Input fields styling */
 .auth-box input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
+  width: 100%;                              /* Full width of the container */
+  padding: 12px;                            /* Padding inside input */
+  margin: 10px 0;                           /* Space above and below inputs */
+  border: 1px solid #ccc;                   /* Light gray border */
+  border-radius: 8px;                       /* Rounded input corners */
+  font-size: 16px;                          /* Readable text size */
+  transition: border-color 0.3s ease;       /* Smooth border color transition on focus */
 }
 
+/* Input focus effect */
 .auth-box input:focus {
-  outline: none;
-  border-color: #1abc9c;
+  outline: none;                            /* Remove default outline */
+  border-color: #1abc9c;                    /* Highlight border with accent color */
 }
 
+/* Button styling */
 .auth-box button {
-  width: 100%;
-  padding: 12px;
-  background: #1abc9c;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.3s ease;
+  width: 100%;                              /* Full width button */
+  padding: 12px;                            /* Padding inside button */
+  background: #1abc9c;                      /* Teal background color */
+  border: none;                             /* No border */
+  border-radius: 8px;                       /* Rounded corners */
+  color: white;                             /* White text */
+  font-size: 16px;                          /* Text size */
+  cursor: pointer;                          /* Pointer cursor on hover */
+  margin-top: 10px;                         /* Space above button */
+  transition: background 0.3s ease;         /* Smooth background color transition */
 }
 
+/* Button hover effect */
 .auth-box button:hover {
-  background: #16a085;
+  background: #16a085;                      /* Slightly darker teal on hover */
 }
 
+/* Message or paragraph text styling */
 .auth-box p {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #555;
+  margin-top: 15px;                         /* Space above the message */
+  font-size: 14px;                          /* Smaller text size */
+  color: #555;                              /* Dark gray text */
 }

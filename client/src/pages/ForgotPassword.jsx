@@ -1,21 +1,25 @@
+// Import necessary modules and components
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './forgot.css';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import './forgot.css'; // Custom styling for the forgot password page
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Icons to toggle password visibility
+import { ToastContainer, toast } from 'react-toastify'; // Toast notifications
+import 'react-toastify/dist/ReactToastify.css'; // Toast styles
 
+// API base URL from environment variables
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ForgotPassword() {
-  const [step, setStep] = useState(1);
+  // Define state variables
+  const [step, setStep] = useState(1); // 1 = email input, 2 = OTP + new password
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
+  const [loading, setLoading] = useState(false); // Show loading state
   const navigate = useNavigate();
 
+  // Function to send OTP to user's email
   const sendOtp = async () => {
     setLoading(true);
     try {
@@ -25,8 +29,9 @@ export default function ForgotPassword() {
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
+
       if (res.ok) {
-        setStep(2);
+        setStep(2); // Move to OTP input step
         toast.success('📩 OTP sent to your email.');
       } else {
         toast.error(data.message || '❌ Failed to send OTP.');
@@ -39,6 +44,7 @@ export default function ForgotPassword() {
     }
   };
 
+  // Function to verify OTP and reset password
   const verifyOtp = async () => {
     setLoading(true);
     try {
@@ -48,6 +54,7 @@ export default function ForgotPassword() {
         body: JSON.stringify({ email, otp, newPassword }),
       });
       const data = await res.json();
+
       if (res.ok) {
         localStorage.setItem('userEmail', email);
         toast.success('✅ Password reset successful! Redirecting...');
@@ -71,6 +78,7 @@ export default function ForgotPassword() {
 
         <div className="forgot-form">
           {step === 1 ? (
+            // Step 1: Email input to send OTP
             <>
               <input
                 type="email"
@@ -84,6 +92,7 @@ export default function ForgotPassword() {
               </button>
             </>
           ) : (
+            // Step 2: Enter OTP and new password
             <>
               <input
                 type="text"
@@ -111,12 +120,13 @@ export default function ForgotPassword() {
           )}
         </div>
 
+        {/* Navigation link to return to login */}
         <div className="bottom-links">
           <span onClick={() => navigate('/login')}>← Back to <b>Login</b></span>
         </div>
       </div>
 
-      {/* ✅ Toast container */}
+      {/* Toast container for showing success/error messages */}
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar pauseOnHover />
     </div>
   );

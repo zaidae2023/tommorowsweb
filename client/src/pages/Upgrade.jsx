@@ -1,6 +1,9 @@
+// Import React and required components
 import React from 'react';
 import Navbar from '../components/navbar';
-import './Upgrade.css';
+import './Upgrade.css'; // Page-specific styles
+
+// Import icons from react-icons
 import {
   FaCrown,
   FaFileExport,
@@ -13,8 +16,9 @@ import {
 } from 'react-icons/fa';
 
 export default function UpgradePage() {
+  // Handles the Stripe checkout process
   const handleUpgrade = async () => {
-    const email = localStorage.getItem('userEmail');
+    const email = localStorage.getItem('userEmail'); // Get logged-in user's email
 
     if (!email) {
       alert('User email not found. Please log in again.');
@@ -22,6 +26,7 @@ export default function UpgradePage() {
     }
 
     try {
+      // Call backend to create a Stripe checkout session
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/create-checkout-session`, {
         method: 'POST',
         headers: {
@@ -32,8 +37,9 @@ export default function UpgradePage() {
 
       const data = await res.json();
 
+      // Redirect user to Stripe payment page
       if (data.url) {
-        window.location.href = data.url; // 🔁 Redirect to Stripe
+        window.location.href = data.url;
       } else {
         alert('Failed to create checkout session.');
       }
@@ -45,9 +51,12 @@ export default function UpgradePage() {
 
   return (
     <>
+      {/* Navigation bar */}
       <Navbar />
 
+      {/* Upgrade main content */}
       <div className="upgrade-page">
+        {/* Header section */}
         <div className="upgrade-header">
           <FaCrown className="crown-icon-big" />
           <h1>
@@ -59,6 +68,7 @@ export default function UpgradePage() {
           </p>
         </div>
 
+        {/* Feature cards grid */}
         <div className="features-grid">
           <div className="feature-card">
             <FaFileExport className="feature-icon" />
@@ -97,12 +107,14 @@ export default function UpgradePage() {
           </div>
         </div>
 
+        {/* Extra standalone feature */}
         <div className="feature-card standalone-card">
           <FaGlobe className="feature-icon" />
           <h3>Multi-Currency Support</h3>
           <p>Manage your expenses in your preferred currency, wherever you are.</p>
         </div>
 
+        {/* Call-to-action button */}
         <div className="upgrade-cta">
           <button className="upgrade-now-btn" onClick={handleUpgrade}>
             Buy Premium only $10.00/month

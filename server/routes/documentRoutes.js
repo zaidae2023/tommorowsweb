@@ -36,7 +36,7 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// ✅ Upload Document (limit 3 for free users)
+//  Upload Document (limit 3 for free users)
 router.post('/', authenticate, upload.single('file'), async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -67,7 +67,7 @@ router.post('/', authenticate, upload.single('file'), async (req, res) => {
   }
 });
 
-// ✅ Get Documents
+//  Get Documents
 router.get('/', authenticate, async (req, res) => {
   try {
     const docs = await Document.find({ userId: req.user.id }).sort({ expiryDate: 1 });
@@ -77,7 +77,7 @@ router.get('/', authenticate, async (req, res) => {
   }
 });
 
-// ✅ Delete Document
+//  Delete Document
 router.delete('/:id', authenticate, async (req, res) => {
   try {
     const doc = await Document.findById(req.params.id);

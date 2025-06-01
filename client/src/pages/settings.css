@@ -1,4 +1,8 @@
-/* Page container */
+/* =========================
+   Page Layout and Card
+========================= */
+
+/* Main page container */
 .settings-page {
   display: flex;
   justify-content: center;
@@ -8,9 +12,9 @@
   color: #111; /* Dark text for contrast */
 }
 
-/* Card container */
+/* Profile card container */
 .settings-card {
-  background: #f9f9f9; /* Light card background */
+  background: #f9f9f9;
   padding: 30px;
   border-radius: 16px;
   width: 100%;
@@ -19,7 +23,7 @@
   color: #111;
 }
 
-/* Section title */
+/* Section heading */
 .settings-title {
   font-size: 28px;
   margin-bottom: 20px;
@@ -27,9 +31,9 @@
   font-weight: bold;
 }
 
-/* Success/Error Message */
+/* Notification message box (e.g., success, error) */
 .settings-message {
-  background: #e3f2fd; /* Light blue background */
+  background: #e3f2fd;
   color: #0d47a1;
   padding: 10px;
   border-radius: 8px;
@@ -39,7 +43,12 @@
   border: 1px solid #90caf9;
 }
 
-/* Avatar container */
+
+/* =========================
+   Avatar Styling
+========================= */
+
+/* Wrapper for avatar image or placeholder */
 .avatar-wrapper {
   position: relative;
   display: flex;
@@ -47,7 +56,7 @@
   margin-bottom: 25px;
 }
 
-/* Avatar image */
+/* Profile image styling */
 .avatar-image {
   width: 100px;
   height: 100px;
@@ -62,11 +71,11 @@
   transform: scale(1.05);
 }
 
-/* Delete (X) button on avatar */
+/* Avatar delete (X) button */
 .avatar-delete-btn {
   position: absolute;
   top: -6px;
-  right: calc(50% - 50px); /* Center based on avatar size */
+  right: calc(50% - 50px); /* Horizontally aligned with avatar */
   background: #ef5350;
   border: none;
   color: white;
@@ -85,7 +94,32 @@
   background: #d32f2f;
 }
 
-/* Form input group */
+/* Default avatar placeholder (when no image is uploaded) */
+.avatar-placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border: 3px dashed #aaa;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.avatar-placeholder:hover {
+  background: #d5d5d5;
+  transform: scale(1.05);
+}
+
+
+/* =========================
+   Form Input Fields
+========================= */
+
 .input-group {
   display: flex;
   flex-direction: column;
@@ -114,6 +148,11 @@
   border-color: #4fc3f7;
 }
 
+
+/* =========================
+   Save Button
+========================= */
+
 .save-btn {
   width: 100%;
   padding: 12px;
@@ -131,6 +170,7 @@
   overflow: hidden;
 }
 
+/* Animated gradient effect */
 .save-btn::before {
   content: '';
   position: absolute;
@@ -150,6 +190,7 @@
   opacity: 1;
 }
 
+/* Gradient animation keyframes */
 @keyframes animatedGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -157,7 +198,10 @@
 }
 
 
-/* Responsive improvements (optional) */
+/* =========================
+   Responsive Design
+========================= */
+
 @media (max-width: 600px) {
   .settings-card {
     padding: 20px;
@@ -178,13 +222,18 @@
   }
 }
 
-/* Toggle Switch for 2FA */
+
+/* =========================
+   2FA Toggle Switch
+========================= */
+
 .toggle-group {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+/* Toggle switch container */
 .switch {
   position: relative;
   display: inline-block;
@@ -198,6 +247,7 @@
   height: 0;
 }
 
+/* Toggle track */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -210,6 +260,7 @@
   border-radius: 24px;
 }
 
+/* Toggle circle */
 .slider:before {
   position: absolute;
   content: "";
@@ -222,6 +273,7 @@
   border-radius: 50%;
 }
 
+/* When toggle is active */
 input:checked + .slider {
   background-color: #1abc9c;
 }
@@ -229,6 +281,11 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(22px);
 }
+
+
+/* =========================
+   Logout Button
+========================= */
 
 .logout-btn {
   width: 100%;
@@ -247,9 +304,11 @@ input:checked + .slider:before {
   background-color: #d32f2f;
 }
 
+
 /* =========================
    Logout Confirmation Modal
-============================ */
+========================= */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -287,12 +346,14 @@ input:checked + .slider:before {
   font-size: 15px;
 }
 
+/* Modal button layout */
 .modal-buttons {
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
+/* Cancel and confirm buttons */
 .modal-cancel,
 .modal-confirm {
   flex: 1;
@@ -323,7 +384,11 @@ input:checked + .slider:before {
   background-color: #d32f2f;
 }
 
-/* Animations */
+
+/* =========================
+   Modal Animations
+========================= */
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -332,24 +397,4 @@ input:checked + .slider:before {
 @keyframes scaleUp {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
-}
-
-.avatar-placeholder {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: #e0e0e0;
-  color: #555;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  border: 3px dashed #aaa;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.avatar-placeholder:hover {
-  background: #d5d5d5;
-  transform: scale(1.05);
 }

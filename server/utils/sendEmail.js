@@ -1,4 +1,3 @@
-// utils/sendEmail.js
 const nodemailer = require('nodemailer');
 
 // Sends email using Gmail SMTP with App Password

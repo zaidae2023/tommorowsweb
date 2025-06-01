@@ -1,21 +1,22 @@
 // src/components/Footer.jsx
 import React from 'react';
-import './footer.css';
-import { Link } from 'react-router-dom';
+import './footer.css'; // Import styles for the footer
+import { Link } from 'react-router-dom'; // For internal navigation links
 
+// Functional component to render the footer section
 export default function Footer() {
   return (
     <footer className="footer">
-      {/* Accent stripe */}
+      {/* Decorative accent bar at the top of the footer */}
       <div className="footer-accent" />
 
       <div className="footer-content">
-        {/* Brand & tagline */}
+        {/* App brand section with name or logo */}
         <div className="footer-section footer-brand">
           <h2 className="brand-title">TuneUp</h2>
         </div>
 
-        {/* Navigation links */}
+        {/* Navigation links to key pages in the app */}
         <div className="footer-section footer-nav">
           <h3 className="section-title">Explore</h3>
           <Link to="/">Home</Link>
@@ -23,15 +24,15 @@ export default function Footer() {
           <Link to="/services">Services</Link>
         </div>
 
-        {/* Legal links with Help Center moved here */}
+        {/* Legal links and help center */}
         <div className="footer-section footer-legal">
           <h3 className="section-title">Legal</h3>
           <Link to="/privacy-policy">Privacy Policy</Link>
           <Link to="/terms">Terms &amp; Conditions</Link>
-          <Link to="/help">Help Center</Link> {/* ✅ Moved here */}
+          <Link to="/help">Help Center</Link> {/* Help Center link placed here */}
         </div>
 
-        {/* Contact / Let’s Connect */}
+        {/* Contact section with email for user support */}
         <div className="footer-section footer-contact">
           <h3 className="section-title">Let’s Connect</h3>
           <p className="contact-text">
@@ -43,7 +44,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom copyright */}
+      {/* Bottom line showing the copyright */}
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} TuneUp. All rights reserved.</p>
       </div>
