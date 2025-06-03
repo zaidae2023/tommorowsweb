@@ -27,11 +27,11 @@ router.post('/', async (req, res) => {
 
   try {
     event = stripe.webhooks.constructEvent(
-      req.body.toString('utf8'),  // <-- Pass raw body as UTF-8 string here
+      req.body.toString('utf8'),
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-    console.log('Webhook verified:', event.type);
+    console.log('✅ Webhook verified:', event.type);
   } catch (err) {
     console.error('❌ Signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -46,15 +46,22 @@ router.post('/', async (req, res) => {
     event.type === 'invoice.payment_succeeded'
   ) {
     const session = event.data.object;
-    const email = session.customer_email;
 
-    console.log('📧 Checkout email:', email);
+    // Try to get the email from customer_email or metadata
+    const email = session.customer_email || session.metadata?.email;
+
+    console.log('📧 Email to upgrade:', email);
+
+    if (!email) {
+      console.warn('⚠️ No email found in session or metadata');
+      return res.status(400).send('Email is missing from session');
+    }
 
     try {
       const user = await User.findOne({ email });
 
       if (user) {
-        user.plan = 'premium'; //Set to 'premium'
+        user.plan = 'premium'; // ✅ Upgrade to premium
         await user.save();
         console.log(`🎉 User ${email} upgraded to Premium`);
       } else {

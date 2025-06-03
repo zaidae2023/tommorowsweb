@@ -19,6 +19,9 @@ router.post('/create-checkout-session', async (req, res) => {
       mode: 'subscription',
       payment_method_types: ['card'],
       customer_email: email,
+      metadata: {
+        email: email, // ✅ Add email to metadata for webhook access
+      },
       line_items: [
         {
           price: 'price_1RUCGCQxGI7D6wc7KnYghEGr',
